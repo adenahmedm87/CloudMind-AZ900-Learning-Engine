@@ -763,7 +763,7 @@ renderQuestion();
   state.answers={};state.confidence={};state.transferDone={};state.index=0;state.view="practice";state.mode=mode;state.paused=false;state.sessionStarted=true;
   state.sessionOrder=ids&&ids.length?ids.slice():shuffleQuestions();state.mockLabDone=false;state.timedMode=!!timed;state.timeLeft=45*60;state.lastCompletedSignature="";
   persist();if($("nextBtn"))$("nextBtn").classList.remove("hidden");renderQuestion();syncClock();
-  const p=$("cmPathStatus");if(p)p.textContent=mode==="mock"?"Mock exam started: 45 minutes. Answer each question, then review your report.":mode==="beginner"?"Beginner path started: 10 questions, no timer. Read each explanation before moving on.":mode==="topic"?"Topic practice started. Focus on this selected topic and read the explanation after each answer.":"Unlimited practice started. No countdown—learn at your own pace.";
+  const p=$("cmPathStatus");if(p)p.textContent=mode==="mock"?"Mock question section: 45 minutes. A separate simulated practical task follows; that lab is a CloudMind learning feature, not a statement about the official AZ-900 exam format.":mode==="beginner"?"Beginner path started: 10 questions, no timer. Read each explanation before moving on.":mode==="topic"?"Topic practice started. Focus on this selected topic and read the explanation after each answer.":"Unlimited practice started. No countdown—learn at your own pace.";
   $("practice").scrollIntoView({behavior:"smooth",block:"start"});
  }
  /* Reliable entry point for the sidebar Practice room. */
@@ -827,7 +827,7 @@ renderQuestion();
   if(c)c.textContent=state.timedMode?"Timed · "+Math.floor((state.timeLeft||2700)/60)+":"+String((state.timeLeft||2700)%60).padStart(2,"0"):"Untimed · no countdown";
   if(cmTimer){clearInterval(cmTimer);cmTimer=null}
   if(state.timedMode&&state.view!=="done"){
-   cmTimer=setInterval(()=>{if(state.paused)return;state.timeLeft=Math.max(0,(state.timeLeft||2700)-1);persist();if(c)c.textContent="Timed · "+Math.floor(state.timeLeft/60)+":"+String(state.timeLeft%60).padStart(2,"0");if(state.timeLeft<=0){clearInterval(cmTimer);cmTimer=null;activeQuestions().forEach(q=>{if(!state.answers[q.id]&&!state.review.includes(q.id))state.review.push(q.id)});state.index=activeQuestions().length;state.view="done";persist();renderQuestion();showToast("Time is up. Unanswered questions were added to Smart Review.")}},1000)
+   cmTimer=setInterval(()=>{if(state.paused)return;if(state.view==="done"){clearInterval(cmTimer);cmTimer=null;return;}state.timeLeft=Math.max(0,(state.timeLeft||2700)-1);persist();if(c)c.textContent="Timed · "+Math.floor(state.timeLeft/60)+":"+String(state.timeLeft%60).padStart(2,"0");if(state.timeLeft<=0){clearInterval(cmTimer);cmTimer=null;activeQuestions().forEach(q=>{if(!state.answers[q.id]&&!state.review.includes(q.id))state.review.push(q.id)});state.index=activeQuestions().length;state.view="done";persist();renderQuestion();showToast("Time is up. Unanswered questions were added to Smart Review.")}},1000)
   }
  }
  window.cmSyncClock=syncClock;
