@@ -124,9 +124,82 @@ body.cm-labview #cmInteractiveLab.hidden,body.cm-labview #cmAzureLab.hidden,body
   .answer,.confidence-btn,.cm-child{min-height:44px}
   .cm-labs-accordion summary{padding:14px}
 }
+
+/* CloudMind student-portal redesign: navigation, hierarchy, responsive layout */
+:root{--bg:#f4f7fb;--panel:#fff;--panel2:#eef3fa;--line:#dbe3ef;--text:#17243a;--muted:#65758d;--cyan:#087f8c;--violet:#6554c0;--green:#16794c;--red:#b42345;--amber:#9a5b00;--radius:16px}
+html{scroll-behavior:smooth;scroll-padding-top:22px}
+body{background:#f4f7fb;color:var(--text);font-size:14px}
+body:before{content:"";position:fixed;inset:0 0 auto 260px;height:5px;background:linear-gradient(90deg,#087f8c 0 38%,#6554c0 38% 70%,#e6a23c 70%);z-index:50}
+.cm-app-sidebar{position:fixed;z-index:60;inset:0 auto 0 0;width:260px;background:#101c32;color:#edf4ff;padding:23px 15px 18px;display:flex;flex-direction:column;border-right:1px solid #273754;overflow-y:auto}
+.cm-side-brand{display:flex;align-items:center;gap:11px;padding:3px 9px 23px;border-bottom:1px solid #293954}
+.cm-side-logo{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,#62d9d2,#a69bff);color:#0b1830;font-size:21px;font-weight:950}
+.cm-side-brand strong{display:block;font-size:17px;letter-spacing:-.3px}.cm-side-brand small{display:block;color:#a9bad3;font-size:11px;margin-top:2px}
+.cm-side-label{font-size:10px;text-transform:uppercase;letter-spacing:1.6px;font-weight:850;color:#7f94b5;padding:23px 11px 8px}
+.cm-side-nav{display:grid;gap:5px}
+.cm-side-link{display:flex;align-items:center;gap:12px;width:100%;padding:11px 12px;border:1px solid transparent;border-radius:10px;background:transparent;color:#b9c7dc;text-align:left;font-size:13px;font-weight:650;transition:background .15s,color .15s,border-color .15s}
+.cm-side-link .cm-nav-icon{width:23px;text-align:center;font-size:16px}.cm-side-link:hover{background:#1a2a45;color:#fff}
+.cm-side-link.active{background:#1b354d;border-color:#2e5c70;color:#7ce4dc;box-shadow:inset 3px 0 #54d7d0}
+.cm-side-spacer{flex:1;min-height:22px}
+.cm-side-note{margin-top:18px;padding:14px;border:1px solid #2c405c;background:#172640;border-radius:12px}
+.cm-side-note strong{font-size:12px;display:block;color:#f0f5ff}.cm-side-note p{font-size:11px;line-height:1.5;color:#aebed4;margin:6px 0 0}
+.cm-side-footer{font-size:10px;color:#7186a7;padding:17px 9px 0;line-height:1.5}
+.shell{max-width:none;margin:0 0 0 260px;padding:22px clamp(18px,3vw,44px) 45px}
+.topbar{padding:6px 0 18px;border-bottom-color:#dce4ef}
+.brand strong{color:#17243a}.brand small{color:#65758d}
+.logo{box-shadow:none}.pill{border-color:#d8e1ee;background:#fff;color:#53647c}.pill.independent{color:#087f8c;background:#e8f7f6;border-color:#b9e7e3}
+.hero{padding:34px 0 25px;gap:30px}.eyebrow,.kicker{color:#087f8c}
+.hero h1{color:#17243a;letter-spacing:-1.9px}.gradient{background:linear-gradient(100deg,#087f8c,#6554c0 78%);background-clip:text}
+.hero p{color:#5d6e86}.hero-card{background:#fff;border-color:#dbe3ef;box-shadow:0 12px 36px #223e6410}.hero-card h3{color:#17243a}.hero-card p{color:#65758d}.orb{box-shadow:none}.signal div{background:#f5f8fc;border-color:#e1e8f1}.signal b{color:#23324a}.signal span{color:#687993}
+.stats{gap:14px;margin:12px 0 25px}.stat{background:#fff;border:1px solid #dce4ef;border-radius:14px;box-shadow:0 3px 10px #233e6406;position:relative;overflow:hidden;padding:17px 18px}
+.stat:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:#087f8c}.stat:nth-child(2):before{background:#6554c0}.stat:nth-child(3):before{background:#d97706}.stat:nth-child(4):before{background:#2876c7}
+.stat .label{color:#63738b;font-weight:650}.stat .value{color:#17243a;font-size:29px}.stat .hint{color:#7b8aa0}
+.mini-panel,.panel{background:#fff;border:1px solid #dbe3ef;box-shadow:0 4px 15px #233e6408;border-radius:16px}
+.panel{padding:clamp(18px,2vw,26px)}.panel h2,.mini-panel h3{color:#1c2a41}.sub{color:#66768d}
+.btn{background:#eef3f9;color:#263750;border-color:#d4deeb;border-radius:10px;transition:transform .15s,box-shadow .15s,background .15s}.btn:hover{border-color:#9eafc6;background:#e7eef7;box-shadow:0 3px 8px #203b5b0c}
+.btn.primary{background:#087f8c;color:#fff;border:1px solid #087f8c;box-shadow:0 4px 10px #087f8c20}.btn.primary:hover{background:#066b76;border-color:#066b76}
+.btn.ghost{background:#fff;color:#4c5d75;border-color:#d5deea}.btn.ghost:hover{background:#f1f5fa}
+.cm-modes{gap:12px}.cm-mode{background:#fff;color:#203049;border-color:#d9e2ed;box-shadow:0 2px 6px #233e6406}.cm-mode:hover,.cm-mode:focus-visible{background:#f2fbfb;border-color:#087f8c;box-shadow:0 5px 15px #087f8c12}
+.cm-mode strong{color:#1c2a41}.cm-mode span{color:#65758d}.cm-mode em{display:inline-block;margin-top:10px;color:#087f8c;font-style:normal;font-size:11px;font-weight:800}
+.cm-mode.cm-active{border-color:#087f8c;background:#eaf8f7;box-shadow:inset 0 0 0 1px #087f8c20}
+.cm-section-label{background:#f0f5fb;border-color:#dfe7f1}.cm-section-label strong{color:#263750}
+.cm-domain{border-color:#dbe4ef}.cm-domain summary{background:#f0f4fa;color:#25354e}.cm-domain summary span{color:#718099}.cm-child{background:#fff;border-color:#d8e2ee;color:#42546e}.cm-child:hover{color:#087f8c;border-color:#087f8c}.cm-child.cm-active{background:#e5f7f5;color:#087f8c;border-color:#087f8c}
+.cm-labs-accordion{border-color:#d9e2ed;background:#f8fafd}.cm-labs-accordion>summary{color:#34465f}.cm-labs-count{color:#087f8c}
+.question{color:#17243a}.tag{background:#f0f4f9;border-color:#dbe4ef;color:#586b84}.tag.topic{color:#087f8c;background:#e8f7f6;border-color:#c5e9e6}
+.progress{background:#e5ebf3}.progress>span{background:linear-gradient(90deg,#087f8c,#6554c0)}
+.answer{background:#fff!important;color:#283951!important;border-color:#d8e2ee!important}.answer:hover:not(:disabled){background:#f1f8fb!important;border-color:#087f8c!important}.letter{background:#edf2f8;color:#5e6f87}.answer.correct{border-color:#15945e!important;background:#eaf8f0!important}.answer.correct .letter{background:#16794c;color:#fff}.answer.wrong{border-color:#c63e5e!important;background:#fff0f3!important}.answer.wrong .letter{background:#b42345;color:#fff}
+.feedback{background:#f6f9fc;border-color:#dbe4ef}.feedback p{color:#53647c}.feedback.good{border-color:#8ed6b1;background:#f0fbf5}.feedback.bad{border-color:#e9a0b0;background:#fff4f6}
+.confidence{border-top-color:#e1e8f1}.confidence-btn{background:#f5f8fc;color:#33465f;border-color:#d5dfec}.confidence-btn:hover{border-color:#6554c0;background:#f4f1ff}.confidence-btn span{color:#73829a}.confidence-btn.chosen{border-color:#087f8c;background:#e8f7f6;color:#087f8c}
+.clinic{background:#f4f1ff;border-color:#c8bdf5}.clinic .kicker{color:#6554c0}.clinic p{color:#514a70}.clinic .transfer{background:#fff;border-color:#ded6fb}
+.topicbar{background:#e7edf5}.topicbar span{background:#087f8c}.review-item{border-top-color:#e4eaf2}.review-item strong{color:#2b3b54}.review-item span{color:#718099}
+.cm-visual,.cm-lab-shell{background:#f7f9fc;border-color:#d8e2ee}.cm-lab-head{border-bottom-color:#dce4ef}.cm-lab-head h3{color:#1b2a42}.cm-lab-head p{color:#63748c}.cm-lab-instructions{background:#edf5fb;border-color:#d9e5f1}
+.cm-how-panel{background:#f8fafd!important;border-color:#dfe7f1!important}.cm-how-step{background:#fff!important;border-color:#dce5ef!important}.cm-how-step strong{color:#24354e}.cm-how-step p,.cm-how-note{color:#61728a!important}
+.footer{border-top-color:#dbe3ee;color:#718099}.footer a{color:#087f8c}.toast{background:#14243b;color:#fff}
+body.cm-cover .cm-app-sidebar{box-shadow:8px 0 28px #172b4712}
+body.cm-cover .shell{padding-top:22px}
+body.cm-dashboard .hero{display:none}body.cm-dashboard .stats{margin-top:20px}
+body.cm-practice .hero,body.cm-practice #cmPathway{display:none}body.cm-practice .stats{margin-top:22px}
+body.cm-labview .hero{display:none}
+@media(max-width:950px){.cm-app-sidebar{width:220px}.shell{margin-left:220px;padding-left:20px;padding-right:20px}body:before{left:220px}.hero{grid-template-columns:1fr}.hero-card{display:none}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:1fr}.sidebar{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){body:before{left:0;height:4px}.cm-app-sidebar{inset:0 0 auto 0;width:auto;height:auto;max-height:none;padding:9px 12px 10px;display:block;overflow:visible;border-right:0;border-bottom:1px solid #273754}.cm-side-brand{padding:0 2px 8px;border:0}.cm-side-logo{width:32px;height:32px;border-radius:9px;font-size:17px}.cm-side-brand strong{font-size:14px}.cm-side-brand small{font-size:10px}.cm-side-label,.cm-side-spacer,.cm-side-note,.cm-side-footer{display:none}.cm-side-nav{display:flex;gap:5px;overflow-x:auto;padding:2px 0 0;scrollbar-width:thin}.cm-side-link{width:auto;flex:0 0 auto;white-space:nowrap;padding:8px 10px;font-size:11px;gap:6px}.cm-side-link .cm-nav-icon{font-size:13px;width:auto}.shell{margin:0;padding:112px 13px 30px}.topbar{padding-bottom:13px}.top-right{gap:5px}.pill{padding:6px 8px;font-size:9px}.brand{display:none}.hero{padding:24px 0 18px}.hero h1{font-size:39px}.stats{gap:8px;margin:12px 0 20px}.stat{padding:13px 12px}.stat .value{font-size:24px}.stat .label{font-size:11px}.stat .hint{font-size:10px}.sidebar{grid-template-columns:1fr}.panel{padding:16px}.cm-modes{grid-template-columns:1fr}.cm-mode{min-height:0}.cm-lab-head,.cm-lab-body{padding:15px}.cm-how-steps{grid-template-columns:1fr!important}.cm-how-arrow{transform:rotate(90deg)}}
+
 </style>
 </head>
 <body class="cm-cover">
+
+<nav class="cm-app-sidebar" aria-label="Main navigation">
+ <div class="cm-side-brand"><div class="cm-side-logo">C</div><div><strong>CloudMind</strong><small>AZ-900 learning portal</small></div></div>
+ <div class="cm-side-label">Learning workspace</div>
+ <div class="cm-side-nav">
+  <button class="cm-side-link active" data-cm-nav="dashboard"><span class="cm-nav-icon">▦</span> Dashboard</button>
+  <button class="cm-side-link" data-cm-nav="practice"><span class="cm-nav-icon">✎</span> Practice room</button>
+  <button class="cm-side-link" data-cm-nav="review"><span class="cm-nav-icon">↻</span> Smart review</button>
+  <button class="cm-side-link" data-cm-nav="labs"><span class="cm-nav-icon">⌘</span> Hands-on labs</button>
+  <button class="cm-side-link" data-cm-nav="progress"><span class="cm-nav-icon">▥</span> My progress</button>
+ </div>
+ <div class="cm-side-spacer"></div>
+ <div class="cm-side-note"><strong>Learn beyond the score</strong><p>Build understanding, spot misconceptions, and revisit the topics that need your attention.</p></div>
+ <div class="cm-side-footer">Independent learning tool<br>Not affiliated with Microsoft.</div>
+</nav>
 <div class="shell">
 <header class="topbar"><div class="brand"><div class="logo">C</div><div><strong>CloudMind</strong><small>The Learning Intelligence Engine</small></div></div><div class="top-right"><span class="pill">AZ-900 PRACTICE LAB</span><span class="pill independent">Independent learning tool</span></div></header>
 <section class="hero"><div><div class="eyebrow">Learn beyond the score</div><h1>Learn why. <span class="gradient">Prove it.</span><br>Remember it.</h1><p>Practice Azure fundamentals, rate how confident you feel, and uncover the misconceptions hiding behind your answers. Your next study step should be smarter than “try again.”</p><div class="actions"><button class="btn primary" id="startBtn">Explore practice options ↗</button><button class="btn ghost" id="howBtn">How it works ↓</button></div></div><div class="hero-card"><div class="orb">✳</div><h3>Confidence is a learning signal.</h3><p>A correct guess and a confident misconception need different next steps. CloudMind uses both answer accuracy and self-reported confidence to guide review.</p><div class="signal"><div><b>01 · Answer</b><span>Choose an option</span></div><div><b>02 · Reflect</b><span>Rate confidence</span></div><div><b>03 · Understand</b><span>Explore the why</span></div><div><b>04 · Revisit</b><span>Track learning</span></div></div></div></section>
@@ -609,6 +682,48 @@ renderQuestion();
   if(e.target.closest("#nextBtn")&&typeof state!=="undefined"&&state.view==="done"&&state.mode==="mock"&&!state.mockLabDone){screen("labview");}
  });
  window.addEventListener("pageshow",function(){if(!body.classList.contains("cm-dashboard")&&!body.classList.contains("cm-practice")&&!body.classList.contains("cm-labview"))screen("cover");});
+})();
+</script>
+
+<script>
+/* Accessible portal navigation for desktop sidebar and compact mobile nav. */
+(function(){
+ const body=document.body;
+ const links=[...document.querySelectorAll("[data-cm-nav]")];
+ function setActive(name){links.forEach(link=>{const active=link.dataset.cmNav===name;link.classList.toggle("active",active);if(active)link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");});}
+ function go(name){
+  if(name==="dashboard"){
+   body.classList.remove("cm-practice","cm-labview");body.classList.add("cm-dashboard");
+   document.querySelector(".layout")?.classList.remove("hidden");
+   document.getElementById("cmInteractiveLab")?.classList.add("hidden");
+   document.getElementById("cmAzureLab")?.classList.add("hidden");
+   document.getElementById("cmScenarioLab")?.classList.add("hidden");
+   document.getElementById("cmPathway")?.scrollIntoView({behavior:"smooth",block:"start"});
+  }else if(name==="practice"){
+   body.classList.remove("cm-dashboard","cm-labview");body.classList.add("cm-practice");
+   document.querySelector(".layout")?.classList.remove("hidden");
+   document.getElementById("cmInteractiveLab")?.classList.add("hidden");
+   document.getElementById("cmAzureLab")?.classList.add("hidden");
+   document.getElementById("cmScenarioLab")?.classList.add("hidden");
+   document.getElementById("practice")?.scrollIntoView({behavior:"smooth",block:"start"});
+  }else if(name==="review"){
+   body.classList.remove("cm-practice","cm-labview");body.classList.add("cm-dashboard");
+   document.querySelector(".layout")?.classList.remove("hidden");
+   document.getElementById("reviewQueue")?.closest(".mini-panel")?.scrollIntoView({behavior:"smooth",block:"start"});
+  }else if(name==="labs"){
+   body.classList.remove("cm-practice","cm-labview");body.classList.add("cm-dashboard");
+   document.querySelector(".layout")?.classList.remove("hidden");
+   const details=document.querySelector(".cm-labs-accordion");if(details)details.open=true;
+   document.getElementById("cmPathway")?.scrollIntoView({behavior:"smooth",block:"start"});
+  }else if(name==="progress"){
+   body.classList.remove("cm-practice","cm-labview");body.classList.add("cm-dashboard");
+   document.querySelector(".layout")?.classList.remove("hidden");
+   document.querySelector(".stats")?.scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  setActive(name);
+ }
+ links.forEach(link=>link.addEventListener("click",()=>go(link.dataset.cmNav)));
+ window.addEventListener("pageshow",()=>{if(body.classList.contains("cm-practice"))setActive("practice");else if(body.classList.contains("cm-dashboard"))setActive("dashboard");else setActive("dashboard");});
 })();
 </script>
 </body></html>
