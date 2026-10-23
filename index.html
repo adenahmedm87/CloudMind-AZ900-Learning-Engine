@@ -182,6 +182,72 @@ body.cm-labview .hero{display:none}
 @media(max-width:950px){.cm-app-sidebar{width:220px}.shell{margin-left:220px;padding-left:20px;padding-right:20px}body:before{left:220px}.hero{grid-template-columns:1fr}.hero-card{display:none}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:1fr}.sidebar{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){body:before{left:0;height:4px}.cm-app-sidebar{inset:0 0 auto 0;width:auto;height:auto;max-height:none;padding:9px 12px 10px;display:block;overflow:visible;border-right:0;border-bottom:1px solid #273754}.cm-side-brand{padding:0 2px 8px;border:0}.cm-side-logo{width:32px;height:32px;border-radius:9px;font-size:17px}.cm-side-brand strong{font-size:14px}.cm-side-brand small{font-size:10px}.cm-side-label,.cm-side-spacer,.cm-side-note,.cm-side-footer{display:none}.cm-side-nav{display:flex;gap:5px;overflow-x:auto;padding:2px 0 0;scrollbar-width:thin}.cm-side-link{width:auto;flex:0 0 auto;white-space:nowrap;padding:8px 10px;font-size:11px;gap:6px}.cm-side-link .cm-nav-icon{font-size:13px;width:auto}.shell{margin:0;padding:112px 13px 30px}.topbar{padding-bottom:13px}.top-right{gap:5px}.pill{padding:6px 8px;font-size:9px}.brand{display:none}.hero{padding:24px 0 18px}.hero h1{font-size:39px}.stats{gap:8px;margin:12px 0 20px}.stat{padding:13px 12px}.stat .value{font-size:24px}.stat .label{font-size:11px}.stat .hint{font-size:10px}.sidebar{grid-template-columns:1fr}.panel{padding:16px}.cm-modes{grid-template-columns:1fr}.cm-mode{min-height:0}.cm-lab-head,.cm-lab-body{padding:15px}.cm-how-steps{grid-template-columns:1fr!important}.cm-how-arrow{transform:rotate(90deg)}}
 
+
+/* Dashboard refinement: one clear starting point, numbered choices, less repetition */
+.cm-app-sidebar .cm-side-brand{padding-bottom:18px}
+body.cm-dashboard .topbar{display:none}
+body.cm-dashboard .shell{padding-top:24px}
+body.cm-dashboard .stats{margin:0 0 22px;gap:12px}
+body.cm-dashboard .stat{min-height:106px;padding:16px 17px 14px 20px}
+body.cm-dashboard #cmPathway{padding:clamp(18px,2.3vw,30px);margin:0 0 22px!important;border-color:#d8e2ef;box-shadow:0 8px 26px #233e6409}
+.cm-dashboard-welcome{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:0 0 21px;border-bottom:1px solid #e5ebf3;margin-bottom:22px}
+.cm-dashboard-title{font-size:clamp(25px,3vw,34px);line-height:1.15;letter-spacing:-.9px;margin:7px 0 9px;color:#17243a}
+.cm-dashboard-welcome .sub{max-width:680px;font-size:14px;line-height:1.65}
+.cm-level-chip{display:inline-flex;align-items:center;gap:7px;flex:none;padding:8px 11px;border:1px solid #cce9e5;border-radius:999px;background:#eefaf8;color:#087f8c;font-size:11px;font-weight:750;white-space:nowrap}
+.cm-step-heading,.cm-practice-heading{display:flex;align-items:flex-start;gap:13px}
+.cm-step-number{display:grid;place-items:center;width:38px;height:38px;flex:none;border-radius:12px;background:#e4f5f3;color:#087f8c;font-size:17px;font-weight:900;border:1px solid #c5e9e5}
+.cm-step-heading h3,.cm-practice-heading h3{font-size:21px;line-height:1.25;margin:3px 0 5px;color:#1b2a42;letter-spacing:-.4px}
+.cm-step-heading .kicker,.cm-practice-heading .kicker{font-size:10px;letter-spacing:1.3px}
+.cm-how-panel{background:#f8fafd!important;border:1px solid #e0e8f1!important;border-radius:15px!important;padding:20px!important;margin:0 0 28px!important}
+.cm-how-panel>.cm-how-intro{margin:12px 0 17px 51px!important}
+.cm-how-steps{gap:9px}
+.cm-how-step{background:#fff!important;border:1px solid #e1e8f0!important;border-radius:12px!important;padding:13px!important}
+.cm-how-step>span{background:#e5f5f3!important;color:#087f8c!important}
+.cm-how-step strong{font-size:13px!important}
+.cm-how-step p{font-size:11px!important;line-height:1.55}
+.cm-how-arrow{color:#94a5ba!important;font-size:19px!important}
+.cm-how-note{background:#eef8f7!important;border-left-color:#087f8c!important;color:#405b68!important;border-radius:0 8px 8px 0;margin-top:14px!important;font-size:12px!important}
+.cm-practice-heading{margin:0 0 15px}
+.cm-practice-heading .sub{font-size:12px;line-height:1.5}
+.cm-numbered-paths{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;margin-top:0!important}
+.cm-numbered-paths .cm-mode{position:relative;min-height:174px!important;padding:18px!important;border:1px solid #dce5ef!important;border-radius:14px!important;box-shadow:0 2px 8px #223e6406!important;gap:7px!important}
+.cm-numbered-paths .cm-mode:hover{transform:translateY(-2px);box-shadow:0 7px 18px #223e6410!important;border-color:#8bcfca!important}
+.cm-numbered-paths .cm-mode strong{font-size:15px!important;padding-right:25px;line-height:1.35}
+.cm-numbered-paths .cm-mode>span:not(.cm-card-number){font-size:12px!important;line-height:1.6!important}
+.cm-numbered-paths .cm-card-number{position:absolute;top:14px;right:14px;width:27px;height:27px;display:grid;place-items:center;border-radius:9px;background:#f0f4f9;border:1px solid #e1e8f1;color:#60738c;font-size:10px;font-weight:850}
+.cm-numbered-paths .cm-mode:first-child{background:#f0faf8!important;border-color:#a9ded7!important}
+.cm-numbered-paths .cm-mode:first-child .cm-card-number{background:#d8f1ec;border-color:#b8e5dd;color:#087f8c}
+.cm-numbered-paths .cm-mode:first-child em{color:#087f8c}
+.cm-numbered-paths .cm-mode em{font-size:11px!important;margin-top:auto;padding-top:9px!important;color:#5b6d85!important}
+.cm-numbered-paths .cm-review-path{background:#faf8ff!important;border-color:#e1dafb!important}
+.cm-numbered-paths .cm-review-path .cm-card-number{background:#eee9ff;border-color:#ddd4ff;color:#6554c0}
+.cm-numbered-paths .cm-review-path em{color:#6554c0!important}
+.cm-labs-accordion{margin-top:21px!important;background:#fff!important;border-color:#dfe6ef!important}
+.cm-labs-accordion summary{padding:15px 16px!important}
+.cm-labs-accordion summary strong{color:#2b3b53}
+.cm-labs-accordion summary small{line-height:1.5}
+.cm-labs-accordion .cm-lab-modes{padding:12px!important}
+#cmPathStatus{margin-top:14px!important;padding:11px 13px!important;background:#f7f9fc!important;border:1px solid #e3eaf2!important;border-radius:9px!important;line-height:1.55}
+@media(max-width:760px){
+ .cm-dashboard-welcome{flex-direction:column;gap:12px}
+ .cm-level-chip{white-space:normal}
+ .cm-how-panel>.cm-how-intro{margin-left:0!important}
+ .cm-numbered-paths{grid-template-columns:1fr!important}
+ .cm-numbered-paths .cm-mode{min-height:0!important}
+ .cm-how-steps{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .cm-how-arrow{display:none!important}
+}
+@media(max-width:540px){
+ body.cm-dashboard .shell{padding-top:114px}
+ body.cm-dashboard .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .cm-dashboard-title{font-size:27px}
+ body.cm-dashboard #cmPathway{padding:15px}
+ .cm-how-panel{padding:14px!important}
+ .cm-how-steps{grid-template-columns:1fr!important}
+ .cm-how-step{min-height:0!important}
+ .cm-practice-heading h3{font-size:18px}
+}
+
 </style>
 </head>
 <body class="cm-cover">
@@ -205,34 +271,35 @@ body.cm-labview .hero{display:none}
 <section class="hero"><div><div class="eyebrow">Learn beyond the score</div><h1>Learn why. <span class="gradient">Prove it.</span><br>Remember it.</h1><p>Practice Azure fundamentals, rate how confident you feel, and uncover the misconceptions hiding behind your answers. Your next study step should be smarter than “try again.”</p><div class="actions"><button class="btn primary" id="startBtn">Explore practice options ↗</button><button class="btn ghost" id="howBtn">How it works ↓</button></div></div><div class="hero-card"><div class="orb">✳</div><h3>Confidence is a learning signal.</h3><p>A correct guess and a confident misconception need different next steps. CloudMind uses both answer accuracy and self-reported confidence to guide review.</p><div class="signal"><div><b>01 · Answer</b><span>Choose an option</span></div><div><b>02 · Reflect</b><span>Rate confidence</span></div><div><b>03 · Understand</b><span>Explore the why</span></div><div><b>04 · Revisit</b><span>Track learning</span></div></div></div></section>
 <section class="stats" aria-label="Your learning statistics"><div class="stat"><div class="label">Questions answered</div><div class="value" id="statAnswered">0</div><div class="hint">Practice attempts</div></div><div class="stat"><div class="label">Accuracy</div><div class="value" id="statAccuracy">—</div><div class="hint">Correct answers / answered</div></div><div class="stat"><div class="label">Misconceptions found</div><div class="value" id="statMis">0</div><div class="hint">Wrong + very confident</div></div><div class="stat"><div class="label">Review queue</div><div class="value" id="statReview">0</div><div class="hint">Topics to revisit</div></div></section>
 
-<section class="mini-panel" id="cmPathway" style="margin:0 0 20px">
+<section class="mini-panel cm-dashboard-home" id="cmPathway">
+ <header class="cm-dashboard-welcome">
+  <div><div class="kicker">YOUR LEARNING SPACE</div><h2 class="cm-dashboard-title">Welcome to CloudMind</h2><p class="sub">Start with the guide, then choose the kind of practice that suits you. You can change paths whenever you need.</p></div>
+  <span class="cm-level-chip"><span aria-hidden="true">✦</span> Beginner friendly</span>
+ </header>
  <section id="cmHowItWorks" class="cm-how-panel" aria-labelledby="cmHowTitle">
-  <div class="kicker">A simple learning loop</div>
-  <h3 id="cmHowTitle">How CloudMind works</h3>
-  <p class="sub">It does more than count correct answers. Your confidence helps decide what you should learn next.</p>
+  <div class="cm-step-heading"><span class="cm-step-number">1</span><div><div class="kicker">START HERE</div><h3 id="cmHowTitle">How CloudMind works</h3></div></div>
+  <p class="sub cm-how-intro">Four simple steps. No special Azure experience needed to get started.</p>
   <div class="cm-how-steps">
-   <div class="cm-how-step"><span>01</span><strong>Answer</strong><p>Choose the answer you think is correct.</p></div>
+   <div class="cm-how-step"><span>01</span><strong>Answer</strong><p>Choose the answer you think is right.</p></div>
    <div class="cm-how-arrow" aria-hidden="true">→</div>
-   <div class="cm-how-step"><span>02</span><strong>Rate confidence</strong><p>Tell CloudMind how sure you felt.</p></div>
+   <div class="cm-how-step"><span>02</span><strong>Rate confidence</strong><p>Tell us how sure you felt.</p></div>
    <div class="cm-how-arrow" aria-hidden="true">→</div>
-   <div class="cm-how-step"><span>03</span><strong>Understand why</strong><p>Read the explanation and inspect misconceptions.</p></div>
+   <div class="cm-how-step"><span>03</span><strong>Understand</strong><p>Learn why an answer is right or wrong.</p></div>
    <div class="cm-how-arrow" aria-hidden="true">→</div>
-   <div class="cm-how-step"><span>04</span><strong>Review</strong><p>Revisit weak areas and test your understanding again.</p></div>
+   <div class="cm-how-step"><span>04</span><strong>Review</strong><p>Return to topics that need more practice.</p></div>
   </div>
-  <p class="cm-how-note"><strong>The key idea:</strong> a confident wrong answer may reveal a misconception that needs a different explanation—not just another attempt.</p>
+  <p class="cm-how-note"><strong>Remember:</strong> mistakes are useful. CloudMind helps you understand them instead of just counting your score.</p>
  </section>
- <div class="kicker">Choose your learning path</div>
- <h3 style="font-size:22px;margin:5px 0">How would you like to prepare?</h3>
- <p class="sub">New to Azure? Start with guided practice. Ready for exam conditions? Choose a mock test. You can change paths any time.</p>
- <div class="cm-section-label"><span>01</span><div><strong>Choose how to study</strong><small>Start with the path that matches your goal.</small></div></div>
- <div class="cm-modes cm-core-modes">
-  <button class="cm-mode" data-mode="beginner"><strong>🌱 Beginner path</strong><span>10 guided questions · untimed · explanations after each answer</span><em>Best place to start ↗</em></button>
-  <button class="cm-mode" data-mode="topic"><strong>🧭 Practice a topic</strong><span>Choose one exam domain and focus on a smaller concept.</span><em>Target a weak area ↗</em></button>
-  <button class="cm-mode" data-mode="mock"><strong>⏱ Full mock exam</strong><span>35 mixed questions · 45 minutes · practical task at the end</span><em>Exam simulation ↗</em></button>
-  <button class="cm-mode" data-mode="unlimited"><strong>♾ Unlimited practice</strong><span>Work through the full question bank at your own pace.</span><em>No timer ↗</em></button>
+ <div class="cm-practice-heading"><div class="cm-step-number">2</div><div><div class="kicker">CHOOSE YOUR NEXT STEP</div><h3>What would you like to practise?</h3><p class="sub">Pick one option below. Each card explains what it does and who it is for.</p></div></div>
+ <div class="cm-modes cm-core-modes cm-numbered-paths">
+  <button class="cm-mode" data-mode="beginner"><span class="cm-card-number">01</span><strong>🌱 Beginner practice</strong><span>Start slowly with 10 guided questions and explanations after each answer.</span><em>Recommended for first-time learners ↗</em></button>
+  <button class="cm-mode" data-mode="topic"><span class="cm-card-number">02</span><strong>🧭 Practise one topic</strong><span>Focus on a single Azure Fundamentals exam area, one concept at a time.</span><em>Good for targeted learning ↗</em></button>
+  <button class="cm-mode" data-mode="mock"><span class="cm-card-number">03</span><strong>⏱ Mock exam</strong><span>Try 35 mixed questions in a 45-minute exam-style session.</span><em>For exam preparation ↗</em></button>
+  <button class="cm-mode" data-mode="unlimited"><span class="cm-card-number">04</span><strong>♾ Unlimited practice</strong><span>Explore the available question bank at your own pace without a timer.</span><em>Practise as long as you like ↗</em></button>
+  <button class="cm-mode cm-review-path" type="button" data-cm-shortcut="review"><span class="cm-card-number">05</span><strong>↻ Smart review</strong><span>Revisit questions and topics your previous answers suggest you should strengthen.</span><em>Best after you've tried a few questions ↗</em></button>
  </div>
  <details class="cm-labs-accordion">
-  <summary><span><strong>Optional hands-on labs</strong><small>Open only when you want extra scenario practice.</small></span><span class="cm-labs-count">4 simulations <b aria-hidden="true">＋</b></span></summary>
+  <summary><span><strong>Optional hands-on labs</strong><small>Explore practical simulations after you feel ready.</small></span><span class="cm-labs-count">4 simulations <b aria-hidden="true">＋</b></span></summary>
   <div class="cm-modes cm-lab-modes">
    <button class="cm-mode" data-mode="lab"><strong>🖱️ Desktop task</strong><span>Complete a simulated desktop task and submit it for feedback.</span></button>
    <button class="cm-mode" data-mode="azurelab"><strong>☁️ Azure portal</strong><span>Configure a resource group and review the settings.</span></button>
@@ -241,7 +308,7 @@ body.cm-labview .hero{display:none}
   </div>
  </details>
  <div id="cmTopicTree" class="cm-topic-tree"></div>
- <p id="cmPathStatus" class="sub" style="margin-top:12px">Choose a path above to begin. Your answers and explanations appear one question at a time.</p>
+ <p id="cmPathStatus" class="sub" style="margin-top:12px">Choose a practice option above to begin. You will see one question at a time, with explanations to help you learn.</p>
 </section><div class="layout"><main class="panel" id="practice"><div class="panel-head"><div><div class="kicker">Your practice session</div><h2 id="sessionTitle">Build understanding, one question at a time</h2><p class="sub" id="sessionSub">Original practice questions · Explanations included · Progress stays in this browser (no account or cross-device sync)</p></div><button class="btn small ghost" id="resetBtn">Reset progress</button></div><div class="progress"><span id="progressBar"></span></div><div class="qmeta"><span class="tag" id="qNumber">Question 1 of 50</span><span class="tag topic" id="qTopic">Cloud concepts</span><span class="tag">AZ-900</span></div><h3 class="question" id="questionText">Loading your practice question…</h3><div class="answers" id="answers"></div><div class="feedback hidden" id="feedback" aria-live="polite"></div><div class="confidence hidden" id="confidence"><h3>How confident were you before seeing the explanation?</h3><p class="sub">Honest reflection helps identify what to learn next. It is not a grade.</p><div class="confidence-options"><button class="confidence-btn" data-confidence="low">Guessing<span>Not sure yet</span></button><button class="confidence-btn" data-confidence="medium">Somewhat confident<span>I think so</span></button><button class="confidence-btn" data-confidence="high">Very confident<span>Quite sure</span></button></div></div><div id="clinicHost"></div><div class="nextrow"><span class="muted" id="questionStatus">Select the best answer to begin.</span><button class="btn primary" id="nextBtn" disabled>Next question →</button></div></main>
 <aside class="sidebar"><section class="mini-panel"><div class="kicker">Learning map</div><h3>Topic mastery</h3><p class="sub">A rough signal from your attempts, not a certification prediction.</p><div id="topicMastery"></div></section><section class="mini-panel"><div class="kicker">Smart review</div><h3>Return to what matters</h3><p class="sub">Questions and concepts to revisit based on your own practice.</p><div id="reviewQueue"></div><button class="btn small ghost" id="reviewBtn">Review a weak topic</button><div style="margin-top:18px;padding-top:14px;border-top:1px solid #273650"><h3>Session history</h3><p class="sub">Completed practice sessions saved in this browser.</p><div id="sessionHistory"></div></div></section><section class="mini-panel"><div class="kicker">The method</div><h3>Why confidence?</h3><p class="sub">Being wrong while very confident may signal a misconception. Being correct while guessing may signal a concept worth strengthening. One answer is only a clue; patterns over time are more useful.</p></section></aside></div>
 <footer class="footer"><span>CloudMind · Built for learning, not memorizing.</span><span>Original practice content. <a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/" target="_blank" rel="noreferrer">Explore the official Azure Fundamentals certification</a>.</span><span>Not affiliated with or endorsed by Microsoft.</span></footer>
@@ -726,4 +793,17 @@ renderQuestion();
  window.addEventListener("pageshow",()=>{if(body.classList.contains("cm-practice"))setActive("practice");else if(body.classList.contains("cm-dashboard"))setActive("dashboard");else setActive("dashboard");});
 })();
 </script>
+
+<script>
+/* Connect the fifth dashboard card to the existing smart-review workflow. */
+(function(){
+ const card=document.querySelector('[data-cm-shortcut="review"]');
+ if(card)card.addEventListener("click",function(){
+  const review=document.getElementById("reviewBtn");
+  if(review)review.click();
+  else document.querySelector('[data-cm-nav="review"]')?.click();
+ });
+})();
+</script>
+
 </body></html>
