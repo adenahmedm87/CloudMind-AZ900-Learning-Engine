@@ -47,9 +47,37 @@
 .cm-lab-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:15px}.cm-lab-feedback{margin-top:14px;padding:13px 15px;border:1px solid #2d7e68;border-radius:11px;background:#102b2a;color:#d9ffef;font-size:13px}.cm-lab-feedback.bad{border-color:#a04c67;background:#301a2b}.cm-lab-progress{height:7px;border-radius:20px;background:#263650;overflow:hidden;margin-top:12px}.cm-lab-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:width .2s}
 @media(max-width:700px){.cm-modes{grid-template-columns:1fr}.layout{gap:14px}.panel{padding:16px}.cm-lab-head,.cm-lab-body{padding:16px}.cm-domain summary{align-items:flex-start;flex-direction:column;gap:4px}.cm-domain summary span{max-width:none;text-align:left}.cm-file-grid{grid-template-columns:repeat(3,minmax(65px,1fr));gap:5px}.cm-desktop-wallpaper{padding:12px}.cm-lab-head{flex-direction:column}}
 
+
+/* CloudMind v2: clear cover → dashboard → focused activity */
+body.cm-cover .stats,body.cm-cover #cmPathway,body.cm-cover .layout,body.cm-cover #cmInteractiveLab,body.cm-cover #cmAzureLab,body.cm-cover #cmScenarioLab,body.cm-cover .footer{display:none!important}
+body.cm-dashboard .hero,body.cm-practice .hero,body.cm-labview .hero{display:none!important}
+body.cm-dashboard .layout,body.cm-dashboard #cmInteractiveLab,body.cm-dashboard #cmAzureLab,body.cm-dashboard #cmScenarioLab{display:none!important}
+body.cm-practice .stats,body.cm-practice #cmPathway,body.cm-practice #cmInteractiveLab,body.cm-practice #cmAzureLab,body.cm-practice #cmScenarioLab{display:none!important}
+body.cm-labview .stats,body.cm-labview #cmPathway,body.cm-labview .layout{display:none!important}
+body.cm-dashboard .stats{margin-top:20px}
+body.cm-cover .hero{min-height:calc(100vh - 130px);padding:54px 0;grid-template-columns:1.3fr .7fr}
+body.cm-cover .hero h1{font-size:clamp(44px,6vw,72px)}
+body.cm-cover .hero-card{box-shadow:0 25px 90px #0005}
+.cm-section-label{display:flex;align-items:center;gap:12px;margin:25px 0 12px}
+.cm-section-label>span{display:grid;place-items:center;width:34px;height:34px;flex:none;border:1px solid #344563;border-radius:11px;color:var(--cyan);font-weight:900;font-size:12px}
+.cm-section-label strong{display:block;font-size:16px}.cm-section-label small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.cm-core-modes{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cm-lab-modes{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cm-mode{min-height:145px;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:6px}
+.cm-mode em{font-size:11px;font-style:normal;color:var(--cyan);margin-top:auto;padding-top:10px;font-weight:750}
+.cm-lab-modes .cm-mode{min-height:132px;padding:14px}
+#cmPathway{padding:24px}
+body.cm-dashboard #cmPathway{margin-top:0!important}
+body.cm-dashboard #cmPathStatus{padding:11px 13px;border-radius:10px;background:#0b1426;border:1px solid #273754}
+body.cm-practice .layout{margin-top:8px}
+body.cm-labview #cmInteractiveLab,body.cm-labview #cmAzureLab,body.cm-labview #cmScenarioLab{display:block!important}
+body.cm-labview #cmInteractiveLab.hidden,body.cm-labview #cmAzureLab.hidden,body.cm-labview #cmScenarioLab.hidden{display:none!important}
+@media(max-width:800px){.cm-lab-modes{grid-template-columns:repeat(2,minmax(0,1fr))}.cm-core-modes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){body.cm-cover .hero{min-height:auto;padding:28px 0}.cm-core-modes,.cm-lab-modes{grid-template-columns:1fr}.cm-mode,.cm-lab-modes .cm-mode{min-height:0}.cm-mode em{padding-top:5px}#cmPathway{padding:16px}}
+
 </style>
 </head>
-<body>
+<body class="cm-cover">
 <div class="shell">
 <header class="topbar"><div class="brand"><div class="logo">C</div><div><strong>CloudMind</strong><small>The Learning Intelligence Engine</small></div></div><div class="top-right"><span class="pill">AZ-900 PRACTICE LAB</span><span class="pill independent">Independent learning tool</span></div></header>
 <section class="hero"><div><div class="eyebrow">Learn beyond the score</div><h1>Learn why. <span class="gradient">Prove it.</span><br>Remember it.</h1><p>Practice Azure fundamentals, rate how confident you feel, and uncover the misconceptions hiding behind your answers. Your next study step should be smarter than “try again.”</p><div class="actions"><button class="btn primary" id="startBtn">Start a practice session ↗</button><button class="btn ghost" id="howBtn">How CloudMind works</button></div></div><div class="hero-card"><div class="orb">✳</div><h3>Confidence is a learning signal.</h3><p>A correct guess and a confident misconception need different next steps. CloudMind uses both answer accuracy and self-reported confidence to guide review.</p><div class="signal"><div><b>01 · Answer</b><span>Choose an option</span></div><div><b>02 · Reflect</b><span>Rate confidence</span></div><div><b>03 · Understand</b><span>Explore the why</span></div><div><b>04 · Revisit</b><span>Track learning</span></div></div></div></section>
@@ -59,19 +87,23 @@
  <div class="kicker">Choose your learning path</div>
  <h3 style="font-size:22px;margin:5px 0">How would you like to prepare?</h3>
  <p class="sub">New to Azure? Start with guided practice. Ready for exam conditions? Choose a mock test. You can change paths any time.</p>
- <div class="cm-modes">
-  <button class="cm-mode" data-mode="beginner"><strong>🌱 Beginner path</strong><span>10 questions · untimed · learn step by step</span></button>
-  <button class="cm-mode" data-mode="topic"><strong>🧭 Practice a topic</strong><span>Choose an exam domain, then a smaller topic</span></button>
-  <button class="cm-mode" data-mode="mock"><strong>⏱ Full mock exam</strong><span>35 mixed questions + practical desktop task · 45-minute timer</span></button>
-  <button class="cm-mode" data-mode="unlimited"><strong>♾ Unlimited practice</strong><span>All questions · no countdown · practice at your pace</span></button>
-  <button class="cm-mode" data-mode="lab"><strong>🖱️ Interactive desktop lab</strong><span>Complete a simulated task using clickable desktop controls, then submit for a grade</span></button>
-  <button class="cm-mode" data-mode="azurelab"><strong>☁️ Azure portal lab</strong><span>Create and configure a resource group in a simulated Azure portal</span></button>
-  <button class="cm-mode" data-mode="archlab"><strong>🧩 Architecture lab</strong><span>Build a resilient design by selecting the right Azure components</span></button>
-  <button class="cm-mode" data-mode="troublelab"><strong>🛠 Troubleshooting lab</strong><span>Inspect a simulated setup, identify the fault, and submit your diagnosis</span></button>
+ <div class="cm-section-label"><span>01</span><div><strong>Choose how to study</strong><small>Start with the path that matches your goal.</small></div></div>
+ <div class="cm-modes cm-core-modes">
+  <button class="cm-mode" data-mode="beginner"><strong>🌱 Beginner path</strong><span>10 guided questions · untimed · explanations after each answer</span><em>Best place to start ↗</em></button>
+  <button class="cm-mode" data-mode="topic"><strong>🧭 Practice a topic</strong><span>Choose one exam domain and focus on a smaller concept.</span><em>Target a weak area ↗</em></button>
+  <button class="cm-mode" data-mode="mock"><strong>⏱ Full mock exam</strong><span>35 mixed questions · 45 minutes · practical task at the end</span><em>Exam simulation ↗</em></button>
+  <button class="cm-mode" data-mode="unlimited"><strong>♾ Unlimited practice</strong><span>Work through the full question bank at your own pace.</span><em>No timer ↗</em></button>
+ </div>
+ <div class="cm-section-label cm-lab-label"><span>02</span><div><strong>Hands-on labs</strong><small>Practice real-world decisions in safe simulations.</small></div></div>
+ <div class="cm-modes cm-lab-modes">
+  <button class="cm-mode" data-mode="lab"><strong>🖱️ Desktop task</strong><span>Use a simulated desktop, complete the task, and submit for grading.</span></button>
+  <button class="cm-mode" data-mode="azurelab"><strong>☁️ Azure portal</strong><span>Configure a resource group and review your settings.</span></button>
+  <button class="cm-mode" data-mode="archlab"><strong>🧩 Architecture design</strong><span>Choose a resilient deployment across availability zones.</span></button>
+  <button class="cm-mode" data-mode="troublelab"><strong>🛠 Troubleshooting</strong><span>Inspect a network scenario and diagnose the fault.</span></button>
  </div>
  <div id="cmTopicTree" class="cm-topic-tree"></div>
  <p id="cmPathStatus" class="sub" style="margin-top:12px">Choose a path above to begin. Your answers and explanations appear one question at a time.</p>
-</section>\n<div class="layout"><main class="panel" id="practice"><div class="panel-head"><div><div class="kicker">Your practice session</div><h2 id="sessionTitle">Build understanding, one question at a time</h2><p class="sub" id="sessionSub">Original practice questions · Explanations included · Progress saved on this device</p></div><button class="btn small ghost" id="resetBtn">Reset progress</button></div><div class="progress"><span id="progressBar"></span></div><div class="qmeta"><span class="tag" id="qNumber">Question 1 of 50</span><span class="tag topic" id="qTopic">Cloud concepts</span><span class="tag">AZ-900</span></div><h3 class="question" id="questionText">Loading your practice question…</h3><div class="answers" id="answers"></div><div class="feedback hidden" id="feedback" aria-live="polite"></div><div class="confidence hidden" id="confidence"><h3>How confident were you before seeing the explanation?</h3><p class="sub">Honest reflection helps identify what to learn next. It is not a grade.</p><div class="confidence-options"><button class="confidence-btn" data-confidence="low">Guessing<span>Not sure yet</span></button><button class="confidence-btn" data-confidence="medium">Somewhat confident<span>I think so</span></button><button class="confidence-btn" data-confidence="high">Very confident<span>Quite sure</span></button></div></div><div id="clinicHost"></div><div class="nextrow"><span class="muted" id="questionStatus">Select the best answer to begin.</span><button class="btn primary" id="nextBtn" disabled>Next question →</button></div></main>
+</section><div class="layout"><main class="panel" id="practice"><div class="panel-head"><div><div class="kicker">Your practice session</div><h2 id="sessionTitle">Build understanding, one question at a time</h2><p class="sub" id="sessionSub">Original practice questions · Explanations included · Progress saved on this device</p></div><button class="btn small ghost" id="resetBtn">Reset progress</button></div><div class="progress"><span id="progressBar"></span></div><div class="qmeta"><span class="tag" id="qNumber">Question 1 of 50</span><span class="tag topic" id="qTopic">Cloud concepts</span><span class="tag">AZ-900</span></div><h3 class="question" id="questionText">Loading your practice question…</h3><div class="answers" id="answers"></div><div class="feedback hidden" id="feedback" aria-live="polite"></div><div class="confidence hidden" id="confidence"><h3>How confident were you before seeing the explanation?</h3><p class="sub">Honest reflection helps identify what to learn next. It is not a grade.</p><div class="confidence-options"><button class="confidence-btn" data-confidence="low">Guessing<span>Not sure yet</span></button><button class="confidence-btn" data-confidence="medium">Somewhat confident<span>I think so</span></button><button class="confidence-btn" data-confidence="high">Very confident<span>Quite sure</span></button></div></div><div id="clinicHost"></div><div class="nextrow"><span class="muted" id="questionStatus">Select the best answer to begin.</span><button class="btn primary" id="nextBtn" disabled>Next question →</button></div></main>
 <aside class="sidebar"><section class="mini-panel"><div class="kicker">Learning map</div><h3>Topic mastery</h3><p class="sub">A rough signal from your attempts, not a certification prediction.</p><div id="topicMastery"></div></section><section class="mini-panel"><div class="kicker">Smart review</div><h3>Return to what matters</h3><p class="sub">Questions and concepts to revisit based on your own practice.</p><div id="reviewQueue"></div><button class="btn small ghost" id="reviewBtn">Review a weak topic</button><div style="margin-top:18px;padding-top:14px;border-top:1px solid #273650"><h3>Session history</h3><p class="sub">Completed practice sessions saved in this browser.</p><div id="sessionHistory"></div></div></section><section class="mini-panel"><div class="kicker">The method</div><h3>Why confidence?</h3><p class="sub">Being wrong while very confident may signal a misconception. Being correct while guessing may signal a concept worth strengthening. One answer is only a clue; patterns over time are more useful.</p></section></aside></div>
 <footer class="footer"><span>CloudMind · Built for learning, not memorizing.</span><span>Original practice content. <a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/" target="_blank" rel="noreferrer">Explore the official Azure Fundamentals certification</a>.</span><span>Not affiliated with or endorsed by Microsoft.</span></footer>
 </div><div class="toast" id="toast" role="status"></div>
@@ -405,7 +437,7 @@ renderQuestion();
  }
  const originalRender=renderQuestion;
  renderQuestion=function(){
-  if(state.mode==="mock"&&state.index>=activeQuestions().length&&!state.mockLabDone){openLab(true);return;}
+  if(state.mode==="mock"&&!state.mockLabDone&&(state.index>=activeQuestions().length||state.view==="done")){openLab(true);return;}
   originalRender();
  };
  window.renderQuestion=renderQuestion;
@@ -469,4 +501,31 @@ renderQuestion();
  function grade(){if(!current||!selected){$("cmScenarioStatus").textContent="Choose an option before submitting.";return;}const ok=selected===current.correct;$("cmScenarioFeedback").innerHTML=ok?'<div class="cm-lab-feedback"><strong>✓ Correct · 100/100</strong><br>'+current.why+'</div>':'<div class="cm-lab-feedback bad"><strong>Submission graded · 0/100</strong><br>'+current.why+'</div>';$("cmScenarioStatus").textContent=ok?"Graded · 100/100":"Graded · Review the explanation and try again.";}
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
-</script></body></html>
+</script>
+<script>
+/* Screen flow: cover → dashboard → one focused learning activity */
+(function(){
+ const body=document.body;
+ function screen(name){body.classList.remove("cm-cover","cm-dashboard","cm-practice","cm-labview");body.classList.add("cm-"+name);}
+ function showDashboard(){screen("dashboard");document.getElementById("cmPathway")?.scrollIntoView({behavior:"smooth",block:"start"});}
+ function showPractice(){screen("practice");document.querySelector(".layout")?.classList.remove("hidden");document.getElementById("practice")?.scrollIntoView({behavior:"smooth",block:"start"});}
+ document.getElementById("startBtn")?.addEventListener("click",function(){showDashboard();});
+ document.getElementById("howBtn")?.addEventListener("click",function(){showDashboard();});
+ document.addEventListener("click",function(e){
+  const mode=e.target.closest("[data-mode]");
+  if(mode){
+   const m=mode.dataset.mode;
+   if(m==="topic"){showDashboard();return;}
+   if(["beginner","mock","unlimited"].includes(m)){showPractice();return;}
+   if(["lab","azurelab","archlab","troublelab"].includes(m)){screen("labview");return;}
+  }
+  if(e.target.closest("#cmTopicTree [data-child]"))showPractice();
+  if(e.target.closest("#cmLabExit")){if(window.state&&state.mode==="mock"&&!state.mockLabDone){screen("labview");return;}showDashboard();}
+  if(e.target.closest("#cmAzureExit")||e.target.closest("#cmScenarioExit"))showDashboard();
+  if(e.target.closest("#cmLabContinue")&&window.state&&state.mode==="mock"){showPractice();}
+  if(e.target.closest("#nextBtn")&&window.state&&state.view==="done"&&state.mode==="mock"&&!state.mockLabDone){screen("labview");}
+ });
+ window.addEventListener("pageshow",function(){if(!body.classList.contains("cm-dashboard")&&!body.classList.contains("cm-practice")&&!body.classList.contains("cm-labview"))screen("cover");});
+})();
+</script>
+</body></html>
