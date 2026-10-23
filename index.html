@@ -357,6 +357,7 @@ body.cm-progress-view .mini-panel:not(:has(#reviewQueue)){display:none!important
   <span class="cm-level-chip"><span aria-hidden="true">✦</span> Beginner friendly</span>
  </header>
  <section id="cmHowItWorks" class="cm-how-panel" aria-labelledby="cmHowTitle">
+  <div class="cm-guide-actions"><button type="button" class="btn small ghost" id="cmGuideBackDashboard" aria-label="Return to the dashboard">← Back to Dashboard</button></div>
   <div class="cm-step-heading"><span class="cm-step-number">1</span><div><div class="kicker">START HERE</div><h3 id="cmHowTitle">How CloudMind works</h3></div></div>
   <p class="sub cm-how-intro">Four simple steps. No special Azure experience needed to get started.</p>
   <div class="cm-how-steps">
@@ -806,6 +807,8 @@ renderQuestion();
 })();
 </script>
 <script>
+/* Guide return navigation */
+.cm-guide-actions{display:flex;justify-content:flex-start;margin:0 0 12px}.cm-guide-actions button{min-height:38px}
 /* Screen flow: cover → dashboard → one focused learning activity */
 (function(){
  const body=document.body;
@@ -814,6 +817,7 @@ renderQuestion();
  function showPractice(){screen("practice");document.querySelector(".layout")?.classList.remove("hidden");document.getElementById("practice")?.scrollIntoView({behavior:"smooth",block:"start"});}
  document.getElementById("startBtn")?.addEventListener("click",function(){showDashboard();});
  document.getElementById("howBtn")?.addEventListener("click",function(){showDashboard("how");});
+ document.getElementById("cmGuideBackDashboard")?.addEventListener("click",function(){showDashboard();const welcome=document.querySelector(".cm-dashboard-welcome");welcome?.scrollIntoView({behavior:"smooth",block:"start"});});
  document.addEventListener("click",function(e){
   const mode=e.target.closest("[data-mode]");
   if(mode){
