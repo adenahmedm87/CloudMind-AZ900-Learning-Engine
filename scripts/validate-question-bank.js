@@ -65,8 +65,17 @@ for (const [index, q] of questions.entries()) {
   }
   if (!Array.isArray(q.options) || q.options.length < 2) {
     errors.push("question " + (q.id ?? index) + ": must have at least two options");
-  } else if (!Number.isInteger(q.correct) || q.correct < 0 || q.correct >= q.options.length) {
-    errors.push("question " + (q.id ?? index) + ": correct answer index is out of range");
+  } else {
+    if (q.options.some(option => typeof option !== "string" || !option.trim())) {
+      errors.push("question " + (q.id ?? index) + ": every answer option must be a non-empty string");
+    }
+    const normalizedOptions = q.options.map(option => String(option).trim().toLowerCase());
+    if (new Set(normalizedOptions).size !== normalizedOptions.length) {
+      errors.push("question " + (q.id ?? index) + ": answer options must be unique");
+    }
+    if (!Number.isInteger(q.correct) || q.correct < 0 || q.correct >= q.options.length) {
+      errors.push("question " + (q.id ?? index) + ": correct answer index is out of range");
+    }
   }
   if (typeof q.topic === "string") domainCounts.set(q.topic, (domainCounts.get(q.topic) || 0) + 1);
 }
