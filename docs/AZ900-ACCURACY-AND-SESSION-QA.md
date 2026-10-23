@@ -49,6 +49,17 @@ Automated validation checks the expected count (103), sequential unique IDs, req
 
 Structural validation cannot establish that every technical statement, distractor, rationale, or example is factually perfect. The review corrected the selected items above and checked the bank against the current objective list, but the remaining content still merits ongoing source-by-source fact verification. No live-browser regression test was run by this source-level review.
 
+## Second-pass factual and scope corrections
+
+A focused follow-up compared cost-tool terminology and WAF wording with the current Microsoft Learn material:
+
+- **Question 8:** Replaced the TCO-calculator comparison with the current listed objective on factors that affect Azure costs. The explanation now distinguishes estimates for planned use with the Pricing Calculator from reviewing actual spending with Cost Management. Microsoft references: [current AZ-900 study guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-900) and [Azure Pricing Calculator](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/pricing-calculator).
+- **Question 31:** Changed “Which Azure service” to “Which Azure security capability” for Web Application Firewall (WAF), because WAF is a capability available through supported networking services rather than one standalone service name. Microsoft references: [Application Gateway overview](https://learn.microsoft.com/en-us/azure/application-gateway/overview) and [secure application delivery choices](https://learn.microsoft.com/en-us/azure/networking/secure-application-delivery).
+
+The other reviewed examples in this pass retained their answers with appropriate qualifications: VM deallocation may stop compute charges while related storage remains billable; private endpoints provide private network access but do not grant authorization by themselves; and region pairing does not automatically configure disaster recovery for every workload. These details are reflected in the relevant explanations and traps.
+
+This is a targeted correction pass, not a claim that every explanation has been independently verified against a dedicated Microsoft Learn page. The manual regression checklist below remains outstanding until exercised in a browser.
+
 ## Manual regression checklist
 
 - [ ] Start Unlimited practice; answer a question; confirm feedback, confidence selection, and Next.
