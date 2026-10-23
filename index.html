@@ -195,7 +195,7 @@ renderQuestion();
     const reset=document.getElementById("resetBtn");
     if(reset&&!reset.dataset.cmBound){reset.dataset.cmBound="1";reset.addEventListener("click",()=>{state.history=[];state.lastCompletedSignature="";state.sessionOrder=shuffleQuestions();state.timedMode=false;state.timeLeft=35*60;persist();syncClock()})}
   };
-  function syncClock(){const b=document.getElementById("cmTimedToggle"),c=document.getElementById("cmClock");if(b)b.textContent="Timed practice: "+(state.timedMode?"ON":"OFF");if(c)c.textContent=state.timedMode?"35-minute mode enabled · "+Math.floor((state.timeLeft||2100)/60)+":"+String((state.timeLeft||2100)%60).padStart(2,"0"):"Untimed · no countdown";}
+  let cmTimer=null;function syncClock(){const b=document.getElementById("cmTimedToggle"),c=document.getElementById("cmClock");if(b)b.textContent="Timed practice: "+(state.timedMode?"ON":"OFF");if(c)c.textContent=state.timedMode?"Timed · "+Math.floor((state.timeLeft||2100)/60)+":"+String((state.timeLeft||2100)%60).padStart(2,"0"):"Untimed · no countdown";if(cmTimer){clearInterval(cmTimer);cmTimer=null}if(state.timedMode&&state.view!=="done"){cmTimer=setInterval(()=>{state.timeLeft=Math.max(0,(state.timeLeft||2100)-1);persist();if(c)c.textContent="Timed · "+Math.floor(state.timeLeft/60)+":"+String(state.timeLeft%60).padStart(2,"0");if(state.timeLeft<=0){clearInterval(cmTimer);cmTimer=null;state.index=activeQuestions().length;state.view="done";persist();renderQuestion();showToast("Time is up. Review your learning report.")}},1000)}}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
 </script>
