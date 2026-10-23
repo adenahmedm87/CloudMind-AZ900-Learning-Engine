@@ -95,6 +95,12 @@ body.cm-labview #cmInteractiveLab.hidden,body.cm-labview #cmAzureLab.hidden,body
 @media(max-width:540px){body.cm-cover .hero{min-height:auto;padding:28px 0}.cm-core-modes,.cm-lab-modes{grid-template-columns:1fr}.cm-mode,.cm-lab-modes .cm-mode{min-height:0}.cm-mode em{padding-top:5px}#cmPathway{padding:16px}}
 
 
+/* Actionable study recommendation */
+.cm-next-step{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;padding:18px;margin:0 0 20px;border:1px solid #b9dff0;border-radius:16px;background:linear-gradient(115deg,#effaff,#f5f3ff 72%,#f0fff8);color:#14213a}
+.cm-next-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:13px;background:#d8f3ff;color:#075985;font-size:22px}
+.cm-next-copy .kicker{color:#036b91}.cm-next-copy h3{font-size:18px;line-height:1.3;margin:4px 0 5px;color:#14213a}.cm-next-copy p{font-size:13px;color:#42536c;margin:0 0 5px}.cm-next-copy small{font-size:11px;color:#5d6f87}
+.cm-next-step .btn{white-space:nowrap}
+@media(max-width:650px){.cm-next-step{grid-template-columns:38px minmax(0,1fr);gap:11px;padding:14px}.cm-next-icon{width:38px;height:38px}.cm-next-step .btn{grid-column:1/-1;width:100%;white-space:normal}}
 /* Accessibility and interaction polish: keyboard clarity, motion sensitivity, touch targets */
 :where(a,button,summary,[tabindex]):focus-visible{
   outline:3px solid var(--cyan);
@@ -502,6 +508,11 @@ body.cm-guide #cmStudentGuide{display:block!important}
   <div><div class="kicker">YOUR LEARNING SPACE</div><h2 class="cm-dashboard-title">Welcome to CloudMind</h2><p class="sub">Start with the guide, then choose the kind of practice that suits you. You can change paths whenever you need.</p></div>
   <span class="cm-level-chip"><span aria-hidden="true">✦</span> Beginner friendly</span>
  </header>
+ <section class="cm-next-step" id="cmNextStep" aria-live="polite">
+  <div class="cm-next-icon" aria-hidden="true">✦</div>
+  <div class="cm-next-copy"><div class="kicker">YOUR RECOMMENDED NEXT STEP</div><h3 id="cmNextTitle">Start with a short guided practice</h3><p id="cmNextDescription">Answer a few questions so CloudMind can begin identifying what you already understand and what needs more practice.</p><small id="cmNextReason">Your recommendation updates as you practise.</small></div>
+  <button type="button" class="btn primary" id="cmNextAction" data-action="beginner">Start learning →</button>
+ </section>
  <a href="#cmStudentGuide" class="cm-dashboard-guide-link" data-cm-open-guide><span class="cm-dashboard-guide-icon" aria-hidden="true">▤</span><span><strong>Student guide: how to learn with CloudMind</strong><small>Beginner to advanced roadmap, study tips and official verification links</small></span><b aria-hidden="true">↗</b></a>
  <section id="cmHowItWorks" class="cm-how-panel" aria-labelledby="cmHowTitle">
   <div class="cm-guide-actions"><button type="button" class="btn small ghost" id="cmGuideBackDashboard" aria-label="Return to the CloudMind landing page">← Back to Landing Page</button></div>
@@ -661,7 +672,49 @@ function answeredCount(){return Object.keys(state.answers).length}
 function correctCount(){return Object.values(state.answers).filter(x=>x.correct).length}
 function accuracy(){return answeredCount()?Math.round(correctCount()/answeredCount()*100):null}
 function showToast(s){const t=$("toast");t.textContent=s;t.style.display="block";setTimeout(()=>t.style.display="none",2200)}
-function renderStats(){$("statAnswered").textContent=answeredCount();$("statAccuracy").textContent=accuracy()===null?"—":accuracy()+"%";$("statMis").textContent=Object.keys(state.confidence).filter(id=>state.confidence[id]==="high"&&state.answers[id]&&!state.answers[id].correct).length;$("statReview").textContent=state.review.length}
+function renderNextStep(){
+ const title=$("cmNextTitle"),desc=$("cmNextDescription"),reason=$("cmNextReason"),button=$("cmNextAction");
+ if(!title||!desc||!reason||!button)return;
+ const priority=id=>{const l=state.learning[id]||{};return l.lastResult==="incorrect"&&l.confidence==="high"?0:l.lastResult==="incorrect"?1:l.lastResult==="correct"&&l.confidence==="low"?2:3};
+ const queued=state.review.slice().sort((a,b)=>priority(a)-priority(b));
+ const risky=queued.find(id=>{const l=state.learning[id]||{};return l.lastResult==="incorrect"&&l.confidence==="high"});
+ const weak=mastery().filter(m=>m.done>0).sort((a,b)=>a.pct-b.pct)[0];
+ if(risky){
+  const q=questions.find(q=>q.id===risky);
+  title.textContent="Review a possible misconception";
+  desc.textContent="You missed a question while feeling very confident. Revisit the explanation and try a related question.";
+  reason.textContent=(q?q.topic+" · ":"")+"Confidence is a signal to investigate, not proof of a misconception.";
+  button.textContent="Start smart review →";button.dataset.action="review";
+ }else if(queued.length){
+  const q=questions.find(q=>q.id===queued[0]);
+  title.textContent="Strengthen a question you found difficult";
+  desc.textContent="Your review queue has items waiting. Revisit them before moving on to new material.";
+  reason.textContent=(q?q.topic+" · ":"")+"Your recommendation is based on your saved practice.";
+  button.textContent="Review queued questions →";button.dataset.action="review";
+ }else if(weak&&weak.pct<70){
+  title.textContent="Give "+weak.topic+" another round";
+  desc.textContent="This is currently your lowest-scoring topic among the areas you've attempted. A focused practice session may help.";
+  reason.textContent=weak.pct+"% across "+weak.attempts+" recorded attempt(s) in this topic; use this as a guide, not a final assessment.";
+  button.textContent="Practise a topic →";button.dataset.action="topic";
+ }else if(answeredCount()===0){
+  title.textContent="Start with a short guided practice";
+  desc.textContent="Answer a few questions so CloudMind can begin identifying what you already understand and what needs more practice.";
+  reason.textContent="Your recommendation updates as you practise.";
+  button.textContent="Start learning →";button.dataset.action="beginner";
+ }else{
+  title.textContent="Keep building your understanding";
+  desc.textContent="Your review queue is clear for now. Continue with mixed practice to build familiarity across Azure Fundamentals topics.";
+  reason.textContent=answeredCount()+" question(s) answered · "+(accuracy()===null?"No accuracy yet":accuracy()+"% overall practice accuracy")+".";
+  button.textContent="Continue practising →";button.dataset.action="unlimited";
+ }
+}
+function renderStats(){$("statAnswered").textContent=answeredCount();$("statAccuracy").textContent=accuracy()===null?"—":accuracy()+"%";$("statMis").textContent=Object.keys(state.confidence).filter(id=>state.confidence[id]==="high"&&state.answers[id]&&!state.answers[id].correct).length;$("statReview").textContent=state.review.length;renderNextStep()}
+document.getElementById("cmNextAction")?.addEventListener("click",function(){
+ const action=this.dataset.action;
+ if(action==="review"){const review=document.getElementById("reviewBtn");if(review)review.click();else document.querySelector('[data-cm-nav="review"]')?.click();return;}
+ const target=document.querySelector('[data-mode="'+action+'"]');
+ if(target)target.click();
+});
 function mastery(){return topics.map(topic=>{const qs=questions.filter(q=>q.topic===topic);const done=qs.filter(q=>state.learning[q.id]&&state.learning[q.id].attempts>0);const attempts=done.reduce((n,q)=>n+state.learning[q.id].attempts,0);const right=done.reduce((n,q)=>n+state.learning[q.id].correct,0);return {topic,done:done.length,total:qs.length,attempts,pct:attempts?Math.round(right/attempts*100):0}})}
 function renderSidebar(){const selectedHistory=$("cmHistoryMode")?.value||state.mode||"unlimited";$("topicMastery").innerHTML=mastery().map(m=>'<div class="topic-row"><div class="topic-top"><span>'+m.topic+'</span><span>'+(m.done?m.pct+"% · ":"")+m.done+"/"+m.total+'</span></div><div class="topicbar"><span style="width:'+(m.done?m.pct:0)+'%"></span></div></div>').join("");const priority=id=>{const l=state.learning[id]||{};return l.lastResult==="incorrect"&&l.confidence==="high"?0:l.lastResult==="incorrect"?1:l.lastResult==="correct"&&l.confidence==="low"?2:3};const ids=state.review.slice().sort((a,b)=>priority(a)-priority(b)).slice(0,4);$("reviewQueue").innerHTML=ids.length?ids.map(id=>{const q=questions.find(q=>q.id===id);if(!q)return "";const l=state.learning[id]||{};const reason=l.lastResult==="incorrect"&&l.confidence==="high"?"Misconception risk · review first":l.lastResult==="incorrect"?"Knowledge gap · revisit this":l.lastResult==="correct"&&l.confidence==="low"?"Needs reinforcement · correct guess":"Review this question";return '<div class="review-item"><strong>'+q.topic+'</strong><span style="display:block;color:#38bdf8;font-weight:700;margin:3px 0">'+reason+'</span><span>'+q.q+'</span></div>'}).join(""):'<div class="empty">Your review queue is clear. Questions you struggle with will appear here.</div>';const hist=$("sessionHistory");if(hist){const mode=selectedHistory;const rows=(state.histories[mode]||[]);hist.innerHTML='<label for="cmHistoryMode" class="sub">History for this activity</label><select id="cmHistoryMode" class="btn small ghost" style="margin:6px 0"><option value="mock">Mock exam</option><option value="beginner">Beginner path</option><option value="topic">Topic practice</option><option value="unlimited">Unlimited practice</option><option value="lab">Hands-on labs</option></select>'+(rows.length?rows.slice(0,8).map(h=>'<div class="review-item"><strong>'+(h.modeLabel||mode)+' · '+h.pct+'% accuracy</strong><span>'+h.correct+'/'+h.total+' correct · '+h.date+'</span></div>').join(""):'<div class="empty">No completed sessions for this activity yet.</div>');const sel=$("cmHistoryMode");if(sel){sel.value=mode;sel.addEventListener("change",()=>renderSidebar())}}renderStats()}
 function renderQuestion(){if(state.view==="done"){renderDone();return}if(state.view==="review"){const weak=mastery().filter(x=>x.done&&x.pct<70).sort((a,b)=>a.pct-b.pct)[0];const reviewIds=state.review.filter(id=>questions.some(q=>q.id===id));if(reviewIds.length){state.sessionOrder=reviewIds.slice()}else if(weak){state.sessionOrder=questions.filter(q=>q.topic===weak.topic).map(q=>q.id)}else{state.sessionOrder=questions.map(q=>q.id);showToast("No queued questions or weak topics yet. Starting a general review.")}state.index=0;state.view="practice"}const bank=activeQuestions();
