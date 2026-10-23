@@ -273,6 +273,50 @@ body:not(.cm-topic-mode) #cmTopicTree{display:none!important}
  body.cm-labview .shell{padding-top:112px}
 }
 
+
+/* Single-purpose screens: the learning guide lives on Dashboard only. */
+body.cm-dashboard .hero,body.cm-dashboard .stats{display:none!important}
+body.cm-practice .hero,body.cm-practice .stats,body.cm-practice #cmPathway{display:none!important}
+body.cm-review-view .hero,body.cm-review-view .stats,body.cm-review-view #cmPathway{display:none!important}
+body.cm-progress-view .hero,body.cm-progress-view #cmPathway{display:none!important}
+body.cm-progress-view .stats{display:grid!important}
+body.cm-dashboard #cmPathway{display:block!important;max-width:1120px;margin:20px auto 36px}
+body.cm-dashboard .cm-dashboard-welcome{padding:8px 4px 18px;border-bottom:1px solid #e4eaf2;margin-bottom:20px}
+body.cm-dashboard .cm-dashboard-title{font-size:clamp(28px,3vw,38px);letter-spacing:-1.2px}
+body.cm-dashboard .cm-dashboard-welcome .sub{max-width:620px;font-size:14px}
+body.cm-dashboard .cm-how-panel{background:linear-gradient(135deg,#f4f8ff 0%,#f7fbff 58%,#effbf8 100%);border:1px solid #dce8f5;border-radius:18px;box-shadow:0 8px 26px rgba(35,65,110,.05);margin-bottom:24px}
+body.cm-dashboard .cm-core-modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+body.cm-dashboard .cm-core-modes .cm-mode{position:relative;min-height:142px;text-align:left;padding:20px 20px 18px 74px;border:1px solid #e0e7f0;border-radius:16px;background:linear-gradient(145deg,#fff,#f9fbfe);box-shadow:0 5px 18px rgba(30,54,88,.045);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+body.cm-dashboard .cm-core-modes .cm-mode:hover{transform:translateY(-2px);border-color:#9eb7d8;box-shadow:0 10px 24px rgba(30,54,88,.09)}
+body.cm-dashboard .cm-core-modes .cm-mode:before{content:"";position:absolute;left:18px;top:21px;width:40px;height:40px;border-radius:13px;background:#e9f1ff;box-shadow:inset 0 0 0 1px #d9e6fb}
+body.cm-dashboard .cm-core-modes .cm-mode:nth-child(1):before{background:#e7f8ee;box-shadow:inset 0 0 0 1px #c9edd7}
+body.cm-dashboard .cm-core-modes .cm-mode:nth-child(2):before{background:#e8f5ff;box-shadow:inset 0 0 0 1px #cce9fa}
+body.cm-dashboard .cm-core-modes .cm-mode:nth-child(3):before{background:#fff2df;box-shadow:inset 0 0 0 1px #f6dfba}
+body.cm-dashboard .cm-core-modes .cm-mode:nth-child(4):before{background:#f0eaff;box-shadow:inset 0 0 0 1px #dfd2fb}
+body.cm-dashboard .cm-core-modes .cm-mode strong{font-size:16px;display:block;margin-bottom:8px}
+body.cm-dashboard .cm-core-modes .cm-mode>span:not(.cm-card-number){font-size:13px;line-height:1.5;color:#5d6b7e}
+body.cm-dashboard .cm-core-modes .cm-mode em{display:block;margin-top:10px;font-size:11px;font-style:normal;font-weight:700;color:#4368a2}
+body.cm-dashboard .cm-core-modes .cm-card-number{position:absolute;left:30px;top:32px;font-size:0;z-index:1}
+body.cm-dashboard .cm-core-modes .cm-card-number:after{font-size:19px}
+body.cm-dashboard .cm-core-modes .cm-mode:nth-child(1) .cm-card-number:after{content:"✦";color:#238354}
+body.cm-dashboard .cm-core-modes .cm-mode:nth-child(2) .cm-card-number:after{content:"⌕";color:#2276a5}
+body.cm-dashboard .cm-core-modes .cm-mode:nth-child(3) .cm-card-number:after{content:"◷";color:#a56513}
+body.cm-dashboard .cm-core-modes .cm-mode:nth-child(4) .cm-card-number:after{content:"∞";color:#7651bd}
+body.cm-dashboard .cm-practice-heading{margin:20px 0 14px}
+body.cm-dashboard .cm-practice-heading .cm-step-number{display:none}
+body.cm-dashboard .cm-practice-heading h3{font-size:21px;letter-spacing:-.3px}
+body.cm-dashboard .cm-practice-heading .sub{font-size:13px}
+body.cm-dashboard .cm-review-path{grid-column:1/-1;min-height:94px!important}
+body.cm-dashboard .cm-review-path:before{background:#e9f8f7!important;box-shadow:inset 0 0 0 1px #cdece8!important}
+body.cm-dashboard .cm-review-path .cm-card-number:after{content:"↻"!important;color:#16867e!important}
+body.cm-dashboard #cmPathStatus{margin-top:18px!important;color:#738198;font-size:12px}
+body.cm-review-view .layout,body.cm-progress-view .layout{display:none!important}
+body.cm-review-view .mini-panel:not(:has(#reviewQueue)){display:none!important}
+body.cm-review-view .mini-panel:has(#reviewQueue){display:block!important}
+body.cm-progress-view .mini-panel:not(:has(#reviewQueue)){display:none!important}
+@media(max-width:680px){body.cm-dashboard #cmPathway{margin:12px auto 24px}body.cm-dashboard .cm-core-modes{grid-template-columns:1fr}body.cm-dashboard .cm-core-modes .cm-mode{min-height:120px;padding:17px 16px 16px 68px}body.cm-dashboard .cm-review-path{grid-column:auto}}
+@media(prefers-reduced-motion:reduce){body.cm-dashboard .cm-core-modes .cm-mode{transition:none}}
+
 </style>
 </head>
 <body class="cm-cover">
@@ -791,22 +835,26 @@ renderQuestion();
  function setActive(name){links.forEach(link=>{const active=link.dataset.cmNav===name;link.classList.toggle("active",active);if(active)link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");});}
  function go(name){
   if(name==="dashboard"){
-   body.classList.remove("cm-practice","cm-labview");body.classList.add("cm-dashboard");
-   document.querySelector(".layout")?.classList.remove("hidden");
+   body.classList.remove("cm-practice","cm-labview","cm-review-view","cm-progress-view","cm-topic-mode");body.classList.add("cm-dashboard");
+   document.getElementById("cmPathway")?.classList.remove("hidden");
+   document.querySelector(".layout")?.classList.add("hidden");
    document.getElementById("cmInteractiveLab")?.classList.add("hidden");
    document.getElementById("cmAzureLab")?.classList.add("hidden");
    document.getElementById("cmScenarioLab")?.classList.add("hidden");
    document.getElementById("cmPathway")?.scrollIntoView({behavior:"smooth",block:"start"});
   }else if(name==="practice"){
-   body.classList.remove("cm-dashboard","cm-labview");body.classList.add("cm-practice");
+   body.classList.remove("cm-dashboard","cm-labview","cm-review-view","cm-progress-view");body.classList.add("cm-practice");
+   document.getElementById("cmPathway")?.classList.add("hidden");
    document.querySelector(".layout")?.classList.remove("hidden");
    document.getElementById("cmInteractiveLab")?.classList.add("hidden");
    document.getElementById("cmAzureLab")?.classList.add("hidden");
    document.getElementById("cmScenarioLab")?.classList.add("hidden");
    document.getElementById("practice")?.scrollIntoView({behavior:"smooth",block:"start"});
   }else if(name==="review"){
-   body.classList.remove("cm-practice","cm-labview");body.classList.add("cm-dashboard");
-   document.querySelector(".layout")?.classList.remove("hidden");
+   body.classList.remove("cm-practice","cm-labview","cm-progress-view");body.classList.add("cm-dashboard","cm-review-view");
+   document.querySelector(".layout")?.classList.add("hidden");
+   document.getElementById("cmPathway")?.classList.add("hidden");
+   document.getElementById("reviewQueue")?.closest(".mini-panel")?.classList.remove("hidden");
    document.getElementById("reviewQueue")?.closest(".mini-panel")?.scrollIntoView({behavior:"smooth",block:"start"});
   }else if(name==="labs"){
    body.classList.remove("cm-practice","cm-dashboard","cm-cover");body.classList.add("cm-labview");
@@ -817,8 +865,9 @@ renderQuestion();
    const details=document.querySelector(".cm-labs-accordion");if(details)details.open=true;
    document.getElementById("cmPathway")?.scrollIntoView({behavior:"smooth",block:"start"});
   }else if(name==="progress"){
-   body.classList.remove("cm-practice","cm-labview");body.classList.add("cm-dashboard");
-   document.querySelector(".layout")?.classList.remove("hidden");
+   body.classList.remove("cm-practice","cm-labview","cm-review-view");body.classList.add("cm-dashboard","cm-progress-view");
+   document.getElementById("cmPathway")?.classList.add("hidden");
+   document.querySelector(".layout")?.classList.add("hidden");
    document.querySelector(".stats")?.scrollIntoView({behavior:"smooth",block:"start"});
   }
   setActive(name);
@@ -849,8 +898,10 @@ renderQuestion();
  function activateShortcut(mode){
   const target=document.querySelector('[data-mode="'+mode+'"]');
   if(!target)return;
-  body.classList.remove("cm-cover","cm-dashboard","cm-labview");
+  body.classList.remove("cm-cover","cm-dashboard","cm-labview","cm-review-view","cm-progress-view");
   body.classList.add("cm-practice");
+  document.getElementById("cmPathway")?.classList.add("hidden");
+  document.querySelector(".layout")?.classList.remove("hidden");
   body.classList.toggle("cm-topic-mode",mode==="topic");
   document.querySelectorAll("[data-cm-direct-mode]").forEach(b=>{
    if(b.dataset.cmDirectMode===mode)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");
