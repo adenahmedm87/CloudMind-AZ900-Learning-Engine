@@ -60,6 +60,8 @@ The other reviewed examples in this pass retained their answers with appropriate
 
 This is a targeted correction pass, not a claim that every explanation has been independently verified against a dedicated Microsoft Learn page. The manual regression checklist below remains outstanding until exercised in a browser.
 
+- **Question 94:** Replaced a duplicate public-cloud definition (already covered by Question 11) with a Total Cost of Ownership (TCO) calculator scenario. Question 8 now tests factors affecting Azure costs, so both cost objectives are covered separately. The Microsoft AZ-900 outline and Microsoft Learn learning resources distinguish estimating Azure usage with the Pricing Calculator from comparing on-premises and Azure costs with TCO-oriented tools. References: [current AZ-900 study guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-900), [Azure pricing calculator](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/pricing-calculator), and [Azure Migrate business case / TCO](https://learn.microsoft.com/en-us/azure/migrate/how-to-build-a-business-case).
+
 ## Manual regression checklist
 
 - [ ] Start Unlimited practice; answer a question; confirm feedback, confidence selection, and Next.
