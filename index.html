@@ -448,7 +448,7 @@ renderQuestion();
 <script>
 (function(){
  const $=id=>document.getElementById(id);
- const esc=s=>String(s).replace(/[&<>"\']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","\'":"&#39;"}[c]));
+ const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/\'/g,"&#39;");
  function setup(){
   if(!$("cmAzureLab")){
    const host=document.createElement("section");host.id="cmAzureLab";host.className="hidden";host.style.marginBottom="20px";
