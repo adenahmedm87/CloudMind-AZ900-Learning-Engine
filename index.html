@@ -358,7 +358,7 @@ renderQuestion();
     const again=document.getElementById("againBtn");
     if(again&&!again.dataset.cmBound){again.dataset.cmBound="1";again.addEventListener("click",()=>{state.sessionOrder=shuffleQuestions();state.timedMode=!!state.timedMode;state.timeLeft=45*60;persist();syncClock()})}
     const reset=document.getElementById("resetBtn");
-    if(reset&&!reset.dataset.cmBound){reset.dataset.cmBound="1";reset.addEventListener("click",()=>{state.history=[];state.lastCompletedSignature="";state.sessionOrder=shuffleQuestions();state.timedMode=false;state.timeLeft=45*60;persist();syncClock()})}
+    if(reset&&!reset.dataset.cmBound){reset.dataset.cmBound="1";reset.addEventListener("click",()=>{state.lastCompletedSignature="";state.sessionOrder=shuffleQuestions();state.timedMode=false;state.timeLeft=45*60;state.paused=false;state.sessionStarted=false;persist();syncClock()})}
   };
   function syncClock(){const c=document.getElementById("cmClock");if(c)c.textContent=state.timedMode?"Timed mock exam · 45-minute countdown":"Choose a practice path above";}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
@@ -445,7 +445,7 @@ renderQuestion();
   if(c)c.textContent=state.timedMode?"Timed · "+Math.floor((state.timeLeft||2700)/60)+":"+String((state.timeLeft||2700)%60).padStart(2,"0"):"Untimed · no countdown";
   if(cmTimer){clearInterval(cmTimer);cmTimer=null}
   if(state.timedMode&&state.view!=="done"){
-   cmTimer=setInterval(()=>{state.timeLeft=Math.max(0,(state.timeLeft||2700)-1);persist();if(c)c.textContent="Timed · "+Math.floor(state.timeLeft/60)+":"+String(state.timeLeft%60).padStart(2,"0");if(state.timeLeft<=0){clearInterval(cmTimer);cmTimer=null;state.index=activeQuestions().length;state.view="done";persist();renderQuestion();showToast("Time is up. Review your learning report.")}},1000)
+   cmTimer=setInterval(()=>{if(state.paused)return;state.timeLeft=Math.max(0,(state.timeLeft||2700)-1);persist();if(c)c.textContent="Timed · "+Math.floor(state.timeLeft/60)+":"+String(state.timeLeft%60).padStart(2,"0");if(state.timeLeft<=0){clearInterval(cmTimer);cmTimer=null;state.index=activeQuestions().length;state.view="done";persist();renderQuestion();showToast("Time is up. Review your learning report.")}},1000)
   }
  }
  window.cmSyncClock=syncClock;
