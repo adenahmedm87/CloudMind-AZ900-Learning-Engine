@@ -820,6 +820,9 @@ renderQuestion();
    oldToggle.dataset.cmFixed="1";
    oldToggle.addEventListener("click",()=>{if(state.mode==="mock"&&state.timedMode){showToast("Mock exam timer is running. Choose Unlimited practice to remove the countdown.");return}syncClock()});
   }
+  // A saved timed session has no live interval after a page refresh. Restore it
+  // once the clock function is available, without restarting completed sessions.
+  if(state.timedMode&&state.sessionStarted&&state.view!=="done")syncClock();
  }
  let cmTimer=null;
  function syncClock(){
