@@ -2,7 +2,7 @@
 
 **Review date:** 2026-10-23  
 **Blueprint:** [Microsoft Learn — Study guide for Exam AZ-900](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-900), skills measured as of July 20, 2026.  
-**Scope:** Source-level review of all 103 question stems, answer-option sets, answer indexes, and objective/topic labels, plus a source-level inspection of practice and mock-session controls. This is not a live-browser certification of the site.
+**Scope:** Source-level review of all 103 question stems, answer-option sets, answer indexes, and objective/topic labels, plus structural checks and focused Playwright browser smoke tests for key mock-session paths. This is not a full end-to-end or accessibility certification of the site.
 
 ## Question-bank changes
 
@@ -49,7 +49,7 @@ CloudMind's mock selector explicitly samples 10 Cloud concepts, 13 Azure archite
 
 Automated validation checks the expected count (103), sequential unique IDs, required fields, answer-index bounds, non-empty options, duplicate options, duplicate normalized question stems, and topic-domain labels against the three AZ-900 domains. It also compiles each inline JavaScript block and guards against the session-history filter mutating the active mode. The GitHub Actions workflow is the repeatable structural gate.
 
-Structural validation cannot establish that every technical statement, distractor, rationale, or example is factually perfect. The review corrected the selected items above and checked the bank against the current objective list, but the remaining content still merits ongoing source-by-source fact verification. No live-browser regression test was run by this source-level review.
+Structural validation cannot establish that every technical statement, distractor, rationale, or example is factually perfect. The review corrected the selected items above and checked the bank against the current objective list, but the remaining content still merits ongoing source-by-source fact verification. A separate Playwright workflow now runs in GitHub Actions and checks mock entry, one-question navigation, Practice again, restoring the practical-task stage after refresh, completing that simulated task, and timer-expiry recovery. These short tests deliberately avoid completing all 35 mock questions; manual visual, accessibility, mobile, and broader path-switching checks remain outstanding.
 
 ## Second-pass factual and scope corrections
 
@@ -95,4 +95,15 @@ The official Microsoft study guide lists security/governance as cloud-service be
 
 A source-level pass found two mock-flow regressions in the existing completion path: the mock practical task could leave the page in the lab-only CSS state when the quiz results were rendered, and the shared Practice again handler randomized all 103 questions without resetting the mock timer/lab state. The mock completion handler now restores the practice layout before rendering results, and a mode-aware restart helper resets the correct question set and timer for mock, beginner, and topic practice. Structural regression checks were added for both behaviors.
 
-This is code-level verification plus CI validation; the updated manual browser checks above remain outstanding until run in a browser.
+Focused Playwright browser smoke tests now exercise the key paths above without completing an entire mock. The remaining manual checklist still covers broader visual, accessibility, mobile, pause/resume, and content-display checks.
+
+## Browser smoke tests and refresh recovery (2026-10-23)
+
+The new `.github/workflows/browser-smoke.yml` workflow runs Playwright against the static site on pull requests and pushes to `main`. It currently verifies:
+
+- Entering a mock session starts at Question 1 of 35, displays the timed clock, and advances to Question 2 after an answer.
+- Practice again from a completed mock starts a fresh 35-question session with a reset timer.
+- Refreshing at the mock practical-task stage restores the simulated task; completing it displays the results screen.
+- Refreshing an active timed mock resumes the countdown. A deliberately short test timer expires into the practical-task stage and adds unanswered questions to Smart Review.
+
+These tests exposed and fixed two additional recovery issues: the mock practical-task UI was not reliably restored after refreshing at that stage, and the countdown interval was not restarted for an active saved mock. The test suite is intentionally a fast smoke test, not a full 35-question mock completion or a replacement for all manual checks.
