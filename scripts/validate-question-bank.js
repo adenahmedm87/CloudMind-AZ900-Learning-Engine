@@ -11,7 +11,7 @@ const html = fs.readFileSync("index.html", "utf8");
 
 // Compile every inline script without executing browser-dependent code. This catches
 // syntax errors in the UI/session logic even when a live browser is unavailable.
-const scriptBodies = [...html.matchAll(/<script\\b[^>]*>([\\s\\S]*?)<\\/script>/gi)]
+const scriptBodies = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)]
   .map(match => match[1])
   .filter(source => source.trim());
 assert.ok(scriptBodies.length > 0, "Expected inline JavaScript in index.html");
@@ -26,7 +26,7 @@ assert.notEqual(sidebarStart, -1, "Could not find renderSidebar");
 assert.ok(sidebarEnd > sidebarStart, "Could not find renderSidebar boundary");
 const sidebarSource = html.slice(sidebarStart, sidebarEnd);
 assert.match(sidebarSource, /selectedHistory/, "History filter should have separate display state");
-assert.doesNotMatch(sidebarSource, /state\\.mode\\s*=/, "History filter must not mutate the active session mode");
+assert.doesNotMatch(sidebarSource, /state\.mode\s*=/, "History filter must not mutate the active session mode");
 const declaration = html.indexOf("const questions=[");
 assert.notEqual(declaration, -1, "Could not find const questions=[ in index.html");
 const open = html.indexOf("[", declaration);
