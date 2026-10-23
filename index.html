@@ -199,7 +199,7 @@ renderQuestion();
     const meta=document.querySelector(".qmeta");
     if(meta&&!document.getElementById("cmTimedToggle")){
       const controls=document.createElement("div");controls.style.cssText="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0";
-      controls.innerHTML='<button class="btn small ghost" id="cmTimedToggle">Timed practice: OFF</button><span class="tag" id="cmClock">Untimed · no countdown</span>';
+      controls.innerHTML='<span class="tag" id="cmClock">Choose a practice path above</span>';
       meta.parentNode.insertBefore(controls,meta);
       document.getElementById("cmTimedToggle").addEventListener("click",()=>{
         state.timedMode=!state.timedMode;state.timeLeft=35*60;persist();syncClock();
@@ -223,7 +223,7 @@ renderQuestion();
     const reset=document.getElementById("resetBtn");
     if(reset&&!reset.dataset.cmBound){reset.dataset.cmBound="1";reset.addEventListener("click",()=>{state.history=[];state.lastCompletedSignature="";state.sessionOrder=shuffleQuestions();state.timedMode=false;state.timeLeft=35*60;persist();syncClock()})}
   };
-  let cmTimer=null;function syncClock(){const b=document.getElementById("cmTimedToggle"),c=document.getElementById("cmClock");if(b)b.textContent="Timed practice: "+(state.timedMode?"ON":"OFF");if(c)c.textContent=state.timedMode?"Timed · "+Math.floor((state.timeLeft||2100)/60)+":"+String((state.timeLeft||2100)%60).padStart(2,"0"):"Untimed · no countdown";if(cmTimer){clearInterval(cmTimer);cmTimer=null}if(state.timedMode&&state.view!=="done"){cmTimer=setInterval(()=>{state.timeLeft=Math.max(0,(state.timeLeft||2100)-1);persist();if(c)c.textContent="Timed · "+Math.floor(state.timeLeft/60)+":"+String(state.timeLeft%60).padStart(2,"0");if(state.timeLeft<=0){clearInterval(cmTimer);cmTimer=null;state.index=activeQuestions().length;state.view="done";persist();renderQuestion();showToast("Time is up. Review your learning report.")}},1000)}}
+  function syncClock(){const c=document.getElementById("cmClock");if(c)c.textContent=state.timedMode?"Timed mock exam · 35-minute countdown":"Choose a practice path above";}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
 </script>
