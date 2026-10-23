@@ -28,6 +28,25 @@
 .cm-visual{margin:0 0 16px;padding:12px;border:1px solid #344563;border-radius:14px;background:#0b1426}
 .cm-visual figcaption{font-size:11px;color:#aab9d2;margin-top:7px}
 .cm-visual svg{display:block;width:100%;height:auto;max-height:230px}
+
+/* CloudMind visual cleanup + interactive simulation lab */
+.cm-modes{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.cm-mode{min-height:112px;padding:17px;transition:background .18s,border-color .18s,transform .18s;position:relative}
+.cm-mode:hover{transform:translateY(-2px)}
+.cm-mode.cm-active{border-color:var(--cyan);background:linear-gradient(135deg,#15323d,#17223c);box-shadow:inset 0 0 0 1px #54e0dc22}
+.cm-mode strong{font-size:14px;line-height:1.4}.cm-mode span{line-height:1.5;margin-top:4px}
+.cm-topic-tree{gap:9px}.cm-domain summary{display:flex;align-items:center;justify-content:space-between;gap:14px}.cm-domain summary span{max-width:50%;text-align:right}
+.layout{align-items:start;gap:20px;margin-top:18px}.panel,.mini-panel{min-width:0}.panel{padding:24px}.panel-head{align-items:flex-start;gap:18px}.panel-head>div{min-width:0}#sessionTitle{line-height:1.25}.question{overflow-wrap:anywhere}#answers .answer{align-items:flex-start}#answers .answer .letter{margin-top:1px}
+#cmInteractiveLab{margin:0 0 20px;scroll-margin-top:18px}.cm-lab-shell{border:1px solid #344563;border-radius:18px;background:linear-gradient(160deg,#111e34,#0b1426);overflow:hidden}
+.cm-lab-head{padding:20px 22px;border-bottom:1px solid #293a56;display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.cm-lab-head h3{font-size:22px;line-height:1.2;margin:4px 0 7px}.cm-lab-head p{margin:0;color:var(--muted);font-size:13px;max-width:650px}.cm-lab-body{padding:20px 22px}
+.cm-lab-instructions{display:flex;align-items:flex-start;gap:12px;padding:13px 15px;border:1px solid #3c4c6a;border-radius:12px;background:#14223d;margin-bottom:16px}.cm-lab-step{width:28px;height:28px;border-radius:9px;background:#54e0dc;color:#071326;display:grid;place-items:center;font-weight:900;flex:none}.cm-lab-instructions strong{display:block;margin-bottom:3px}.cm-lab-instructions span{font-size:12px;color:#b9c8df}
+.cm-desktop{border:1px solid #3b5476;border-radius:14px;overflow:hidden;background:#172d48;position:relative;min-height:280px}.cm-desktop-bar{height:34px;background:#0b1426;border-bottom:1px solid #304562;display:flex;align-items:center;gap:7px;padding:0 12px;font-size:11px;color:#b6c7df}.cm-dot{width:8px;height:8px;border-radius:50%;background:#ff8193}.cm-dot:nth-child(2){background:#ffd17b}.cm-dot:nth-child(3){background:#6ee7a8}
+.cm-desktop-wallpaper{min-height:245px;padding:20px;position:relative;background:radial-gradient(ellipse at 80% 20%,#28607a 0,transparent 30%),linear-gradient(135deg,#163b58,#17264b 60%,#332c62)}.cm-desktop-hint{color:#dce9ff;font-size:11px;opacity:.85;margin-bottom:15px}
+.cm-file-grid{display:grid;grid-template-columns:repeat(4,minmax(70px,100px));gap:12px}.cm-file{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:92px;padding:8px;border:1px solid transparent;border-radius:9px;color:white;background:transparent;font-size:11px;text-align:center;overflow-wrap:anywhere}.cm-file:hover,.cm-file:focus-visible{background:#ffffff18;border-color:#b4d8ff}.cm-file.selected{background:#64b5f633;border-color:#8dcfff}.cm-file-icon{font-size:30px;line-height:1}
+.cm-context-menu{position:absolute;z-index:4;width:165px;padding:5px;border:1px solid #536783;border-radius:9px;background:#f6f8fc;color:#18243a;box-shadow:0 10px 28px #0007}.cm-context-menu button{display:block;width:100%;text-align:left;padding:8px 10px;border:0;border-radius:5px;background:transparent;color:#18243a;font-size:12px}.cm-context-menu button:hover{background:#dce9fb}.cm-context-menu .cm-menu-danger{color:#b42336}
+.cm-lab-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:15px}.cm-lab-feedback{margin-top:14px;padding:13px 15px;border:1px solid #2d7e68;border-radius:11px;background:#102b2a;color:#d9ffef;font-size:13px}.cm-lab-feedback.bad{border-color:#a04c67;background:#301a2b}.cm-lab-progress{height:7px;border-radius:20px;background:#263650;overflow:hidden;margin-top:12px}.cm-lab-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:width .2s}
+@media(max-width:700px){.cm-modes{grid-template-columns:1fr}.layout{gap:14px}.panel{padding:16px}.cm-lab-head,.cm-lab-body{padding:16px}.cm-domain summary{align-items:flex-start;flex-direction:column;gap:4px}.cm-domain summary span{max-width:none;text-align:left}.cm-file-grid{grid-template-columns:repeat(3,minmax(65px,1fr));gap:5px}.cm-desktop-wallpaper{padding:12px}.cm-lab-head{flex-direction:column}}
+
 </style>
 </head>
 <body>
@@ -43,8 +62,9 @@
  <div class="cm-modes">
   <button class="cm-mode" data-mode="beginner"><strong>🌱 Beginner path</strong><span>10 questions · untimed · learn step by step</span></button>
   <button class="cm-mode" data-mode="topic"><strong>🧭 Practice a topic</strong><span>Choose an exam domain, then a smaller topic</span></button>
-  <button class="cm-mode" data-mode="mock"><strong>⏱ Full mock exam</strong><span>All available questions · 45-minute timer</span></button>
+  <button class="cm-mode" data-mode="mock"><strong>⏱ Full mock exam</strong><span>35 mixed questions · all exam domains · 45-minute timer</span></button>
   <button class="cm-mode" data-mode="unlimited"><strong>♾ Unlimited practice</strong><span>All questions · no countdown · practice at your pace</span></button>
+  <button class="cm-mode" data-mode="lab"><strong>🖱️ Interactive desktop lab</strong><span>Complete a simulated task using clickable desktop controls, then submit for a grade</span></button>
  </div>
  <div id="cmTopicTree" class="cm-topic-tree"></div>
  <p id="cmPathStatus" class="sub" style="margin-top:12px">Choose a path above to begin. Your answers and explanations appear one question at a time.</p>
@@ -315,4 +335,44 @@ renderQuestion();
  window.cmSyncClock=syncClock;
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
-</script>\n</body></html>
+</script>\n
+<script>
+(function(){
+ const $=id=>document.getElementById(id);
+ let deleted=false,selected=null,submitted=false;
+ const files=[{id:"notes",name:"Old-VM-Notes.txt",icon:"📄"},{id:"report",name:"AZ-900-Study-Plan.docx",icon:"📝"},{id:"folder",name:"Practice Files",icon:"📁"},{id:"image",name:"Azure-Diagram.png",icon:"🖼️"}];
+ function labMarkup(){
+  let host=$("cmInteractiveLab");
+  if(!host){host=document.createElement("section");host.id="cmInteractiveLab";host.className="hidden";const pathway=$("cmPathway");pathway.parentNode.insertBefore(host,pathway.nextSibling);}
+  host.innerHTML='<div class="cm-lab-shell"><header class="cm-lab-head"><div><div class="kicker">Hands-on learning · simulated environment</div><h3>Desktop task: remove an old file</h3><p>Practice a real computer workflow in a safe simulation. Nothing on your actual device will be changed.</p></div><button class="btn small ghost" id="cmLabExit">Back to AZ-900 practice</button></header><div class="cm-lab-body"><div class="cm-lab-instructions"><div class="cm-lab-step">1</div><div><strong>Your task</strong><span>Delete <b>Old-VM-Notes.txt</b> from this simulated desktop. Right-click the file, choose Delete, then submit your result for grading.</span></div></div><div class="cm-desktop" id="cmDesktop"><div class="cm-desktop-bar"><i class="cm-dot"></i><i class="cm-dot"></i><i class="cm-dot"></i><span>Training Desktop · Simulation</span></div><div class="cm-desktop-wallpaper"><div class="cm-desktop-hint">Desktop files · Right-click a file to view actions</div><div class="cm-file-grid" id="cmFileGrid"></div><div id="cmContextMount"></div></div></div><div class="cm-lab-progress"><span id="cmLabProgress"></span></div><div class="cm-lab-actions"><span class="muted" id="cmLabStatus" aria-live="polite">Step 1 of 2 · Choose the file and open its context menu.</span><button class="btn primary" id="cmLabSubmit" disabled>Submit task for grading →</button></div><div id="cmLabFeedback" aria-live="polite"></div></div></div>';
+  $("cmLabExit").addEventListener("click",()=>{host.classList.add("hidden");$("practice").classList.remove("hidden");$("cmPathway").scrollIntoView({behavior:"smooth",block:"start"});});
+  $("cmLabSubmit").addEventListener("click",grade);renderFiles();
+ }
+ function renderFiles(){
+  const grid=$("cmFileGrid");if(!grid)return;
+  grid.innerHTML=files.filter(f=>!(deleted&&f.id==="notes")).map(f=>'<button class="cm-file '+(selected===f.id?'selected':'')+'" data-file="'+f.id+'" aria-label="'+f.name+'"><span class="cm-file-icon">'+f.icon+'</span><span>'+f.name+'</span></button>').join("");
+  grid.querySelectorAll("[data-file]").forEach(b=>{b.addEventListener("click",()=>{selected=b.dataset.file;renderFiles();});b.addEventListener("contextmenu",e=>{e.preventDefault();selected=b.dataset.file;renderFiles();showMenu(e.clientX,e.clientY);});});
+  $("cmLabProgress").style.width=deleted?"100%":"0%";$("cmLabSubmit").disabled=submitted||!deleted;
+  $("cmLabStatus").textContent=deleted?"Task step complete · submit to receive your grade":"Step 1 of 2 · Right-click Old-VM-Notes.txt and choose Delete.";
+ }
+ function showMenu(x,y){
+  const mount=$("cmContextMount");mount.innerHTML='<div class="cm-context-menu" role="menu"><button data-action="open">Open</button><button data-action="rename">Rename</button><button data-action="copy">Copy</button><button class="cm-menu-danger" data-action="delete">🗑 Delete</button></div>';
+  const m=mount.firstElementChild,rect=$("cmDesktop").getBoundingClientRect();m.style.left=Math.max(6,Math.min(x-rect.left,rect.width-175))+"px";m.style.top=Math.max(40,Math.min(y-rect.top,rect.height-125))+"px";
+  m.querySelectorAll("[data-action]").forEach(b=>b.addEventListener("click",()=>{const action=b.dataset.action;mount.innerHTML="";
+   if(action==="delete"){
+    if(selected==="notes"){mount.innerHTML='<div class="cm-context-menu" role="dialog" style="left:50%;top:42%;transform:translate(-50%,-50%);width:min(290px,90%)"><strong style="display:block;padding:9px;font-size:12px">Delete this file?</strong><p style="padding:0 9px;font-size:11px">Old-VM-Notes.txt will be removed from this simulated desktop.</p><div style="display:flex;gap:7px;padding:8px"><button data-confirm="cancel">Cancel</button><button data-confirm="yes" class="cm-menu-danger">Delete</button></div></div>';
+     mount.querySelector('[data-confirm="cancel"]').addEventListener("click",()=>mount.innerHTML="");mount.querySelector('[data-confirm="yes"]').addEventListener("click",()=>{deleted=true;selected=null;mount.innerHTML="";renderFiles();$("cmLabFeedback").innerHTML="";});
+    }else{$("cmLabFeedback").innerHTML='<div class="cm-lab-feedback bad">Not the requested file. Find <b>Old-VM-Notes.txt</b> and delete that file instead.</div>';}
+   }else if(action==="rename"){$("cmLabFeedback").innerHTML='<div class="cm-lab-feedback">Rename is not needed. Try Delete on the requested file.</div>';}
+   else if(action==="copy"){$("cmLabFeedback").innerHTML='<div class="cm-lab-feedback">Copy is not needed. Choose Delete on the requested file.</div>';}
+   else {$("cmLabFeedback").innerHTML='<div class="cm-lab-feedback">You opened a file. The task asks you to remove it, so use the right-click menu and choose Delete.</div>';}
+  }));
+ }
+ function grade(){submitted=true;const feedback=$("cmLabFeedback");if(deleted){feedback.innerHTML='<div class="cm-lab-feedback"><strong>✓ Correct · 100/100</strong><br>You deleted the requested file using the context menu and submitted the task. You completed both steps: perform the action, then submit for grading.</div>';$("cmLabStatus").textContent="Graded · 100/100 · Task completed";$("cmLabProgress").style.width="100%";$("cmLabSubmit").disabled=true;}else{feedback.innerHTML='<div class="cm-lab-feedback bad"><strong>Not complete yet · 0/100</strong><br>The requested file is still on the desktop. Right-click Old-VM-Notes.txt, choose Delete, confirm, and submit again.</div>';submitted=false;}}
+ function openLab(){const host=$("cmInteractiveLab");host.classList.remove("hidden");$("practice").classList.add("hidden");host.scrollIntoView({behavior:"smooth",block:"start"});}
+ function init(){labMarkup();document.querySelectorAll('[data-mode="lab"]').forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("[data-mode]").forEach(x=>x.classList.toggle("cm-active",x===b));deleted=false;selected=null;submitted=false;$("cmLabFeedback").innerHTML="";renderFiles();openLab();}));document.addEventListener("click",e=>{if(!e.target.closest(".cm-context-menu")&&!e.target.closest(".cm-file")){const m=$("cmContextMount");if(m)m.innerHTML="";}});}
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
+</script>
+
+</body></html>
