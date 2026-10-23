@@ -214,7 +214,7 @@ renderQuestion();
     const originalDone=renderDone;
     renderDone=function(){
       originalDone();
-      const host=document.getElementById("feedback");
+      const host=document.getElementById("answers");
       if(host&&!host.querySelector("#cmTopicReport")){
         const report=document.createElement("section");report.id="cmTopicReport";report.style.cssText="margin-top:20px;padding-top:16px;border-top:1px solid #273650";
         const data=topics.map(topic=>{const qs=questions.filter(q=>q.topic===topic&&state.answers[q.id]);const correct=qs.filter(q=>state.answers[q.id].correct).length;return {topic,done:qs.length,correct,pct:qs.length?Math.round(correct/qs.length*100):0}});
