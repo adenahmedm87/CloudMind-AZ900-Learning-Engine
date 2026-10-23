@@ -71,5 +71,6 @@ This is a targeted correction pass, not a claim that every explanation has been 
 - [ ] Complete the question section and confirm its countdown stops before the separate simulated lab.
 - [ ] Complete the lab and confirm the results report counts quiz answers only, displays unanswered questions, and records the mock attempt once.
 - [ ] Allow the timer to expire; confirm unanswered questions are added to Smart Review and the session can proceed to the lab/results flow.
+- [ ] While a session is in progress, change the session-history filter and confirm the active practice mode and mock-exam flow remain unchanged.
 - [ ] Refresh mid-session; confirm saved state resumes in the same browser.
 - [ ] Confirm the existing visual questions at IDs 2, 4, and 5 still render.
