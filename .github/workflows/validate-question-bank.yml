@@ -1,0 +1,20 @@
+name: Validate AZ-900 question bank
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  question-bank:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate question structure and objective tags
+        run: node scripts/validate-question-bank.js
