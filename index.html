@@ -322,6 +322,8 @@ body.cm-progress-view .mini-panel:not(:has(#reviewQueue)){display:none!important
 @media(max-width:680px){body.cm-dashboard #cmPathway{margin:12px auto 24px}body.cm-dashboard .cm-core-modes{grid-template-columns:1fr}body.cm-dashboard .cm-core-modes .cm-mode{min-height:120px;padding:17px 16px 16px 68px}body.cm-dashboard .cm-review-path{grid-column:auto}}
 @media(prefers-reduced-motion:reduce){body.cm-dashboard .cm-core-modes .cm-mode{transition:none}}
 
+/* Guide return navigation */
+.cm-guide-actions{display:flex;justify-content:flex-start;margin:0 0 12px}.cm-guide-actions button{min-height:38px}
 </style>
 </head>
 <body class="cm-cover">
@@ -807,8 +809,6 @@ renderQuestion();
 })();
 </script>
 <script>
-/* Guide return navigation */
-.cm-guide-actions{display:flex;justify-content:flex-start;margin:0 0 12px}.cm-guide-actions button{min-height:38px}
 /* Screen flow: cover → dashboard → one focused learning activity */
 (function(){
  const body=document.body;
