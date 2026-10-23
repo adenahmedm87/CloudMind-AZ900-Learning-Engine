@@ -310,7 +310,12 @@ body.cm-dashboard .cm-review-path{grid-column:1/-1;min-height:94px!important}
 body.cm-dashboard .cm-review-path:before{background:#e9f8f7!important;box-shadow:inset 0 0 0 1px #cdece8!important}
 body.cm-dashboard .cm-review-path .cm-card-number:after{content:"↻"!important;color:#16867e!important}
 body.cm-dashboard #cmPathStatus{margin-top:18px!important;color:#738198;font-size:12px}
-body.cm-review-view .layout,body.cm-progress-view .layout{display:none!important}
+body.cm-progress-view .layout{display:none!important}
+body.cm-review-view .layout{display:grid!important;grid-template-columns:minmax(0,1fr)!important;max-width:900px;margin:22px auto}
+body.cm-review-view .layout>main{display:none!important}
+body.cm-review-view .layout>aside{display:block!important}
+body.cm-review-view .layout>aside>.mini-panel:not(:has(#reviewQueue)){display:none!important}
+body.cm-review-view .layout>aside>.mini-panel:has(#reviewQueue){display:block!important}
 body.cm-review-view .mini-panel:not(:has(#reviewQueue)){display:none!important}
 body.cm-review-view .mini-panel:has(#reviewQueue){display:block!important}
 body.cm-progress-view .mini-panel:not(:has(#reviewQueue)){display:none!important}
@@ -852,7 +857,7 @@ renderQuestion();
    document.getElementById("practice")?.scrollIntoView({behavior:"smooth",block:"start"});
   }else if(name==="review"){
    body.classList.remove("cm-practice","cm-labview","cm-progress-view");body.classList.add("cm-dashboard","cm-review-view");
-   document.querySelector(".layout")?.classList.add("hidden");
+   document.querySelector(".layout")?.classList.remove("hidden");
    document.getElementById("cmPathway")?.classList.add("hidden");
    document.getElementById("reviewQueue")?.closest(".mini-panel")?.classList.remove("hidden");
    document.getElementById("reviewQueue")?.closest(".mini-panel")?.scrollIntoView({behavior:"smooth",block:"start"});
