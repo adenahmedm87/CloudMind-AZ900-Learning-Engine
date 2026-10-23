@@ -13,7 +13,7 @@ The question array contains **103 questions with 103 unique IDs (1–103)**. The
 
 ### 2. Objective labels were incomplete
 
-Before the implementation branch, only **20 of 103 questions had an `objective` field**. The renderer already displays `q.objective`, but the remaining 83 questions were missing labels. The companion implementation branch adds objective labels to those 83 questions while preserving question IDs and the existing question text, answer choices, rationales, traps, examples, and visual-question hooks.
+Before the implementation branch, only **20 of 103 questions had an `objective` field**. The renderer already displays `q.objective`, but the remaining 83 questions were missing labels. The companion implementation in PR #24 adds objective labels to those 83 questions while preserving question IDs and the existing question text, answer choices, rationales, traps, examples, and visual-question hooks. PR #24 has now been merged into main.
 
 ### 3. Topic balance is not the same as objective coverage
 
