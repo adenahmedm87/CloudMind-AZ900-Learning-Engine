@@ -39,8 +39,13 @@ test("Practice again restarts a completed mock with a fresh timer and lab state"
   });
 
   await page.goto("http://127.0.0.1:4173/index.html");
-  await page.locator("#startBtn").click();
-  await page.locator('[data-cm-nav="practice"]').click();
+  // Reveal the already-rendered results without invoking the Practice Room
+  // navigation action, which intentionally starts a new session after completion.
+  await page.evaluate(() => {
+    document.body.classList.remove("cm-cover", "cm-dashboard", "cm-labview");
+    document.body.classList.add("cm-practice");
+    document.querySelector(".layout")?.classList.remove("hidden");
+  });
   await expect(page.locator("#againBtn")).toBeVisible();
 
   await page.locator("#againBtn").click();
