@@ -437,7 +437,7 @@ renderQuestion();
  }
  const originalRender=renderQuestion;
  renderQuestion=function(){
-  if(state.mode==="mock"&&!state.mockLabDone&&(state.index>=activeQuestions().length||state.view==="done")){openLab(true);return;}
+  if(state.mode==="mock"&&!state.mockLabDone&&(state.index>=activeQuestions().length||state.view==="done")){document.body.classList.remove("cm-cover","cm-dashboard","cm-practice");document.body.classList.add("cm-labview");openLab(true);return;}
   originalRender();
  };
  window.renderQuestion=renderQuestion;
@@ -520,10 +520,10 @@ renderQuestion();
    if(["lab","azurelab","archlab","troublelab"].includes(m)){screen("labview");return;}
   }
   if(e.target.closest("#cmTopicTree [data-child]"))showPractice();
-  if(e.target.closest("#cmLabExit")){if(window.state&&state.mode==="mock"&&!state.mockLabDone){screen("labview");return;}showDashboard();}
+  if(e.target.closest("#cmLabExit")){if(typeof state!=="undefined"&&state.mode==="mock"&&!state.mockLabDone){screen("labview");return;}showDashboard();}
   if(e.target.closest("#cmAzureExit")||e.target.closest("#cmScenarioExit"))showDashboard();
-  if(e.target.closest("#cmLabContinue")&&window.state&&state.mode==="mock"){showPractice();}
-  if(e.target.closest("#nextBtn")&&window.state&&state.view==="done"&&state.mode==="mock"&&!state.mockLabDone){screen("labview");}
+  if(e.target.closest("#cmLabContinue")&&typeof state!=="undefined"&&state.mode==="mock"){showPractice();}
+  if(e.target.closest("#nextBtn")&&typeof state!=="undefined"&&state.view==="done"&&state.mode==="mock"&&!state.mockLabDone){screen("labview");}
  });
  window.addEventListener("pageshow",function(){if(!body.classList.contains("cm-dashboard")&&!body.classList.contains("cm-practice")&&!body.classList.contains("cm-labview"))screen("cover");});
 })();
