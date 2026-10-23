@@ -205,10 +205,6 @@ renderQuestion();
       const controls=document.createElement("div");controls.style.cssText="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0";
       controls.innerHTML='<span class="tag" id="cmClock">Choose a practice path above</span>';
       meta.parentNode.insertBefore(controls,meta);
-      document.getElementById("cmTimedToggle").addEventListener("click",()=>{
-        state.timedMode=!state.timedMode;state.timeLeft=35*60;persist();syncClock();
-        showToast(state.timedMode?"Timed practice started: 35 minutes.":"Timed practice turned off.");
-      });
     }
     syncClock();
     const originalDone=renderDone;
