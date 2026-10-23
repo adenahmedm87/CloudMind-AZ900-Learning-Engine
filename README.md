@@ -6,7 +6,8 @@ CloudMind is an independent AZ-900 (Microsoft Azure Fundamentals) learning compa
 
 **Live demo:** https://adenahmedm87.github.io/CloudMind-AZ900-Learning-Engine/  
 **Source code:** https://github.com/adenahmedm87/CloudMind-AZ900-Learning-Engine  
-**Submission brief and demo script:** [SUBMISSION.md](./SUBMISSION.md)
+**Submission brief and demo script:** [SUBMISSION.md](./SUBMISSION.md)  
+**Final manual QA checklist:** [TESTING_CHECKLIST.md](./TESTING_CHECKLIST.md)
 
 ## The problem
 
