@@ -74,6 +74,9 @@ This is a targeted correction pass, not a claim that every explanation has been 
 - [ ] Start the 45-minute mock question section; confirm 35 questions are selected with the intended domain mix.
 - [ ] Complete the question section and confirm its countdown stops before the separate simulated lab.
 - [ ] Complete the lab and confirm the results report counts quiz answers only, displays unanswered questions, and records the mock attempt once.
+- [ ] After completing a mock practical task, confirm the results screen is visible rather than remaining in the lab-only layout.
+- [ ] From mock results, select Practice again and confirm a fresh 35-question mock starts with a reset 45-minute timer and the practical task enabled again.
+- [ ] From beginner and topic-practice results, select Practice again and confirm the same path/topic question set is retained.
 - [ ] Allow the timer to expire; confirm unanswered questions are added to Smart Review and the session can proceed to the lab/results flow.
 - [ ] While a session is in progress, change the session-history filter and confirm the active practice mode and mock-exam flow remain unchanged.
 - [ ] Refresh mid-session; confirm saved state resumes in the same browser.
@@ -87,3 +90,9 @@ This is a targeted correction pass, not a claim that every explanation has been 
 - **Validator:** Added checks for duplicate question stems after case/punctuation normalization and for topic labels outside the three published AZ-900 skill domains. These guards help prevent future bank drift and accidental duplicate items.
 
 The official Microsoft study guide lists security/governance as cloud-service benefits and consumption-based pricing as a separate cloud-computing objective: [AZ-900 study guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-900). This is a focused wording and regression-guard pass, not a claim that every question explanation has now been independently verified.
+
+## Practice-to-results flow follow-up (2026-10-23)
+
+A source-level pass found two mock-flow regressions in the existing completion path: the mock practical task could leave the page in the lab-only CSS state when the quiz results were rendered, and the shared Practice again handler randomized all 103 questions without resetting the mock timer/lab state. The mock completion handler now restores the practice layout before rendering results, and a mode-aware restart helper resets the correct question set and timer for mock, beginner, and topic practice. Structural regression checks were added for both behaviors.
+
+This is code-level verification plus CI validation; the updated manual browser checks above remain outstanding until run in a browser.
