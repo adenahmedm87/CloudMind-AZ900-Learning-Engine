@@ -1,66 +1,78 @@
 # CloudMind — The Learning Intelligence Engine
 
-**Tagline:** Learn why. Prove it. Remember it.
+**Learn why. Prove it. Remember it.**
 
-CloudMind is an independent AZ-900 practice companion that uses answer accuracy and self-reported confidence to help learners decide what to review next.
+CloudMind is an independent AZ-900 (Microsoft Azure Fundamentals) learning companion. It uses a learner's answers and self-reported confidence to help surface questions worth revisiting—so practice can focus on understanding, not only scores.
+
+**Live demo:** https://adenahmedm87.github.io/CloudMind-AZ900-Learning-Engine/  
+**Source code:** https://github.com/adenahmedm87/CloudMind-AZ900-Learning-Engine  
+**Submission brief and demo script:** [SUBMISSION.md](./SUBMISSION.md)
+
+## The problem
+
+Practice quizzes often tell learners whether an answer is right or wrong, but a score alone may not reveal *why* the learner is struggling. A confident wrong answer may point to a misconception, while a correct answer made by guessing may still need reinforcement.
+
+## The solution
+
+CloudMind adds a lightweight reflection loop to AZ-900 practice:
+
+1. **Answer** an original practice question.
+2. **Reflect** by choosing a confidence level.
+3. **Understand** the explanation and, where relevant, complete a transfer check.
+4. **Review** questions and topics that practice signals suggest revisiting.
+
+The dashboard now gives an adaptive next-step recommendation based on the learner's saved practice signals. Confidence is treated as a clue—not proof of a misconception.
 
 ## Features
+
 - Original Azure Fundamentals practice questions with explanations.
+- Beginner practice, focused topic practice, unlimited practice, and a timed mock-exam path.
 - Confidence reflection: Guessing, Somewhat confident, or Very confident.
-- Misconception Clinic when an answer is wrong and the learner reports high confidence.
-- Transfer checks that ask learners to apply an idea to a new situation.
-- Progress statistics, topic-level practice signals, and a review queue.
-- Browser-local progress persistence using localStorage.
-- Responsive layout for desktop and mobile.
+- A Misconception Clinic for wrong answers reported with high confidence.
+- Transfer checks to practise applying an idea in a different situation.
+- Adaptive next-step recommendation based on review priorities and topic performance.
+- A confidence-aware review queue with explanations for why an item is prioritised.
+- Topic-level practice signals, session summaries, and activity history.
+- Optional interactive simulations for a desktop task, Azure resource-group configuration, architecture design, and network troubleshooting.
+- Browser-local progress persistence using `localStorage`.
+- Responsive layout and keyboard focus styling for desktop and mobile.
 
 ## Run locally
-Open `index.html` in a modern browser. No build step or external JavaScript libraries are required.
 
-## Architecture and design decisions
+1. Download or clone this repository.
+2. Open `index.html` in a modern browser.
+3. No build step, package installation, account, or external JavaScript library is required.
 
-CloudMind is currently a small, static, single-page learning prototype:
+## Architecture
 
-- **Interface and question logic:** HTML, CSS, and browser JavaScript in `index.html`.
-- **Progress storage:** the browser's `localStorage`; progress stays on the learner's device and is not synced to an account or shared across devices.
-- **Hosting:** GitHub Pages serves the static site. The project does not currently run its own application server or API.
-- **Learning flow:** answer a question → report confidence → read feedback → review a queued question or weaker topic.
+CloudMind is a static single-page web application:
 
-### Why this design?
+- **Interface and learning logic:** HTML, CSS, and browser JavaScript in `index.html`.
+- **Question content:** Bundled original practice questions.
+- **Progress storage:** Browser `localStorage`; progress remains in the current browser on the learner's device.
+- **Hosting:** GitHub Pages.
+- **Backend/API:** None in the current prototype.
 
-The system-design lesson emphasized understanding the problem before choosing infrastructure. CloudMind's current question bank is bundled with the page, and progress is saved locally. There is no repeated API request or slow background job that currently justifies adding a database server, cache service, message queue, load balancer, or custom CDN configuration. Adding those components now would increase complexity without solving a demonstrated problem.
+### Why keep it simple?
 
-If CloudMind later needs accounts, cross-device progress, centrally updated question content, or many concurrent learners, we should measure the bottleneck and revisit the design. Depending on the need, that could mean an API and database, background jobs for genuinely slow tasks, or additional scaling and monitoring. Those are future options, not features implemented in this prototype.
+The question bank is bundled with the page and learner progress is saved locally. A database, API, message queue, or custom server would add complexity without solving a demonstrated need in this prototype. If future versions need accounts, cross-device synchronisation, centrally updated content, or shared analytics, the architecture can be reconsidered based on measured requirements.
+
+## Learning and privacy boundaries
+
+- Confidence is self-reported and is not a psychological or diagnostic measure.
+- Topic performance is a practice signal, not a reliable prediction of certification success.
+- Progress is stored in the current browser; it is not synced to an account or automatically shared across devices.
+- The hands-on labs are simulations, not live Azure resource deployments.
+- Questions are original practice content, not copied official exam questions.
 
 ## Publish with GitHub Pages
-In the repository settings, enable GitHub Pages for the `main` branch and the root folder. The app entry point is `index.html`.
 
-## Learning-content note
-Questions in this prototype are original practice questions, not copied exam questions. They are for learning and review and do not predict exam performance. For official certification details and the current skills outline, consult [Microsoft Learn — Azure Fundamentals](https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/).
+In repository settings, enable GitHub Pages for the `main` branch and root folder. The app entry point is `index.html`. The live demo link above is the intended presentation entry point.
+
+## Official reference
+
+For official certification details and the current skills outline, consult [Microsoft Learn — Azure Fundamentals](https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/).
 
 ## Disclaimer
+
 CloudMind is an independent learning tool and is not affiliated with or endorsed by Microsoft.
-
-## Demo walkthrough
-
-Use this short path when presenting CloudMind:
-
-1. Open the live site and select **Start learning**.
-2. Choose **Beginner path** and answer a question; demonstrate the explanation and confidence reflection.
-3. Show how the review queue and topic progress respond to practice.
-4. Pause an activity, return to learning paths, then resume it. If switching paths, confirm that the learner is warned before the new path replaces the active session.
-5. Open the **Full mock exam** and explain the timed-question journey and practical task at the end.
-6. Open the optional labs to demonstrate the simulated desktop task, Azure resource-group configuration, architecture choice, and network troubleshooting scenario.
-7. Show the activity-history selector and explain that progress is stored locally in the current browser.
-
-## Release hand-off checklist
-
-- [ ] Manually test the main learning paths, pause/resume, and switching paths.
-- [ ] Confirm previous session history remains after resetting the current activity.
-- [ ] Check that diagrams appear on the questions that include them.
-- [ ] Complete each lab once with a correct answer and once with an incorrect answer where retries are supported.
-- [ ] Refresh the page and confirm browser-local progress behaves as expected.
-- [ ] Check keyboard focus, reduced-motion behaviour, and a narrow mobile viewport.
-- [ ] Confirm the GitHub Pages site serves the latest `main` version.
-- [ ] Capture screenshots and a short demo recording for the final presentation.
-
-These checks are a manual hand-off list; they are not represented as automated browser tests.
