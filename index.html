@@ -766,6 +766,19 @@ renderQuestion();
   const p=$("cmPathStatus");if(p)p.textContent=mode==="mock"?"Mock exam started: 45 minutes. Answer each question, then review your report.":mode==="beginner"?"Beginner path started: 10 questions, no timer. Read each explanation before moving on.":mode==="topic"?"Topic practice started. Focus on this selected topic and read the explanation after each answer.":"Unlimited practice started. No countdown—learn at your own pace.";
   $("practice").scrollIntoView({behavior:"smooth",block:"start"});
  }
+ /* Reliable entry point for the sidebar Practice room. */
+ window.cmEnsurePracticeSession=function(){
+  document.body.classList.remove("cm-cover","cm-dashboard","cm-labview","cm-review-view","cm-progress-view","cm-guide");
+  document.body.classList.add("cm-practice");
+  document.getElementById("cmPathway")?.classList.add("hidden");
+  document.querySelector(".layout")?.classList.remove("hidden");
+  if(!state.sessionStarted||state.view==="done"){
+   resetSession(shuffleQuestions(),"unlimited",false);
+  }else{
+   if($("nextBtn"))$("nextBtn").classList.remove("hidden");
+   renderQuestion();
+  }
+ };
 
  window.cmRenderVisual=function(q){
   let host=document.getElementById("cmVisual");
@@ -1005,9 +1018,9 @@ renderQuestion();
    document.getElementById("cmInteractiveLab")?.classList.add("hidden");
    document.getElementById("cmAzureLab")?.classList.add("hidden");
    document.getElementById("cmScenarioLab")?.classList.add("hidden");
-   /* A direct Practice room visit must show a real question, not the empty placeholder. */
-   if(typeof state!=="undefined"&&(!state.sessionStarted||state.view==="done")){
-    document.querySelector('.cm-mode[data-mode="unlimited"]')?.click();
+   /* Start or restore a real session directly; do not depend on a synthetic card click. */
+   if(typeof window.cmEnsurePracticeSession==="function"){
+    window.cmEnsurePracticeSession();
    }else if(typeof renderQuestion==="function"){
     renderQuestion();
    }
