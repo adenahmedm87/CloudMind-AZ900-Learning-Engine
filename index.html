@@ -898,6 +898,7 @@ renderQuestion();
  function ensureLabMarkup(){if(labMarkupReady)return;labMarkup();labMarkupReady=true;}
  function init(){
   ensureLabMarkup();
+  if(state.mode==="mock"&&!state.mockLabDone&&(state.index>=activeQuestions().length||state.view==="done"))renderQuestion();
   document.querySelectorAll('[data-mode="lab"]').forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("[data-mode]").forEach(x=>x.classList.toggle("cm-active",x===b));deleted=false;selected=null;submitted=false;$("cmLabFeedback").innerHTML="";$("cmLabSubmit").disabled=false;renderFiles();openLab(false);}));
   document.addEventListener("click",e=>{if(!e.target.closest(".cm-context-menu")&&!e.target.closest(".cm-file")){const m=$("cmContextMount");if(m)m.innerHTML="";}});
  }
