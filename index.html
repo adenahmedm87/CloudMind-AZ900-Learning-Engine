@@ -939,7 +939,7 @@ renderQuestion();
   if(e.target.closest("#cmLabContinue")&&typeof state!=="undefined"&&state.mode==="mock"){showPractice();}
   if(e.target.closest("#nextBtn")&&typeof state!=="undefined"&&state.view==="done"&&state.mode==="mock"&&!state.mockLabDone){screen("labview");}
  });
- window.addEventListener("pageshow",function(){if(!body.classList.contains("cm-dashboard")&&!body.classList.contains("cm-practice")&&!body.classList.contains("cm-labview"))screen("cover");});
+ window.addEventListener("pageshow",function(){if(!body.classList.contains("cm-dashboard")&&!body.classList.contains("cm-practice")&&!body.classList.contains("cm-labview")&&!body.classList.contains("cm-guide"))screen("cover");});
 })();
 </script>
 
@@ -951,7 +951,8 @@ renderQuestion();
  function setActive(name){links.forEach(link=>{const active=link.dataset.cmNav===name;link.classList.toggle("active",active);if(active)link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");});}
  function go(name){
   if(name==="dashboard"){
-   body.classList.remove("cm-practice","cm-labview","cm-review-view","cm-progress-view","cm-topic-mode");body.classList.add("cm-dashboard");
+   body.classList.remove("cm-practice","cm-labview","cm-review-view","cm-progress-view","cm-topic-mode","cm-guide");body.classList.add("cm-dashboard");
+   document.getElementById("cmStudentGuide")?.classList.add("hidden");
    document.getElementById("cmPathway")?.classList.remove("hidden");
    document.querySelector(".layout")?.classList.add("hidden");
    document.getElementById("cmInteractiveLab")?.classList.add("hidden");
@@ -959,7 +960,8 @@ renderQuestion();
    document.getElementById("cmScenarioLab")?.classList.add("hidden");
    document.getElementById("cmPathway")?.scrollIntoView({behavior:"smooth",block:"start"});
   }else if(name==="practice"){
-   body.classList.remove("cm-dashboard","cm-labview","cm-review-view","cm-progress-view");body.classList.add("cm-practice");
+   body.classList.remove("cm-dashboard","cm-labview","cm-review-view","cm-progress-view","cm-guide");body.classList.add("cm-practice");
+   document.getElementById("cmStudentGuide")?.classList.add("hidden");
    document.getElementById("cmPathway")?.classList.add("hidden");
    document.querySelector(".layout")?.classList.remove("hidden");
    document.getElementById("cmInteractiveLab")?.classList.add("hidden");
@@ -967,13 +969,15 @@ renderQuestion();
    document.getElementById("cmScenarioLab")?.classList.add("hidden");
    document.getElementById("practice")?.scrollIntoView({behavior:"smooth",block:"start"});
   }else if(name==="review"){
-   body.classList.remove("cm-practice","cm-labview","cm-progress-view");body.classList.add("cm-dashboard","cm-review-view");
+   body.classList.remove("cm-practice","cm-labview","cm-progress-view","cm-guide");body.classList.add("cm-dashboard","cm-review-view");
+   document.getElementById("cmStudentGuide")?.classList.add("hidden");
    document.querySelector(".layout")?.classList.remove("hidden");
    document.getElementById("cmPathway")?.classList.add("hidden");
    document.getElementById("reviewQueue")?.closest(".mini-panel")?.classList.remove("hidden");
    document.getElementById("reviewQueue")?.closest(".mini-panel")?.scrollIntoView({behavior:"smooth",block:"start"});
   }else if(name==="labs"){
-   body.classList.remove("cm-practice","cm-dashboard","cm-cover");body.classList.add("cm-labview");
+   body.classList.remove("cm-practice","cm-dashboard","cm-cover","cm-guide");body.classList.add("cm-labview");
+   document.getElementById("cmStudentGuide")?.classList.add("hidden");
    document.querySelector(".layout")?.classList.add("hidden");
    document.getElementById("cmInteractiveLab")?.classList.add("hidden");
    document.getElementById("cmAzureLab")?.classList.add("hidden");
