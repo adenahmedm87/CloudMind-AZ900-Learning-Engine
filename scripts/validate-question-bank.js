@@ -64,6 +64,8 @@ assert.ok(questions.length > 0, "Question bank must not be empty");
 assert.equal(questions.length, 103, "Expected 103 questions; the bank may be incomplete");
 
 const ids = new Set();
+const stems = new Map();
+const allowedTopics = new Set(["Cloud concepts", "Azure architecture", "Management & governance"]);
 const domainCounts = new Map();
 const errors = [];
 
@@ -76,6 +78,18 @@ for (const [index, q] of questions.entries()) {
   if (!Number.isInteger(q.id)) errors.push(label + ": id must be an integer");
   else if (ids.has(q.id)) errors.push("duplicate question id " + q.id);
   else ids.add(q.id);
+
+  if (typeof q.topic === "string" && !allowedTopics.has(q.topic)) {
+    errors.push("question " + (q.id ?? index) + ": unexpected topic domain " + JSON.stringify(q.topic));
+  }
+  if (typeof q.q === "string" && q.q.trim()) {
+    const normalizedStem = q.q.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+    if (stems.has(normalizedStem)) {
+      errors.push("duplicate question stem on questions " + stems.get(normalizedStem) + " and " + q.id);
+    } else {
+      stems.set(normalizedStem, q.id);
+    }
+  }
 
   for (const field of ["topic", "objective", "q", "why", "trap", "example"]) {
     if (typeof q[field] !== "string" || !q[field].trim()) {
