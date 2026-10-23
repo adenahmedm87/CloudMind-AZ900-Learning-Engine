@@ -277,7 +277,7 @@ renderQuestion();
  function matches(q,child){const text=(q.q+" "+q.options.join(" ")+" "+q.why+" "+q.example).toLowerCase();return child.words.some(w=>text.includes(w))}
  function resetSession(ids,mode,timed){
   state.answers={};state.confidence={};state.review=[];state.transferDone={};state.index=0;state.view="practice";state.mode=mode;
-  state.sessionOrder=ids&&ids.length?ids.slice():shuffleQuestions();state.timedMode=!!timed;state.timeLeft=45*60;state.lastCompletedSignature="";
+  state.sessionOrder=ids&&ids.length?ids.slice():shuffleQuestions();state.mockLabDone=false;state.timedMode=!!timed;state.timeLeft=45*60;state.lastCompletedSignature="";
   persist();if($("nextBtn"))$("nextBtn").classList.remove("hidden");renderQuestion();syncClock();
   const p=$("cmPathStatus");if(p)p.textContent=mode==="mock"?"Mock exam started: 45 minutes. Answer each question, then review your report.":mode==="beginner"?"Beginner path started: 10 questions, no timer. Read each explanation before moving on.":mode==="topic"?"Topic practice started. Focus on this selected topic and read the explanation after each answer.":"Unlimited practice started. No countdown—learn at your own pace.";
   $("practice").scrollIntoView({behavior:"smooth",block:"start"});
@@ -341,36 +341,71 @@ renderQuestion();
  const $=id=>document.getElementById(id);
  let deleted=false,selected=null,submitted=false;
  const files=[{id:"notes",name:"Old-VM-Notes.txt",icon:"📄"},{id:"report",name:"AZ-900-Study-Plan.docx",icon:"📝"},{id:"folder",name:"Practice Files",icon:"📁"},{id:"image",name:"Azure-Diagram.png",icon:"🖼️"}];
+ const baseRenderQuestion=window.renderQuestion||renderQuestion;
  function labMarkup(){
   let host=$("cmInteractiveLab");
   if(!host){host=document.createElement("section");host.id="cmInteractiveLab";host.className="hidden";const pathway=$("cmPathway");pathway.parentNode.insertBefore(host,pathway.nextSibling);}
-  host.innerHTML='<div class="cm-lab-shell"><header class="cm-lab-head"><div><div class="kicker">Hands-on learning · simulated environment</div><h3>Desktop task: remove an old file</h3><p>Practice a real computer workflow in a safe simulation. Nothing on your actual device will be changed.</p></div><button class="btn small ghost" id="cmLabExit">Back to AZ-900 practice</button></header><div class="cm-lab-body"><div class="cm-lab-instructions"><div class="cm-lab-step">1</div><div><strong>Your task</strong><span>Delete <b>Old-VM-Notes.txt</b> from this simulated desktop. Right-click the file, choose Delete, then submit your result for grading.</span></div></div><div class="cm-desktop" id="cmDesktop"><div class="cm-desktop-bar"><i class="cm-dot"></i><i class="cm-dot"></i><i class="cm-dot"></i><span>Training Desktop · Simulation</span></div><div class="cm-desktop-wallpaper"><div class="cm-desktop-hint">Desktop files · Right-click a file to view actions</div><div class="cm-file-grid" id="cmFileGrid"></div><div id="cmContextMount"></div></div></div><div class="cm-lab-progress"><span id="cmLabProgress"></span></div><div class="cm-lab-actions"><span class="muted" id="cmLabStatus" aria-live="polite">Step 1 of 2 · Choose the file and open its context menu.</span><button class="btn primary" id="cmLabSubmit" disabled>Submit task for grading →</button></div><div id="cmLabFeedback" aria-live="polite"></div></div></div>';
-  $("cmLabExit").addEventListener("click",()=>{host.classList.add("hidden");document.querySelector(".layout").classList.remove("hidden");$("cmPathway").scrollIntoView({behavior:"smooth",block:"start"});});
+  host.innerHTML='<div class="cm-lab-shell"><header class="cm-lab-head"><div><div class="kicker">Hands-on learning · simulated environment</div><h3 id="cmLabTitle">Interactive desktop task</h3><p>Complete the requested task in this simulated environment. No real files are changed.</p></div><button class="btn small ghost" id="cmLabExit">Back to practice</button></header><div class="cm-lab-body"><div class="cm-lab-instructions"><div class="cm-lab-step">1</div><div><strong>Your task</strong><span>Delete the file named <b>Old-VM-Notes.txt</b>. Use the simulated desktop controls, confirm the action, then submit your work for grading. Feedback is shown only after submission.</span></div></div><div class="cm-desktop" id="cmDesktop"><div class="cm-desktop-bar"><i class="cm-dot"></i><i class="cm-dot"></i><i class="cm-dot"></i><span>Training Desktop · Simulation</span></div><div class="cm-desktop-wallpaper"><div class="cm-desktop-hint">Desktop files · Right-click or focus a file and press Shift+F10 for actions</div><div class="cm-file-grid" id="cmFileGrid"></div><div id="cmContextMount"></div></div></div><div class="cm-lab-progress"><span id="cmLabProgress"></span></div><div class="cm-lab-actions"><span class="muted" id="cmLabStatus" aria-live="polite">Task in progress · submit when ready.</span><button class="btn primary" id="cmLabSubmit">Submit task for grading →</button></div><div id="cmLabFeedback" aria-live="polite"></div></div></div>';
+  $("cmLabExit").addEventListener("click",()=>{if(state.mode==="mock"&&!state.mockLabDone){$("cmLabStatus").textContent="Complete and submit the practical task to finish the mock exam.";return;}hideLab();});
   $("cmLabSubmit").addEventListener("click",grade);renderFiles();
  }
  function renderFiles(){
   const grid=$("cmFileGrid");if(!grid)return;
-  grid.innerHTML=files.filter(f=>!(deleted&&f.id==="notes")).map(f=>'<button class="cm-file '+(selected===f.id?'selected':'')+'" data-file="'+f.id+'" aria-label="'+f.name+'"><span class="cm-file-icon">'+f.icon+'</span><span>'+f.name+'</span></button>').join("");
-  grid.querySelectorAll("[data-file]").forEach(b=>{b.addEventListener("click",()=>{selected=b.dataset.file;renderFiles();});b.addEventListener("contextmenu",e=>{e.preventDefault();selected=b.dataset.file;renderFiles();showMenu(e.clientX,e.clientY);});});
-  $("cmLabProgress").style.width=deleted?"100%":"0%";$("cmLabSubmit").disabled=submitted||!deleted;
-  $("cmLabStatus").textContent=deleted?"Task step complete · submit to receive your grade":"Step 1 of 2 · Right-click Old-VM-Notes.txt and choose Delete.";
+  grid.innerHTML=files.filter(f=>!(deleted&&f.id==="notes")).map(f=>'<button type="button" class="cm-file '+(selected===f.id?'selected':'')+'" data-file="'+f.id+'" aria-label="'+f.name+'"><span class="cm-file-icon">'+f.icon+'</span><span>'+f.name+'</span></button>').join("");
+  grid.querySelectorAll("[data-file]").forEach(b=>{
+   b.addEventListener("click",()=>{selected=b.dataset.file;renderFiles();});
+   b.addEventListener("contextmenu",e=>{e.preventDefault();selected=b.dataset.file;renderFiles();showMenu(e.clientX,e.clientY);});
+   b.addEventListener("keydown",e=>{if(e.key==="ContextMenu"||(e.shiftKey&&e.key==="F10")){e.preventDefault();selected=b.dataset.file;renderFiles();const r=b.getBoundingClientRect();showMenu(r.left+30,r.top+30);}if(e.key==="Enter"||e.key===" "){e.preventDefault();selected=b.dataset.file;renderFiles();}});
+  });
+  $("cmLabProgress").style.width=deleted?"100%":"0%";
+  $("cmLabStatus").textContent=deleted?"Action performed · submit when ready for grading":"Task in progress · use the simulated desktop controls, then submit.";
  }
  function showMenu(x,y){
-  const mount=$("cmContextMount");mount.innerHTML='<div class="cm-context-menu" role="menu"><button data-action="open">Open</button><button data-action="rename">Rename</button><button data-action="copy">Copy</button><button class="cm-menu-danger" data-action="delete">🗑 Delete</button></div>';
-  const m=mount.firstElementChild,rect=$("cmDesktop").getBoundingClientRect();m.style.left=Math.max(6,Math.min(x-rect.left,rect.width-175))+"px";m.style.top=Math.max(40,Math.min(y-rect.top,rect.height-125))+"px";
-  m.querySelectorAll("[data-action]").forEach(b=>b.addEventListener("click",()=>{const action=b.dataset.action;mount.innerHTML="";
-   if(action==="delete"){
-    if(selected==="notes"){mount.innerHTML='<div class="cm-context-menu" role="dialog" style="left:50%;top:42%;transform:translate(-50%,-50%);width:min(290px,90%)"><strong style="display:block;padding:9px;font-size:12px">Delete this file?</strong><p style="padding:0 9px;font-size:11px">Old-VM-Notes.txt will be removed from this simulated desktop.</p><div style="display:flex;gap:7px;padding:8px"><button data-confirm="cancel">Cancel</button><button data-confirm="yes" class="cm-menu-danger">Delete</button></div></div>';
-     mount.querySelector('[data-confirm="cancel"]').addEventListener("click",()=>mount.innerHTML="");mount.querySelector('[data-confirm="yes"]').addEventListener("click",()=>{deleted=true;selected=null;mount.innerHTML="";renderFiles();$("cmLabFeedback").innerHTML="";});
-    }else{$("cmLabFeedback").innerHTML='<div class="cm-lab-feedback bad">Not the requested file. Find <b>Old-VM-Notes.txt</b> and delete that file instead.</div>';}
-   }else if(action==="rename"){$("cmLabFeedback").innerHTML='<div class="cm-lab-feedback">Rename is not needed. Try Delete on the requested file.</div>';}
-   else if(action==="copy"){$("cmLabFeedback").innerHTML='<div class="cm-lab-feedback">Copy is not needed. Choose Delete on the requested file.</div>';}
-   else {$("cmLabFeedback").innerHTML='<div class="cm-lab-feedback">You opened a file. The task asks you to remove it, so use the right-click menu and choose Delete.</div>';}
+  const mount=$("cmContextMount"),wall=$("cmDesktop").querySelector(".cm-desktop-wallpaper");mount.innerHTML='<div class="cm-context-menu" role="menu"><button data-action="open">Open</button><button data-action="rename">Rename</button><button data-action="copy">Copy</button><button class="cm-menu-danger" data-action="delete">🗑 Delete</button></div>';
+  const m=mount.firstElementChild,rect=wall.getBoundingClientRect();m.style.left=Math.max(6,Math.min(x-rect.left,rect.width-175))+"px";m.style.top=Math.max(40,Math.min(y-rect.top,rect.height-145))+"px";
+  const first=m.querySelector("button");if(first)first.focus();
+  m.querySelectorAll("[data-action]").forEach(b=>b.addEventListener("click",()=>{
+   const action=b.dataset.action;mount.innerHTML="";
+   if(action==="delete"&&selected==="notes"){
+    mount.innerHTML='<div class="cm-context-menu" role="dialog" aria-label="Confirm delete" style="left:50%;top:42%;transform:translate(-50%,-50%);width:min(290px,90%)"><strong style="display:block;padding:9px;font-size:12px">Confirm delete</strong><p style="padding:0 9px;font-size:11px">Delete Old-VM-Notes.txt from this simulated desktop?</p><div style="display:flex;gap:7px;padding:8px"><button data-confirm="cancel">Cancel</button><button data-confirm="yes" class="cm-menu-danger">Delete</button></div></div>';
+    mount.querySelector('[data-confirm="cancel"]').addEventListener("click",()=>{mount.innerHTML="";});
+    mount.querySelector('[data-confirm="yes"]').addEventListener("click",()=>{deleted=true;selected=null;mount.innerHTML="";renderFiles();$("cmLabFeedback").innerHTML="";});
+   }else if(action==="delete"){$("cmLabStatus").textContent="Action attempted · continue working, then submit for grading.";}
+   else {$("cmLabStatus").textContent="Action selected · continue working, then submit for grading.";}
   }));
  }
- function grade(){submitted=true;const feedback=$("cmLabFeedback");if(deleted){feedback.innerHTML='<div class="cm-lab-feedback"><strong>✓ Correct · 100/100</strong><br>You deleted the requested file using the context menu and submitted the task. You completed both steps: perform the action, then submit for grading.</div>';$("cmLabStatus").textContent="Graded · 100/100 · Task completed";$("cmLabProgress").style.width="100%";$("cmLabSubmit").disabled=true;}else{feedback.innerHTML='<div class="cm-lab-feedback bad"><strong>Not complete yet · 0/100</strong><br>The requested file is still on the desktop. Right-click Old-VM-Notes.txt, choose Delete, confirm, and submit again.</div>';submitted=false;}}
- function openLab(){const host=$("cmInteractiveLab");host.classList.remove("hidden");document.querySelector(".layout").classList.add("hidden");host.scrollIntoView({behavior:"smooth",block:"start"});}
- function init(){labMarkup();document.querySelectorAll('[data-mode="lab"]').forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("[data-mode]").forEach(x=>x.classList.toggle("cm-active",x===b));deleted=false;selected=null;submitted=false;$("cmLabFeedback").innerHTML="";renderFiles();openLab();}));document.addEventListener("click",e=>{if(!e.target.closest(".cm-context-menu")&&!e.target.closest(".cm-file")){const m=$("cmContextMount");if(m)m.innerHTML="";}});}
+ function hideLab(){const host=$("cmInteractiveLab");host.classList.add("hidden");document.querySelector(".layout").classList.remove("hidden");$("cmPathway").scrollIntoView({behavior:"smooth",block:"start"});}
+ function openLab(isMock){
+  const host=$("cmInteractiveLab");host.classList.remove("hidden");document.querySelector(".layout").classList.add("hidden");
+  $("cmLabTitle").textContent=isMock?"Mock exam · practical scenario":"Interactive desktop task";
+  $("cmLabExit").textContent=isMock?"Finish later":"Back to AZ-900 practice";
+  host.scrollIntoView({behavior:"smooth",block:"start"});
+ }
+ function grade(){
+  submitted=true;const feedback=$("cmLabFeedback");
+  if(deleted){
+   feedback.innerHTML='<div class="cm-lab-feedback"><strong>✓ Correct · 100/100</strong><br>Submission graded. The requested file was removed using the simulated context menu.</div><button class="btn primary" id="cmLabContinue" style="margin-top:12px">'+(state.mode==="mock"?"Continue to mock exam results →":"Reset and try again →")+'</button>';
+   $("cmLabStatus").textContent="Graded · 100/100 · Task completed";$("cmLabProgress").style.width="100%";$("cmLabSubmit").disabled=true;
+   $("cmLabContinue").addEventListener("click",()=>{
+    if(state.mode==="mock"){state.mockLabDone=true;state.view="done";state.index=activeQuestions().length;persist();hideLab();baseRenderQuestion();}
+    else{deleted=false;selected=null;submitted=false;$("cmLabFeedback").innerHTML="";$("cmLabSubmit").disabled=false;renderFiles();}
+   });
+  }else{
+   feedback.innerHTML='<div class="cm-lab-feedback bad"><strong>Submission graded · 0/100</strong><br>The requested task was not completed. Review the task instructions, make the change, and submit again.</div>';
+   $("cmLabStatus").textContent="Graded · 0/100 · You may retry";$("cmLabSubmit").disabled=false;submitted=false;
+  }
+ }
+ function init(){
+  labMarkup();
+  document.querySelectorAll('[data-mode="lab"]').forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("[data-mode]").forEach(x=>x.classList.toggle("cm-active",x===b));deleted=false;selected=null;submitted=false;$("cmLabFeedback").innerHTML="";$("cmLabSubmit").disabled=false;renderFiles();openLab(false);}));
+  document.addEventListener("click",e=>{if(!e.target.closest(".cm-context-menu")&&!e.target.closest(".cm-file")){const m=$("cmContextMount");if(m)m.innerHTML="";}});
+ }
+ const originalRender=renderQuestion;
+ renderQuestion=function(){
+  if(state.mode==="mock"&&state.index>=activeQuestions().length&&!state.mockLabDone){openLab(true);return;}
+  originalRender();
+ };
+ window.renderQuestion=renderQuestion;
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
 </script>
