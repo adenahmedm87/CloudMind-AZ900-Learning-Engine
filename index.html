@@ -43,7 +43,7 @@
  <div class="cm-modes">
   <button class="cm-mode" data-mode="beginner"><strong>🌱 Beginner path</strong><span>10 questions · untimed · learn step by step</span></button>
   <button class="cm-mode" data-mode="topic"><strong>🧭 Practice a topic</strong><span>Choose an exam domain, then a smaller topic</span></button>
-  <button class="cm-mode" data-mode="mock"><strong>⏱ Full mock exam</strong><span>All available questions · 35-minute timer</span></button>
+  <button class="cm-mode" data-mode="mock"><strong>⏱ Full mock exam</strong><span>All available questions · 45-minute timer</span></button>
   <button class="cm-mode" data-mode="unlimited"><strong>♾ Unlimited practice</strong><span>All questions · no countdown · practice at your pace</span></button>
  </div>
  <div id="cmTopicTree" class="cm-topic-tree"></div>
@@ -220,11 +220,11 @@ renderQuestion();
       }
     };
     const again=document.getElementById("againBtn");
-    if(again&&!again.dataset.cmBound){again.dataset.cmBound="1";again.addEventListener("click",()=>{state.sessionOrder=shuffleQuestions();state.timedMode=!!state.timedMode;state.timeLeft=35*60;persist();syncClock()})}
+    if(again&&!again.dataset.cmBound){again.dataset.cmBound="1";again.addEventListener("click",()=>{state.sessionOrder=shuffleQuestions();state.timedMode=!!state.timedMode;state.timeLeft=45*60;persist();syncClock()})}
     const reset=document.getElementById("resetBtn");
-    if(reset&&!reset.dataset.cmBound){reset.dataset.cmBound="1";reset.addEventListener("click",()=>{state.history=[];state.lastCompletedSignature="";state.sessionOrder=shuffleQuestions();state.timedMode=false;state.timeLeft=35*60;persist();syncClock()})}
+    if(reset&&!reset.dataset.cmBound){reset.dataset.cmBound="1";reset.addEventListener("click",()=>{state.history=[];state.lastCompletedSignature="";state.sessionOrder=shuffleQuestions();state.timedMode=false;state.timeLeft=45*60;persist();syncClock()})}
   };
-  function syncClock(){const c=document.getElementById("cmClock");if(c)c.textContent=state.timedMode?"Timed mock exam · 35-minute countdown":"Choose a practice path above";}
+  function syncClock(){const c=document.getElementById("cmClock");if(c)c.textContent=state.timedMode?"Timed mock exam · 45-minute countdown":"Choose a practice path above";}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
 </script>
@@ -257,9 +257,9 @@ renderQuestion();
  function matches(q,child){const text=(q.q+" "+q.options.join(" ")+" "+q.why+" "+q.example).toLowerCase();return child.words.some(w=>text.includes(w))}
  function resetSession(ids,mode,timed){
   state.answers={};state.confidence={};state.review=[];state.transferDone={};state.index=0;state.view="practice";state.mode=mode;
-  state.sessionOrder=ids&&ids.length?ids.slice():shuffleQuestions();state.timedMode=!!timed;state.timeLeft=35*60;state.lastCompletedSignature="";
+  state.sessionOrder=ids&&ids.length?ids.slice():shuffleQuestions();state.timedMode=!!timed;state.timeLeft=45*60;state.lastCompletedSignature="";
   persist();if($("nextBtn"))$("nextBtn").classList.remove("hidden");renderQuestion();syncClock();
-  const p=$("cmPathStatus");if(p)p.textContent=mode==="mock"?"Mock exam started: 35 minutes. Answer each question, then review your report.":mode==="beginner"?"Beginner path started: 10 questions, no timer. Read each explanation before moving on.":mode==="topic"?"Topic practice started. Focus on this selected topic and read the explanation after each answer.":"Unlimited practice started. No countdown—learn at your own pace.";
+  const p=$("cmPathStatus");if(p)p.textContent=mode==="mock"?"Mock exam started: 45 minutes. Answer each question, then review your report.":mode==="beginner"?"Beginner path started: 10 questions, no timer. Read each explanation before moving on.":mode==="topic"?"Topic practice started. Focus on this selected topic and read the explanation after each answer.":"Unlimited practice started. No countdown—learn at your own pace.";
   $("practice").scrollIntoView({behavior:"smooth",block:"start"});
  }
 
@@ -285,14 +285,15 @@ renderQuestion();
   }));
  }
  function shuffleQuestionsFrom(ids){return ids.slice().sort(()=>Math.random()-.5)}
+ function makeMockQuestionIds(){const pick=(topic,n)=>shuffleQuestionsFrom(questions.filter(q=>q.topic===topic).map(q=>q.id)).slice(0,n);return shuffleQuestionsFrom([...pick("Cloud concepts",10),...pick("Azure architecture",13),...pick("Management & governance",12)])}
  function init(){
   buildTree();
   document.querySelectorAll("[data-mode]").forEach(btn=>btn.addEventListener("click",()=>{
    document.querySelectorAll("[data-mode]").forEach(b=>b.classList.toggle("cm-active",b===btn));
    const mode=btn.dataset.mode;
    if(mode==="topic"){$("cmTopicTree").scrollIntoView({behavior:"smooth",block:"nearest"});$("cmPathStatus").textContent="Open an exam domain below, then choose one of its smaller topics.";return}
-   if(mode==="beginner"){const ids=questions.slice().sort((a,b)=>a.id-b.id).slice(0,10).map(q=>q.id);resetSession(ids,"beginner",false)}
-   if(mode==="mock")resetSession(shuffleQuestions(),"mock",true);
+   if(mode==="beginner"){const ids=[...questions.filter(q=>q.topic==="Cloud concepts").sort((a,b)=>a.id-b.id).slice(0,3),...questions.filter(q=>q.topic==="Azure architecture").sort((a,b)=>a.id-b.id).slice(0,4),...questions.filter(q=>q.topic==="Management & governance").sort((a,b)=>a.id-b.id).slice(0,3)].map(q=>q.id);resetSession(shuffleQuestionsFrom(ids),"beginner",false)}
+   if(mode==="mock")resetSession(makeMockQuestionIds(),"mock",true);
    if(mode==="unlimited")resetSession(shuffleQuestions(),"unlimited",false);
   }));
   const oldToggle=$("cmTimedToggle");
@@ -305,7 +306,7 @@ renderQuestion();
  function syncClock(){
   const b=$("cmTimedToggle"),c=$("cmClock");
   if(b)b.textContent="Timed practice: "+(state.timedMode?"ON":"OFF");
-  if(c)c.textContent=state.timedMode?"Timed · "+Math.floor((state.timeLeft||2100)/60)+":"+String((state.timeLeft||2100)%60).padStart(2,"0"):"Untimed · no countdown";
+  if(c)c.textContent=state.timedMode?"Timed · "+Math.floor((state.timeLeft||2700)/60)+":"+String((state.timeLeft||2100)%60).padStart(2,"0"):"Untimed · no countdown";
   if(cmTimer){clearInterval(cmTimer);cmTimer=null}
   if(state.timedMode&&state.view!=="done"){
    cmTimer=setInterval(()=>{state.timeLeft=Math.max(0,(state.timeLeft||2100)-1);persist();if(c)c.textContent="Timed · "+Math.floor(state.timeLeft/60)+":"+String(state.timeLeft%60).padStart(2,"0");if(state.timeLeft<=0){clearInterval(cmTimer);cmTimer=null;state.index=activeQuestions().length;state.view="done";persist();renderQuestion();showToast("Time is up. Review your learning report.")}},1000)
