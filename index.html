@@ -62,9 +62,10 @@
  <div class="cm-modes">
   <button class="cm-mode" data-mode="beginner"><strong>🌱 Beginner path</strong><span>10 questions · untimed · learn step by step</span></button>
   <button class="cm-mode" data-mode="topic"><strong>🧭 Practice a topic</strong><span>Choose an exam domain, then a smaller topic</span></button>
-  <button class="cm-mode" data-mode="mock"><strong>⏱ Full mock exam</strong><span>35 mixed questions · all exam domains · 45-minute timer</span></button>
+  <button class="cm-mode" data-mode="mock"><strong>⏱ Full mock exam</strong><span>35 mixed questions + practical desktop task · 45-minute timer</span></button>
   <button class="cm-mode" data-mode="unlimited"><strong>♾ Unlimited practice</strong><span>All questions · no countdown · practice at your pace</span></button>
   <button class="cm-mode" data-mode="lab"><strong>🖱️ Interactive desktop lab</strong><span>Complete a simulated task using clickable desktop controls, then submit for a grade</span></button>
+  <button class="cm-mode" data-mode="azurelab"><strong>☁️ Azure portal lab</strong><span>Create and configure a resource group in a simulated Azure portal</span></button>
  </div>
  <div id="cmTopicTree" class="cm-topic-tree"></div>
  <p id="cmPathStatus" class="sub" style="margin-top:12px">Choose a path above to begin. Your answers and explanations appear one question at a time.</p>
@@ -410,4 +411,33 @@ renderQuestion();
 })();
 </script>
 
-</body></html>
+<script>
+(function(){
+ const $=id=>document.getElementById(id);
+ function setup(){
+  if(!$("cmAzureLab")){
+   const host=document.createElement("section");host.id="cmAzureLab";host.className="hidden";host.style.marginBottom="20px";
+   host.innerHTML='<div class="cm-lab-shell"><header class="cm-lab-head"><div><div class="kicker">Hands-on learning · Azure portal simulation</div><h3>Task: create a resource group</h3><p>Configure a resource group using the simulated portal. This is a training environment; it does not connect to a real Azure subscription.</p></div><button class="btn small ghost" id="cmAzureExit">Back to practice</button></header><div class="cm-lab-body"><div class="cm-lab-instructions"><div class="cm-lab-step">1</div><div><strong>Scenario</strong><span>Create a resource group named <b>rg-cloudmind-practice</b> in <b>East US</b>, under the <b>Azure for Students</b> subscription, and set the Environment tag to <b>Training</b>. Review your settings, then submit for grading.</span></div></div><div class="cm-desktop" style="background:#f5f7fb;color:#18243a"><div class="cm-desktop-bar" style="background:#e4eaf3;color:#24344e"><i class="cm-dot"></i><i class="cm-dot"></i><i class="cm-dot"></i><span style="margin-left:5px">Microsoft Azure · simulated portal</span></div><div style="display:grid;grid-template-columns:minmax(115px, .6fr) 2fr;min-height:330px"><nav style="padding:14px;background:#eaf0f7;border-right:1px solid #cbd5e1;font-size:12px;color:#334155"><b>Azure services</b><p>⌂ Home</p><p>▦ Resource groups</p><p>◈ Virtual machines</p><p>▤ Storage accounts</p><p>⌘ Virtual networks</p></nav><div style="padding:20px;min-width:0"><div style="font-size:11px;color:#53657e">Home › Resource groups › Create</div><h3 style="color:#17243a;margin:7px 0 15px">Create a resource group</h3><div style="display:grid;gap:13px;max-width:560px"><label style="display:grid;gap:5px;font-size:12px;color:#34445b">Subscription<select id="azSub" style="padding:10px;border:1px solid #aebdd0;border-radius:7px;background:white;color:#18243a"><option value="">Select subscription</option><option>Azure for Students</option><option>Pay-As-You-Go</option></select></label><label style="display:grid;gap:5px;font-size:12px;color:#34445b">Resource group name<input id="azName" placeholder="Enter a resource group name" style="padding:10px;border:1px solid #aebdd0;border-radius:7px;background:white;color:#18243a"></label><label style="display:grid;gap:5px;font-size:12px;color:#34445b">Region<select id="azRegion" style="padding:10px;border:1px solid #aebdd0;border-radius:7px;background:white;color:#18243a"><option value="">Select region</option><option>East US</option><option>West Europe</option><option>South Africa North</option></select></label><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><label style="display:grid;gap:5px;font-size:12px;color:#34445b">Tag name<input id="azTagName" placeholder="e.g. Environment" style="padding:10px;border:1px solid #aebdd0;border-radius:7px;background:white;color:#18243a"></label><label style="display:grid;gap:5px;font-size:12px;color:#34445b">Tag value<input id="azTagValue" placeholder="e.g. Training" style="padding:10px;border:1px solid #aebdd0;border-radius:7px;background:white;color:#18243a"></label></div><div id="azReview" class="hidden" style="padding:12px;border:1px solid #aebdd0;border-radius:8px;background:white;color:#24344e;font-size:12px"></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" id="azReviewBtn" style="background:#e3ebf6;color:#1c2d46">Review + create</button><button class="btn small primary" id="azSubmit" disabled>Submit for grading</button></div></div></div></div></div><div class="cm-lab-actions"><span class="muted" id="azStatus">Configure the settings, then select Review + create.</span></div><div id="azFeedback" aria-live="polite"></div></div></div>';
+   $("cmPathway").parentNode.insertBefore(host,$("cmPathway").nextSibling);
+  }
+  $("cmAzureExit").addEventListener("click",()=>{ $("cmAzureLab").classList.add("hidden");document.querySelector(".layout").classList.remove("hidden");$("cmPathway").scrollIntoView({behavior:"smooth",block:"start"});});
+  $("azReviewBtn").addEventListener("click",()=>{
+   const sub=$("azSub").value,name=$("azName").value.trim(),region=$("azRegion").value,tn=$("azTagName").value.trim(),tv=$("azTagValue").value.trim();
+   const review=$("azReview");review.classList.remove("hidden");review.innerHTML='<strong>Review your configuration</strong><p>Subscription: '+(sub||"Not selected")+'</p><p>Resource group: '+(name||"Not entered")+'</p><p>Region: '+(region||"Not selected")+'</p><p>Tag: '+(tn||"Not entered")+' = '+(tv||"Not entered")+'</p>';
+   $("azSubmit").disabled=false;$("azStatus").textContent="Configuration review ready. Submit when you want your work graded.";$("azFeedback").innerHTML="";
+  });
+  $("azSubmit").addEventListener("click",()=>{
+   const ok=$("azSub").value==="Azure for Students"&&$("azName").value.trim()==="rg-cloudmind-practice"&&$("azRegion").value==="East US"&&$("azTagName").value.trim().toLowerCase()==="environment"&&$("azTagValue").value.trim().toLowerCase()==="training";
+   $("azFeedback").innerHTML=ok?'<div class="cm-lab-feedback"><strong>✓ Correct · 100/100</strong><br>You selected the required subscription and region, named the resource group correctly, and applied the Environment=Training tag.</div>':'<div class="cm-lab-feedback bad"><strong>Submission graded · Review your configuration</strong><br>One or more settings do not match the scenario requirements. Update your selections and submit again.</div>';
+   $("azStatus").textContent=ok?"Graded · 100/100":"Graded · Try again";$("azSubmit").disabled=ok;
+  });
+  document.querySelectorAll('[data-mode="azurelab"]').forEach(b=>b.addEventListener("click",()=>{
+   document.querySelectorAll("[data-mode]").forEach(x=>x.classList.toggle("cm-active",x===b));
+   document.querySelector(".layout").classList.add("hidden");$("cmInteractiveLab").classList.add("hidden");$("cmAzureLab").classList.remove("hidden");
+   $("azSub").value="";$("azName").value="";$("azRegion").value="";$("azTagName").value="";$("azTagValue").value="";$("azReview").classList.add("hidden");$("azSubmit").disabled=true;$("azFeedback").innerHTML="";$("azStatus").textContent="Configure the settings, then select Review + create.";
+   $("cmAzureLab").scrollIntoView({behavior:"smooth",block:"start"});
+  }));
+ }
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",setup);else setup();
+})();
+</script></body></html>
