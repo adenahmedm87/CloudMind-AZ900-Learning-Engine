@@ -361,6 +361,44 @@ body.cm-guide #cmStudentGuide{display:block!important}
 @media(max-width:780px){.cm-guide-hero{grid-template-columns:1fr}.cm-guide-illustration{max-width:350px;margin:auto}.cm-guide-step-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.cm-guide-level-layout{grid-template-columns:150px minmax(0,1fr);gap:15px}.cm-guide-week{grid-template-columns:repeat(2,minmax(0,1fr))}.cm-guide-jump{position:static}}
 @media(max-width:540px){.cm-dashboard-guide-link{align-items:flex-start;padding:12px}.cm-dashboard-guide-link strong{font-size:12px}.cm-guide-hero{padding:19px}.cm-guide-hero-actions{display:grid}.cm-guide-hero-actions .btn{width:100%}.cm-guide-section{padding:16px}.cm-guide-section-head{gap:10px}.cm-guide-number{flex-basis:35px;height:35px}.cm-guide-step-grid{grid-template-columns:1fr}.cm-guide-level-layout{grid-template-columns:1fr}.cm-guide-level-art{min-height:145px}.cm-guide-level-art svg{width:105px}.cm-guide-week{grid-template-columns:1fr 1fr}.cm-guide-jump{gap:6px}.cm-guide-jump-label{width:100%}.cm-guide-jump a{font-size:10px;padding:6px 8px}}
 @media(prefers-reduced-motion:reduce){.cm-dashboard-guide-link{transition:none}}
+
+/* Landing-page guide entry and print-ready student handbook */
+.cm-landing-guide-link{display:inline-flex;align-items:center;justify-content:center;gap:7px;text-decoration:none}
+#cmGuidePrint{cursor:pointer}
+@media print{
+ @page{size:A4;margin:16mm 15mm}
+ html,body{background:#fff!important;color:#172033!important;font-size:10pt!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ body.cm-guide *{visibility:visible!important;box-shadow:none!important;text-shadow:none!important}
+ body.cm-guide .shell,body.cm-guide .topbar{display:block!important}
+ body.cm-guide .topbar,body.cm-guide .cm-side-nav,body.cm-guide nav,body.cm-guide .cm-guide-hero-actions,body.cm-guide .cm-guide-bottom-actions,body.cm-guide .cm-guide-illustration,body.cm-guide .footer{display:none!important}
+ body.cm-guide .cm-student-guide{display:block!important;max-width:none!important;margin:0!important;padding:0!important}
+ body.cm-guide .cm-guide-hero{display:block!important;padding:0 0 12mm!important;border:0!important;border-bottom:2px solid #38bdf8!important;border-radius:0!important;background:#fff!important;color:#172033!important}
+ body.cm-guide .cm-guide-hero h1{font-size:27pt!important;color:#172033!important;margin:5mm 0!important}
+ body.cm-guide .cm-guide-hero p{font-size:10pt!important;color:#39465a!important;max-width:none!important}
+ body.cm-guide .cm-guide-hero .kicker{color:#0369a1!important}
+ body.cm-guide .cm-guide-jump{position:static!important;display:block!important;margin:7mm 0!important;padding:0!important;border:0!important;background:#fff!important}
+ body.cm-guide .cm-guide-jump-label{display:block!important;color:#475569!important;margin-bottom:3mm}
+ body.cm-guide .cm-guide-jump a{display:inline-block!important;margin:0 2mm 2mm 0!important;padding:2mm 3mm!important;border:1px solid #cbd5e1!important;border-radius:4px!important;background:#f1f5f9!important;color:#0f172a!important;font-size:8pt!important}
+ body.cm-guide .cm-guide-section{break-inside:auto!important;page-break-inside:auto!important;margin:0 0 7mm!important;padding:0 0 5mm!important;border:0!important;border-bottom:1px solid #cbd5e1!important;border-radius:0!important;background:#fff!important;color:#172033!important}
+ body.cm-guide .cm-guide-section-head{break-after:avoid!important;page-break-after:avoid!important;margin-bottom:4mm!important}
+ body.cm-guide .cm-guide-number{background:#e0f2fe!important;border-color:#bae6fd!important;color:#0369a1!important}
+ body.cm-guide .cm-guide-section h2,body.cm-guide .cm-guide-section h3,body.cm-guide .cm-guide-step h3{color:#0f172a!important}
+ body.cm-guide .cm-guide-section .sub,body.cm-guide .cm-guide-level-content p,body.cm-guide .cm-guide-level-content ul,body.cm-guide .cm-guide-step p,body.cm-guide .cm-guide-week p,body.cm-guide .cm-guide-disclaimer{color:#334155!important}
+ body.cm-guide .cm-guide-step-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.cm-guide .cm-guide-step,body.cm-guide .cm-guide-level-art,body.cm-guide .cm-guide-week article,body.cm-guide .cm-guide-source-list>a{break-inside:avoid!important;page-break-inside:avoid!important;background:#f8fafc!important;border:1px solid #cbd5e1!important;color:#172033!important}
+ body.cm-guide .cm-guide-level-layout{grid-template-columns:35mm minmax(0,1fr)!important;gap:6mm!important;break-inside:avoid!important}
+ body.cm-guide .cm-guide-level-art{min-height:35mm!important}
+ body.cm-guide .cm-guide-level-art strong,body.cm-guide .cm-guide-source-list strong,body.cm-guide .cm-guide-week strong{color:#172033!important}
+ body.cm-guide .cm-guide-tip,body.cm-guide .cm-guide-callout{background:#eff6ff!important;border-color:#93c5fd!important;color:#172033!important}
+ body.cm-guide .cm-guide-tip strong,body.cm-guide .cm-guide-callout strong{color:#0f172a!important}
+ body.cm-guide .cm-guide-callout ol{color:#334155!important}
+ body.cm-guide .cm-guide-source-list small{color:#475569!important}
+ body.cm-guide .cm-guide-source-icon{background:#e0f2fe!important;color:#0369a1!important}
+ body.cm-guide .cm-guide-week{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.cm-guide a{color:#075985!important;text-decoration:none!important}
+ body.cm-guide a[href^="https://learn.microsoft.com"]::after{content:" (" attr(href) ")";font-size:7pt;overflow-wrap:anywhere}
+ body.cm-guide .cm-guide-disclaimer{margin-top:4mm!important}
+}
 </style>
 </head>
 <body class="cm-cover">
@@ -394,7 +432,7 @@ body.cm-guide #cmStudentGuide{display:block!important}
    <div class="kicker">CLOUDMIND STUDENT HANDBOOK</div>
    <h1 id="cmStudentGuideTitle">Your AZ-900 learning roadmap</h1>
    <p>Start with the basics, build real understanding, then practise exam-style decisions. This guide shows you how to use CloudMind, what to study at each level, and how to verify facts using trusted sources.</p>
-   <div class="cm-guide-hero-actions"><a class="btn primary" href="#cm-guide-beginner">Start with beginner</a><a class="btn ghost" href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-900" target="_blank" rel="noopener noreferrer">Official AZ-900 study guide ↗</a></div>
+   <div class="cm-guide-hero-actions"><a class="btn primary" href="#cm-guide-beginner">Start with beginner</a><a class="btn ghost" href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-900" target="_blank" rel="noopener noreferrer">Official AZ-900 study guide ↗</a><button class="btn ghost" type="button" id="cmGuidePrint">Print / Save as PDF</button></div>
   </div>
   <div class="cm-guide-illustration" role="img" aria-label="Illustration of a learner progressing through three learning levels">
    <svg viewBox="0 0 320 230" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -456,7 +494,7 @@ body.cm-guide #cmStudentGuide{display:block!important}
   <div class="cm-guide-bottom-actions"><button class="btn primary" type="button" data-cm-nav="practice">Go to Practice Room</button><button class="btn ghost" type="button" data-cm-nav="dashboard">Back to Dashboard</button></div>
  </section>
 </section>
-<section class="hero"><div><div class="eyebrow">Learn beyond the score</div><h1>Learn why. <span class="gradient">Prove it.</span><br>Remember it.</h1><p>Practice Azure fundamentals, rate how confident you feel, and uncover the misconceptions hiding behind your answers. Your next study step should be smarter than “try again.”</p><div class="actions"><button class="btn primary" id="startBtn">Explore practice options ↗</button><button class="btn ghost" id="howBtn">How it works ↓</button></div></div><div class="hero-card"><div class="orb">✳</div><h3>Confidence is a learning signal.</h3><p>A correct guess and a confident misconception need different next steps. CloudMind uses both answer accuracy and self-reported confidence to guide review.</p><div class="signal"><div><b>01 · Answer</b><span>Choose an option</span></div><div><b>02 · Reflect</b><span>Rate confidence</span></div><div><b>03 · Understand</b><span>Explore the why</span></div><div><b>04 · Revisit</b><span>Track learning</span></div></div></div></section>
+<section class="hero"><div><div class="eyebrow">Learn beyond the score</div><h1>Learn why. <span class="gradient">Prove it.</span><br>Remember it.</h1><p>Practice Azure fundamentals, rate how confident you feel, and uncover the misconceptions hiding behind your answers. Your next study step should be smarter than “try again.”</p><div class="actions"><button class="btn primary" id="startBtn">Explore practice options ↗</button><button class="btn ghost" id="howBtn">How it works ↓</button><a class="btn ghost cm-landing-guide-link" href="#cmStudentGuide" data-cm-open-guide>▤ Student guide</a></div></div><div class="hero-card"><div class="orb">✳</div><h3>Confidence is a learning signal.</h3><p>A correct guess and a confident misconception need different next steps. CloudMind uses both answer accuracy and self-reported confidence to guide review.</p><div class="signal"><div><b>01 · Answer</b><span>Choose an option</span></div><div><b>02 · Reflect</b><span>Rate confidence</span></div><div><b>03 · Understand</b><span>Explore the why</span></div><div><b>04 · Revisit</b><span>Track learning</span></div></div></div></section>
 <section class="stats" aria-label="Your learning statistics"><div class="stat"><div class="label">Questions answered</div><div class="value" id="statAnswered">0</div><div class="hint">Practice attempts</div></div><div class="stat"><div class="label">Accuracy</div><div class="value" id="statAccuracy">—</div><div class="hint">Correct answers / answered</div></div><div class="stat"><div class="label">Misconceptions found</div><div class="value" id="statMis">0</div><div class="hint">Wrong + very confident</div></div><div class="stat"><div class="label">Review queue</div><div class="value" id="statReview">0</div><div class="hint">Topics to revisit</div></div></section>
 
 <section class="mini-panel cm-dashboard-home" id="cmPathway">
@@ -1001,6 +1039,7 @@ renderQuestion();
   setActive(name);
  }
  document.querySelectorAll("[data-cm-open-guide]").forEach(link=>link.addEventListener("click",event=>{event.preventDefault();go("guide");}));
+ document.getElementById("cmGuidePrint")?.addEventListener("click",()=>window.print());
  document.querySelectorAll("#cmStudentGuide [data-cm-nav]").forEach(button=>button.addEventListener("click",()=>go(button.dataset.cmNav)));
  links.forEach(link=>link.addEventListener("click",()=>go(link.dataset.cmNav)));
  window.addEventListener("pageshow",()=>{if(body.classList.contains("cm-guide"))setActive("guide");else if(body.classList.contains("cm-practice"))setActive("practice");else if(body.classList.contains("cm-dashboard"))setActive("dashboard");else setActive("dashboard");});
