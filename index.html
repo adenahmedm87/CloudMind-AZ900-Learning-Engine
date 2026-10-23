@@ -817,7 +817,7 @@ renderQuestion();
  function showPractice(){screen("practice");document.querySelector(".layout")?.classList.remove("hidden");document.getElementById("practice")?.scrollIntoView({behavior:"smooth",block:"start"});}
  document.getElementById("startBtn")?.addEventListener("click",function(){showDashboard();});
  document.getElementById("howBtn")?.addEventListener("click",function(){showDashboard("how");});
- document.getElementById("cmGuideBackDashboard")?.addEventListener("click",function(){showDashboard();const welcome=document.querySelector(".cm-dashboard-welcome");welcome?.scrollIntoView({behavior:"smooth",block:"start"});});
+ document.getElementById("cmGuideBackDashboard")?.addEventListener("click",function(){const dashboardNav=document.querySelector('[data-cm-nav="dashboard"]');if(dashboardNav){dashboardNav.click();}else{showDashboard();document.getElementById("cmPathway")?.classList.remove("hidden");document.querySelector(".layout")?.classList.add("hidden");}const welcome=document.querySelector(".cm-dashboard-welcome");welcome?.scrollIntoView({behavior:"smooth",block:"start"});});
  document.addEventListener("click",function(e){
   const mode=e.target.closest("[data-mode]");
   if(mode){
