@@ -6,11 +6,12 @@
 
 ## Question-bank changes
 
-The review replaced 11 selected questions in place. IDs, total question count, and the existing visual-question IDs (2, 4, and 5) are preserved.
+The initial review replaced 11 selected questions in place. Subsequent targeted passes revised Question 8, clarified Question 31 wording, and replaced duplicate Question 94. IDs, total question count, and the existing visual-question IDs (2, 4, and 5) are preserved.
 
 | ID | Review action | Current objective |
 |---:|---|---|
 | 6 | Replaced an off-outline database-service recall item with a practical VM deployment question | Resources required for Azure virtual machines |
+| 8 | Replaced an outdated duplicate cost-tool scenario with a question on cost drivers | Factors affecting Azure costs |
 | 26 | Replaced an SLA recall item that is not explicitly listed in the current skills outline | Cloud security and governance benefits |
 | 29 | Replaced a database-service recall item with a comparison of VMs, containers, and functions | Compare containers, virtual machines, and functions |
 | 38 | Replaced a repeated Key Vault item with a current identity objective | Microsoft Entra Domain Services |
@@ -20,6 +21,7 @@ The review replaced 11 selected questions in place. IDs, total question count, a
 | 67 | Replaced a repeated Functions item with a listed storage tool | Azure Storage Explorer |
 | 68 | Replaced a repeated availability-zone definition with a distinct infrastructure concept | Azure datacenters |
 | 86 | Replaced a repeated Key Vault item with a current authentication objective | Passwordless authentication |
+| 94 | Replaced a duplicate public-cloud definition with a TCO comparison scenario | Total Cost of Ownership (TCO) calculator |
 | 100 | Replaced a data-pipeline item with the broader deployment concept named in the current outline | Infrastructure as code (IaC) |
 
 The review also corrected topic-domain labels where identity/access/security content was incorrectly classified under Management & governance, and moved Azure Monitor and Azure Resource Manager topics to Management & governance. The existing question-bank schema validator now also checks that every option is a non-empty string and that answer options are unique.
@@ -45,7 +47,7 @@ CloudMind's mock selector explicitly samples 10 Cloud concepts, 13 Azure archite
 
 ## Validation and remaining limits
 
-Automated validation checks the expected count (103), sequential unique IDs, required fields, answer-index bounds, non-empty options, and duplicate options. The GitHub Actions workflow is the repeatable structural gate.
+Automated validation checks the expected count (103), sequential unique IDs, required fields, answer-index bounds, non-empty options, and duplicate options. It also compiles each inline JavaScript block and guards against the session-history filter mutating the active mode. The GitHub Actions workflow is the repeatable structural gate.
 
 Structural validation cannot establish that every technical statement, distractor, rationale, or example is factually perfect. The review corrected the selected items above and checked the bank against the current objective list, but the remaining content still merits ongoing source-by-source fact verification. No live-browser regression test was run by this source-level review.
 
@@ -59,6 +61,8 @@ A focused follow-up compared cost-tool terminology and WAF wording with the curr
 The other reviewed examples in this pass retained their answers with appropriate qualifications: VM deallocation may stop compute charges while related storage remains billable; private endpoints provide private network access but do not grant authorization by themselves; and region pairing does not automatically configure disaster recovery for every workload. These details are reflected in the relevant explanations and traps.
 
 This is a targeted correction pass, not a claim that every explanation has been independently verified against a dedicated Microsoft Learn page. The manual regression checklist below remains outstanding until exercised in a browser.
+
+- **Question 94:** Replaced a duplicate public-cloud definition (already covered by Question 11) with a Total Cost of Ownership (TCO) calculator scenario. Question 8 now tests factors affecting Azure costs, so both cost objectives are covered separately. The Microsoft AZ-900 outline and Microsoft Learn learning resources distinguish estimating Azure usage with the Pricing Calculator from comparing on-premises and Azure costs with TCO-oriented tools. References: [current AZ-900 study guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-900), [Azure pricing calculator](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/pricing-calculator), and [Azure Migrate business case / TCO](https://learn.microsoft.com/en-us/azure/migrate/how-to-build-a-business-case).
 
 ## Manual regression checklist
 
