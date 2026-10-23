@@ -248,6 +248,31 @@ body.cm-dashboard #cmPathway{padding:clamp(18px,2.3vw,30px);margin:0 0 22px!impo
  .cm-practice-heading h3{font-size:18px}
 }
 
+
+/* Navigation/content separation: one guide, dedicated practice shortcuts, dedicated labs page */
+.cm-practice-subnav{display:grid;gap:3px;margin:1px 0 8px 34px;padding-left:10px;border-left:1px solid #344761}
+.cm-side-sublink{width:100%;text-align:left;padding:8px 10px;border:1px solid transparent;border-radius:8px;background:transparent;color:#9eafc9;font:600 12px/1.35 inherit;cursor:pointer}
+.cm-side-sublink:hover,.cm-side-sublink:focus-visible{color:#7ce4dc;background:#1a2a45;border-color:#2e5c70;outline-offset:2px}
+.cm-side-sublink[aria-current="page"]{color:#7ce4dc;background:#1b354d;border-color:#2e5c70}
+body.cm-dashboard .cm-labs-accordion{display:none!important}
+body.cm-labview .hero,body.cm-labview .stats,body.cm-labview .layout{display:none!important}
+body.cm-labview #cmPathway{display:block!important;margin-top:18px}
+body.cm-labview #cmPathway>.cm-dashboard-welcome,
+body.cm-labview #cmHowItWorks,
+body.cm-labview .cm-practice-heading,
+body.cm-labview .cm-core-modes,
+body.cm-labview #cmTopicTree,
+body.cm-labview #cmPathStatus{display:none!important}
+body.cm-labview .cm-labs-accordion{display:block!important;margin:0}
+body.cm-labview .cm-labs-accordion>summary{display:none}
+body.cm-labview .cm-labs-accordion .cm-lab-modes{display:grid!important}
+body:not(.cm-topic-mode) #cmTopicTree{display:none!important}
+@media(max-width:680px){
+ .cm-practice-subnav{display:flex;gap:4px;overflow-x:auto;margin:5px 0 7px;padding:0 0 4px;border-left:0}
+ .cm-side-sublink{flex:0 0 auto;width:auto;white-space:nowrap;padding:7px 9px;font-size:10px}
+ body.cm-labview .shell{padding-top:112px}
+}
+
 </style>
 </head>
 <body class="cm-cover">
@@ -257,6 +282,12 @@ body.cm-dashboard #cmPathway{padding:clamp(18px,2.3vw,30px);margin:0 0 22px!impo
  <div class="cm-side-label">Learning workspace</div>
  <div class="cm-side-nav">
   <button class="cm-side-link active" data-cm-nav="dashboard"><span class="cm-nav-icon">▦</span> Dashboard</button>
+  <div class="cm-practice-subnav" aria-label="Direct practice shortcuts">
+   <button class="cm-side-sublink" data-cm-direct-mode="beginner">Beginner practice</button>
+   <button class="cm-side-sublink" data-cm-direct-mode="topic">Topic practice</button>
+   <button class="cm-side-sublink" data-cm-direct-mode="mock">Mock exam</button>
+   <button class="cm-side-sublink" data-cm-direct-mode="unlimited">Unlimited practice</button>
+  </div>
   <button class="cm-side-link" data-cm-nav="practice"><span class="cm-nav-icon">✎</span> Practice room</button>
   <button class="cm-side-link" data-cm-nav="review"><span class="cm-nav-icon">↻</span> Smart review</button>
   <button class="cm-side-link" data-cm-nav="labs"><span class="cm-nav-icon">⌘</span> Hands-on labs</button>
@@ -778,8 +809,11 @@ renderQuestion();
    document.querySelector(".layout")?.classList.remove("hidden");
    document.getElementById("reviewQueue")?.closest(".mini-panel")?.scrollIntoView({behavior:"smooth",block:"start"});
   }else if(name==="labs"){
-   body.classList.remove("cm-practice","cm-labview");body.classList.add("cm-dashboard");
-   document.querySelector(".layout")?.classList.remove("hidden");
+   body.classList.remove("cm-practice","cm-dashboard","cm-cover");body.classList.add("cm-labview");
+   document.querySelector(".layout")?.classList.add("hidden");
+   document.getElementById("cmInteractiveLab")?.classList.add("hidden");
+   document.getElementById("cmAzureLab")?.classList.add("hidden");
+   document.getElementById("cmScenarioLab")?.classList.add("hidden");
    const details=document.querySelector(".cm-labs-accordion");if(details)details.open=true;
    document.getElementById("cmPathway")?.scrollIntoView({behavior:"smooth",block:"start"});
   }else if(name==="progress"){
@@ -803,6 +837,48 @@ renderQuestion();
   if(review)review.click();
   else document.querySelector('[data-cm-nav="review"]')?.click();
  });
+})();
+</script>
+
+
+<script>
+/* Direct practice navigation and topic-only concept map. */
+(function(){
+ const body=document.body;
+ const shortcuts=[...document.querySelectorAll("[data-cm-direct-mode]")];
+ function activateShortcut(mode){
+  const target=document.querySelector('[data-mode="'+mode+'"]');
+  if(!target)return;
+  body.classList.remove("cm-cover","cm-dashboard","cm-labview");
+  body.classList.add("cm-practice");
+  body.classList.toggle("cm-topic-mode",mode==="topic");
+  document.querySelectorAll("[data-cm-direct-mode]").forEach(b=>{
+   if(b.dataset.cmDirectMode===mode)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");
+  });
+  document.querySelectorAll("[data-cm-nav]").forEach(b=>{
+   const active=b.dataset.cmNav==="practice";
+   b.classList.toggle("active",active);
+   if(active)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");
+  });
+  target.click();
+ }
+ shortcuts.forEach(b=>b.addEventListener("click",()=>activateShortcut(b.dataset.cmDirectMode)));
+ document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>{
+  const mode=b.dataset.mode;
+  body.classList.toggle("cm-topic-mode",mode==="topic");
+  shortcuts.forEach(link=>{
+   if(link.dataset.cmDirectMode===mode)link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");
+  });
+ }));
+ document.querySelectorAll("[data-cm-nav]").forEach(b=>b.addEventListener("click",()=>{
+  if(b.dataset.cmNav==="dashboard"){
+   body.classList.remove("cm-topic-mode");
+   shortcuts.forEach(link=>link.removeAttribute("aria-current"));
+  }else if(b.dataset.cmNav==="labs"||b.dataset.cmNav==="review"||b.dataset.cmNav==="progress"){
+   body.classList.remove("cm-topic-mode");
+   shortcuts.forEach(link=>link.removeAttribute("aria-current"));
+  }
+ }));
 })();
 </script>
 
