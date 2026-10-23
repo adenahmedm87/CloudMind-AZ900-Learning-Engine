@@ -47,7 +47,7 @@ CloudMind's mock selector explicitly samples 10 Cloud concepts, 13 Azure archite
 
 ## Validation and remaining limits
 
-Automated validation checks the expected count (103), sequential unique IDs, required fields, answer-index bounds, non-empty options, and duplicate options. It also compiles each inline JavaScript block and guards against the session-history filter mutating the active mode. The GitHub Actions workflow is the repeatable structural gate.
+Automated validation checks the expected count (103), sequential unique IDs, required fields, answer-index bounds, non-empty options, duplicate options, duplicate normalized question stems, and topic-domain labels against the three AZ-900 domains. It also compiles each inline JavaScript block and guards against the session-history filter mutating the active mode. The GitHub Actions workflow is the repeatable structural gate.
 
 Structural validation cannot establish that every technical statement, distractor, rationale, or example is factually perfect. The review corrected the selected items above and checked the bank against the current objective list, but the remaining content still merits ongoing source-by-source fact verification. No live-browser regression test was run by this source-level review.
 
@@ -78,3 +78,12 @@ This is a targeted correction pass, not a claim that every explanation has been 
 - [ ] While a session is in progress, change the session-history filter and confirm the active practice mode and mock-exam flow remain unchanged.
 - [ ] Refresh mid-session; confirm saved state resumes in the same browser.
 - [ ] Confirm the existing visual questions at IDs 2, 4, and 5 still render.
+
+
+## Third-pass wording and regression guards (2026-10-23)
+
+- **Question 26:** Reworded the cloud security/governance benefit scenario to state the shared-responsibility boundary explicitly, reducing the risk that learners infer the cloud provider removes all customer responsibility.
+- **Question 52:** Reworded the consumption-based pricing item to ask for a pricing model rather than incorrectly classifying consumption-based pricing as a cloud benefit.
+- **Validator:** Added checks for duplicate question stems after case/punctuation normalization and for topic labels outside the three published AZ-900 skill domains. These guards help prevent future bank drift and accidental duplicate items.
+
+The official Microsoft study guide lists security/governance as cloud-service benefits and consumption-based pricing as a separate cloud-computing objective: [AZ-900 study guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-900). This is a focused wording and regression-guard pass, not a claim that every question explanation has now been independently verified.
