@@ -27,6 +27,25 @@ assert.ok(sidebarEnd > sidebarStart, "Could not find renderSidebar boundary");
 const sidebarSource = html.slice(sidebarStart, sidebarEnd);
 assert.match(sidebarSource, /selectedHistory/, "History filter should have separate display state");
 assert.doesNotMatch(sidebarSource, /state\.mode\s*=/, "History filter must not mutate the active session mode");
+
+// Guard the mock results transition and mode-aware restart path against regressions.
+const restartStart = html.indexOf("window.cmRestartPracticeMode=function");
+assert.notEqual(restartStart, -1, "Expected a mode-aware practice restart helper");
+const restartEnd = html.indexOf("function init(){", restartStart);
+assert.ok(restartEnd > restartStart, "Could not find restart helper boundary");
+const restartSource = html.slice(restartStart, restartEnd);
+assert.match(restartSource, /mode==="mock"\)\{resetSession\(makeMockQuestionIds\(\),"mock",true\)/, "Mock restart must use the 35-question selector and timed mode");
+assert.match(restartSource, /mode==="beginner"/, "Restart helper must preserve beginner mode");
+assert.match(restartSource, /mode==="topic"/, "Restart helper must preserve topic mode");
+
+const mockCompletionStart = html.indexOf('if(state.mode==="mock"){state.mockLabDone=true;state.view="done";');
+assert.notEqual(mockCompletionStart, -1, "Could not find mock practical completion handler");
+const mockCompletionSource = html.slice(mockCompletionStart, mockCompletionStart + 900);
+const leaveLabView = mockCompletionSource.indexOf('classList.remove("cm-labview"');
+const enterPracticeView = mockCompletionSource.indexOf('classList.add("cm-practice"');
+const renderResults = mockCompletionSource.indexOf("baseRenderQuestion()");
+assert.ok(leaveLabView >= 0 && enterPracticeView > leaveLabView && renderResults > enterPracticeView, "Mock completion must restore the practice layout before rendering results");
+
 const declaration = html.indexOf("const questions=[");
 assert.notEqual(declaration, -1, "Could not find const questions=[ in index.html");
 const open = html.indexOf("[", declaration);
