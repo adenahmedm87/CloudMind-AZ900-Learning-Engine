@@ -306,10 +306,10 @@ renderQuestion();
  function syncClock(){
   const b=$("cmTimedToggle"),c=$("cmClock");
   if(b)b.textContent="Timed practice: "+(state.timedMode?"ON":"OFF");
-  if(c)c.textContent=state.timedMode?"Timed · "+Math.floor((state.timeLeft||2700)/60)+":"+String((state.timeLeft||2100)%60).padStart(2,"0"):"Untimed · no countdown";
+  if(c)c.textContent=state.timedMode?"Timed · "+Math.floor((state.timeLeft||2700)/60)+":"+String((state.timeLeft||2700)%60).padStart(2,"0"):"Untimed · no countdown";
   if(cmTimer){clearInterval(cmTimer);cmTimer=null}
   if(state.timedMode&&state.view!=="done"){
-   cmTimer=setInterval(()=>{state.timeLeft=Math.max(0,(state.timeLeft||2100)-1);persist();if(c)c.textContent="Timed · "+Math.floor(state.timeLeft/60)+":"+String(state.timeLeft%60).padStart(2,"0");if(state.timeLeft<=0){clearInterval(cmTimer);cmTimer=null;state.index=activeQuestions().length;state.view="done";persist();renderQuestion();showToast("Time is up. Review your learning report.")}},1000)
+   cmTimer=setInterval(()=>{state.timeLeft=Math.max(0,(state.timeLeft||2700)-1);persist();if(c)c.textContent="Timed · "+Math.floor(state.timeLeft/60)+":"+String(state.timeLeft%60).padStart(2,"0");if(state.timeLeft<=0){clearInterval(cmTimer);cmTimer=null;state.index=activeQuestions().length;state.view="done";persist();renderQuestion();showToast("Time is up. Review your learning report.")}},1000)
   }
  }
  window.cmSyncClock=syncClock;
