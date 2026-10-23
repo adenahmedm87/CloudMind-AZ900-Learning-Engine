@@ -93,3 +93,36 @@ test("a refreshed mock at the practical-task stage restores the lab and reaches 
   await expect(page.locator("#sessionTitle")).toHaveText("Your learning snapshot");
   await expect(page.locator("#qTopic")).toHaveText("MOCK EXAM · RESULTS");
 });
+
+
+test("a refreshed timed mock resumes its countdown and sends expired unanswered questions to the lab", async ({ page }) => {
+  await page.addInitScript(() => {
+    const saved = {
+      answers: {},
+      confidence: {},
+      review: [],
+      learning: {},
+      index: 0,
+      transferDone: {},
+      view: "practice",
+      history: [],
+      histories: { mock: [] },
+      lastCompletedSignature: "",
+      sessionOrder: Array.from({ length: 35 }, (_, i) => i + 1),
+      mode: "mock",
+      paused: false,
+      sessionStarted: true,
+      mockLabDone: false,
+      timedMode: true,
+      timeLeft: 2
+    };
+    localStorage.setItem("cloudmindAZ900v1", JSON.stringify(saved));
+  });
+
+  await page.goto("http://127.0.0.1:4173/index.html");
+  await expect(page.locator("#qNumber")).toHaveText("Question 1 of 35");
+  await expect(page.locator("#cmLabTitle")).toHaveText("Mock exam · practical scenario", { timeout: 7000 });
+
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("cloudmindAZ900v1")));
+  expect(saved.review).toHaveLength(35);
+});
