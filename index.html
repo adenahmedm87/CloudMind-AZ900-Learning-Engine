@@ -408,12 +408,6 @@ body.cm-guide #cmStudentGuide{display:block!important}
  <div class="cm-side-label">Learning workspace</div>
  <div class="cm-side-nav">
   <button class="cm-side-link active" data-cm-nav="dashboard"><span class="cm-nav-icon">▦</span> Dashboard</button>
-  <div class="cm-practice-subnav" aria-label="Direct practice shortcuts">
-   <button class="cm-side-sublink" data-cm-direct-mode="beginner">Beginner practice</button>
-   <button class="cm-side-sublink" data-cm-direct-mode="topic">Topic practice</button>
-   <button class="cm-side-sublink" data-cm-direct-mode="mock">Mock exam</button>
-   <button class="cm-side-sublink" data-cm-direct-mode="unlimited">Unlimited practice</button>
-  </div>
   <button class="cm-side-link" data-cm-nav="practice"><span class="cm-nav-icon">✎</span> Practice room</button>
   <button class="cm-side-link" data-cm-nav="review"><span class="cm-nav-icon">↻</span> Smart review</button>
   <button class="cm-side-link" data-cm-nav="labs"><span class="cm-nav-icon">⌘</span> Hands-on labs</button>
@@ -1005,6 +999,12 @@ renderQuestion();
    document.getElementById("cmInteractiveLab")?.classList.add("hidden");
    document.getElementById("cmAzureLab")?.classList.add("hidden");
    document.getElementById("cmScenarioLab")?.classList.add("hidden");
+   /* A direct Practice room visit must show a real question, not the empty placeholder. */
+   if(typeof state!=="undefined"&&(!state.sessionStarted||state.view==="done")){
+    document.querySelector('.cm-mode[data-mode="unlimited"]')?.click();
+   }else if(typeof renderQuestion==="function"){
+    renderQuestion();
+   }
    document.getElementById("practice")?.scrollIntoView({behavior:"smooth",block:"start"});
   }else if(name==="review"){
    body.classList.remove("cm-practice","cm-labview","cm-progress-view","cm-guide");body.classList.add("cm-dashboard","cm-review-view");
