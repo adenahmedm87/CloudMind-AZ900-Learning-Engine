@@ -66,6 +66,8 @@
   <button class="cm-mode" data-mode="unlimited"><strong>♾ Unlimited practice</strong><span>All questions · no countdown · practice at your pace</span></button>
   <button class="cm-mode" data-mode="lab"><strong>🖱️ Interactive desktop lab</strong><span>Complete a simulated task using clickable desktop controls, then submit for a grade</span></button>
   <button class="cm-mode" data-mode="azurelab"><strong>☁️ Azure portal lab</strong><span>Create and configure a resource group in a simulated Azure portal</span></button>
+  <button class="cm-mode" data-mode="archlab"><strong>🧩 Architecture lab</strong><span>Build a resilient design by selecting the right Azure components</span></button>
+  <button class="cm-mode" data-mode="troublelab"><strong>🛠 Troubleshooting lab</strong><span>Inspect a simulated setup, identify the fault, and submit your diagnosis</span></button>
  </div>
  <div id="cmTopicTree" class="cm-topic-tree"></div>
  <p id="cmPathStatus" class="sub" style="margin-top:12px">Choose a path above to begin. Your answers and explanations appear one question at a time.</p>
@@ -439,5 +441,32 @@ renderQuestion();
   }));
  }
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",setup);else setup();
+})();
+</script><script>
+(function(){
+ const $=id=>document.getElementById(id);
+ const tasks={
+  archlab:{title:"Architecture scenario: design for availability",intro:"A customer wants its application to keep running if one datacenter in an Azure region becomes unavailable. Select the best design, then submit your answer.",items:[["single","One virtual machine in one availability zone"],["same","Three virtual machines in the same availability zone"],["zones","Deploy redundant instances across separate availability zones"]],correct:"zones",why:"Availability zones are physically separate locations within an Azure region. Spreading redundant instances across zones helps protect against a zone-level failure."},
+  troublelab:{title:"Troubleshooting scenario: diagnose blocked access",intro:"A virtual machine is running, DNS resolution succeeds, but it cannot reach an approved HTTPS endpoint. The effective network security rules show an outbound deny rule matching TCP port 443. Select the most likely cause, then submit.",items:[["dns","DNS resolution is failing"],["deny","An outbound network security group rule denies HTTPS traffic"],["size","The virtual machine size is too small"]],correct:"deny",why:"The matching outbound deny rule blocks TCP port 443. Review the network security group rules and make sure an appropriate higher-priority allow rule exists, consistent with the required security policy."}
+ };
+ function init(){
+  if(!$("cmScenarioLab")){const h=document.createElement("section");h.id="cmScenarioLab";h.className="hidden";h.style.marginBottom="20px";h.innerHTML='<div class="cm-lab-shell"><header class="cm-lab-head"><div><div class="kicker">Hands-on learning · interactive scenario</div><h3 id="cmScenarioTitle">Scenario lab</h3><p id="cmScenarioIntro"></p></div><button class="btn small ghost" id="cmScenarioExit">Back to practice</button></header><div class="cm-lab-body"><div id="cmScenarioVisual"></div><div id="cmScenarioChoices" style="display:grid;gap:9px;margin-top:15px"></div><div class="cm-lab-actions"><span class="muted" id="cmScenarioStatus">Select one option, then submit.</span><button class="btn primary" id="cmScenarioSubmit">Submit for grading →</button></div><div id="cmScenarioFeedback" aria-live="polite"></div></div></div>';$("cmPathway").parentNode.insertBefore(h,$("cmPathway").nextSibling);}
+  $("cmScenarioExit").addEventListener("click",()=>{ $("cmScenarioLab").classList.add("hidden");document.querySelector(".layout").classList.remove("hidden");$("cmPathway").scrollIntoView({behavior:"smooth",block:"start"});});
+  $("cmScenarioSubmit").addEventListener("click",grade);
+  ["archlab","troublelab"].forEach(mode=>document.querySelectorAll('[data-mode="'+mode+'"]').forEach(b=>b.addEventListener("click",()=>open(mode,b))));
+ }
+ let current=null,selected=null;
+ function open(mode,button){
+  current=tasks[mode];selected=null;document.querySelectorAll("[data-mode]").forEach(x=>x.classList.toggle("cm-active",x===button));
+  document.querySelector(".layout").classList.add("hidden");$("cmInteractiveLab").classList.add("hidden");$("cmAzureLab").classList.add("hidden");$("cmScenarioLab").classList.remove("hidden");
+  $("cmScenarioTitle").textContent=current.title;$("cmScenarioIntro").textContent=current.intro;$("cmScenarioFeedback").innerHTML="";$("cmScenarioStatus").textContent="Select an option, then submit for grading.";
+  $("cmScenarioChoices").innerHTML=current.items.map(it=>'<button type="button" class="answer" data-scenario="'+it[0]+'"><span class="letter">○</span><span>'+it[1]+'</span></button>').join("");
+  $("cmScenarioChoices").querySelectorAll("[data-scenario]").forEach(b=>b.addEventListener("click",()=>{selected=b.dataset.scenario;$("cmScenarioChoices").querySelectorAll("[data-scenario]").forEach(x=>{x.classList.toggle("selected",x===b);x.style.borderColor=x===b?"#54e0dc":"#2a3a58";x.querySelector(".letter").textContent=x===b?"●":"○";});}));
+  if(mode==="archlab")$("cmScenarioVisual").innerHTML='<div class="cm-desktop" style="padding:18px;background:#101a30"><div style="text-align:center;font-weight:800;margin-bottom:15px">Azure region · choose a resilient deployment pattern</div><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">'+["Availability Zone 1","Availability Zone 2","Availability Zone 3"].map((x,i)=>'<div style="border:1px solid #54e0dc;border-radius:10px;padding:15px 5px;text-align:center;background:#142b43"><div style="font-size:25px">▣</div><strong style="font-size:12px">'+x+'</strong><p style="font-size:11px;color:#aab9d2;margin:5px 0 0">Separate location</p></div>').join("")+'</div><p style="font-size:11px;color:#aab9d2;margin:12px 0 0">Illustrative diagram · select the design that matches the availability requirement.</p></div>';
+  else $("cmScenarioVisual").innerHTML='<div class="cm-desktop" style="padding:18px;background:#101a30"><div style="font-weight:800;margin-bottom:10px">Simulated network inspection</div><div style="display:grid;gap:8px"><div style="padding:10px;border:1px solid #2d7e68;border-radius:8px">VM power state: <b>Running</b></div><div style="padding:10px;border:1px solid #2d7e68;border-radius:8px">DNS lookup: <b>Successful</b></div><div style="padding:10px;border:1px solid #a04c67;border-radius:8px">Outbound TCP 443: <b>Deny rule matched</b></div></div></div>';
+  $("cmScenarioLab").scrollIntoView({behavior:"smooth",block:"start"});
+ }
+ function grade(){if(!current||!selected){$("cmScenarioStatus").textContent="Choose an option before submitting.";return;}const ok=selected===current.correct;$("cmScenarioFeedback").innerHTML=ok?'<div class="cm-lab-feedback"><strong>✓ Correct · 100/100</strong><br>'+current.why+'</div>':'<div class="cm-lab-feedback bad"><strong>Submission graded · 0/100</strong><br>'+current.why+'</div>';$("cmScenarioStatus").textContent=ok?"Graded · 100/100":"Graded · Review the explanation and try again.";}
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
 </script></body></html>
