@@ -42,6 +42,7 @@ assert.notEqual(close, -1, "Question array does not have a matching closing brac
 const questions = vm.runInNewContext(html.slice(open, close + 1));
 assert.ok(Array.isArray(questions), "Question bank must evaluate to an array");
 assert.ok(questions.length > 0, "Question bank must not be empty");
+assert.equal(questions.length, 103, "Expected 103 questions; the bank may be incomplete");
 
 const ids = new Set();
 const domainCounts = new Map();
@@ -71,6 +72,9 @@ for (const [index, q] of questions.entries()) {
 }
 
 if (ids.size !== questions.length) errors.push("question IDs are not unique");
+for (let id = 1; id <= 103; id += 1) {
+  if (!ids.has(id)) errors.push("missing question id " + id);
+}
 if (errors.length) {
   console.error("Question-bank validation failed:");
   for (const error of errors) console.error("- " + error);
