@@ -822,7 +822,7 @@ renderQuestion();
   const mode=e.target.closest("[data-mode]");
   if(mode){
    const m=mode.dataset.mode;
-   if(m==="topic"){showDashboard();return;}
+   if(m==="topic"){showPractice();document.getElementById("cmTopicTree")?.scrollIntoView({behavior:"smooth",block:"start"});return;}
    if(["beginner","mock","unlimited"].includes(m)){if(state.sessionStarted&&state.paused&&state.mode===m){state.paused=false;state.view="practice";persist();showPractice();renderQuestion();if(window.cmSyncClock)window.cmSyncClock();showToast("Resumed your saved activity.");}else if(state.sessionStarted&&state.paused&&state.mode!==m){showPractice();}else{showPractice();}return;}
    if(["lab","azurelab","archlab","troublelab"].includes(m)){screen("labview");return;}
   }
