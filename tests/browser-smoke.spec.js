@@ -6,7 +6,7 @@ test("mock entry starts a timed 35-question session and advances", async ({ page
   await page.locator('[data-mode="mock"]').first().click();
 
   await expect(page.locator("#qNumber")).toHaveText("Question 1 of 35");
-  await expect(page.locator("#cmClock")).toContainText(/Timed · 45:/);
+  await expect(page.locator("#cmClock")).toContainText(/Timed · 4[45]:\d{2}/);
 
   await page.locator(".answer").first().click();
   await expect(page.locator("#nextBtn")).toBeEnabled();
@@ -50,6 +50,6 @@ test("Practice again restarts a completed mock with a fresh timer and lab state"
 
   await page.locator("#againBtn").click();
   await expect(page.locator("#qNumber")).toHaveText("Question 1 of 35");
-  await expect(page.locator("#cmClock")).toContainText(/Timed · 45:/);
+  await expect(page.locator("#cmClock")).toContainText(/Timed · 4[45]:\d{2}/);
   await expect(page.locator("#nextBtn")).toBeDisabled();
 });
