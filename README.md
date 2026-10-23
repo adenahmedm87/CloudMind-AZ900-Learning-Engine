@@ -39,3 +39,28 @@ Questions in this prototype are original practice questions, not copied exam que
 
 ## Disclaimer
 CloudMind is an independent learning tool and is not affiliated with or endorsed by Microsoft.
+
+## Demo walkthrough
+
+Use this short path when presenting CloudMind:
+
+1. Open the live site and select **Start learning**.
+2. Choose **Beginner path** and answer a question; demonstrate the explanation and confidence reflection.
+3. Show how the review queue and topic progress respond to practice.
+4. Pause an activity, return to learning paths, then resume it. If switching paths, confirm that the learner is warned before the new path replaces the active session.
+5. Open the **Full mock exam** and explain the timed-question journey and practical task at the end.
+6. Open the optional labs to demonstrate the simulated desktop task, Azure resource-group configuration, architecture choice, and network troubleshooting scenario.
+7. Show the activity-history selector and explain that progress is stored locally in the current browser.
+
+## Release hand-off checklist
+
+- [ ] Manually test the main learning paths, pause/resume, and switching paths.
+- [ ] Confirm previous session history remains after resetting the current activity.
+- [ ] Check that diagrams appear on the questions that include them.
+- [ ] Complete each lab once with a correct answer and once with an incorrect answer where retries are supported.
+- [ ] Refresh the page and confirm browser-local progress behaves as expected.
+- [ ] Check keyboard focus, reduced-motion behaviour, and a narrow mobile viewport.
+- [ ] Confirm the GitHub Pages site serves the latest `main` version.
+- [ ] Capture screenshots and a short demo recording for the final presentation.
+
+These checks are a manual hand-off list; they are not represented as automated browser tests.
