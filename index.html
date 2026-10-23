@@ -94,6 +94,36 @@ body.cm-labview #cmInteractiveLab.hidden,body.cm-labview #cmAzureLab.hidden,body
 @media(max-width:800px){.cm-lab-modes{grid-template-columns:repeat(2,minmax(0,1fr))}.cm-core-modes{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:540px){body.cm-cover .hero{min-height:auto;padding:28px 0}.cm-core-modes,.cm-lab-modes{grid-template-columns:1fr}.cm-mode,.cm-lab-modes .cm-mode{min-height:0}.cm-mode em{padding-top:5px}#cmPathway{padding:16px}}
 
+
+/* Accessibility and interaction polish: keyboard clarity, motion sensitivity, touch targets */
+:where(a,button,summary,[tabindex]):focus-visible{
+  outline:3px solid var(--cyan);
+  outline-offset:3px;
+}
+:where(.answer,.confidence-btn,.cm-mode,.cm-child,.cm-domain summary,.cm-labs-accordion summary){
+  -webkit-tap-highlight-color:transparent;
+}
+.answer,.confidence-btn,.cm-mode,.cm-child{
+  touch-action:manipulation;
+}
+.cm-labs-accordion summary{min-height:54px}
+.cm-labs-accordion summary:focus-visible,
+.cm-domain summary:focus-visible{position:relative;z-index:1}
+#questionStatus,#cmPathStatus,#azStatus,#cmScenarioStatus{
+  line-height:1.55;
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    scroll-behavior:auto!important;
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+}
+@media(max-width:540px){
+  .answer,.confidence-btn,.cm-child{min-height:44px}
+  .cm-labs-accordion summary{padding:14px}
+}
 </style>
 </head>
 <body class="cm-cover">
@@ -139,7 +169,7 @@ body.cm-labview #cmInteractiveLab.hidden,body.cm-labview #cmAzureLab.hidden,body
  </details>
  <div id="cmTopicTree" class="cm-topic-tree"></div>
  <p id="cmPathStatus" class="sub" style="margin-top:12px">Choose a path above to begin. Your answers and explanations appear one question at a time.</p>
-</section><div class="layout"><main class="panel" id="practice"><div class="panel-head"><div><div class="kicker">Your practice session</div><h2 id="sessionTitle">Build understanding, one question at a time</h2><p class="sub" id="sessionSub">Original practice questions · Explanations included · Progress saved on this device</p></div><button class="btn small ghost" id="resetBtn">Reset progress</button></div><div class="progress"><span id="progressBar"></span></div><div class="qmeta"><span class="tag" id="qNumber">Question 1 of 50</span><span class="tag topic" id="qTopic">Cloud concepts</span><span class="tag">AZ-900</span></div><h3 class="question" id="questionText">Loading your practice question…</h3><div class="answers" id="answers"></div><div class="feedback hidden" id="feedback" aria-live="polite"></div><div class="confidence hidden" id="confidence"><h3>How confident were you before seeing the explanation?</h3><p class="sub">Honest reflection helps identify what to learn next. It is not a grade.</p><div class="confidence-options"><button class="confidence-btn" data-confidence="low">Guessing<span>Not sure yet</span></button><button class="confidence-btn" data-confidence="medium">Somewhat confident<span>I think so</span></button><button class="confidence-btn" data-confidence="high">Very confident<span>Quite sure</span></button></div></div><div id="clinicHost"></div><div class="nextrow"><span class="muted" id="questionStatus">Select the best answer to begin.</span><button class="btn primary" id="nextBtn" disabled>Next question →</button></div></main>
+</section><div class="layout"><main class="panel" id="practice"><div class="panel-head"><div><div class="kicker">Your practice session</div><h2 id="sessionTitle">Build understanding, one question at a time</h2><p class="sub" id="sessionSub">Original practice questions · Explanations included · Progress stays in this browser (no account or cross-device sync)</p></div><button class="btn small ghost" id="resetBtn">Reset progress</button></div><div class="progress"><span id="progressBar"></span></div><div class="qmeta"><span class="tag" id="qNumber">Question 1 of 50</span><span class="tag topic" id="qTopic">Cloud concepts</span><span class="tag">AZ-900</span></div><h3 class="question" id="questionText">Loading your practice question…</h3><div class="answers" id="answers"></div><div class="feedback hidden" id="feedback" aria-live="polite"></div><div class="confidence hidden" id="confidence"><h3>How confident were you before seeing the explanation?</h3><p class="sub">Honest reflection helps identify what to learn next. It is not a grade.</p><div class="confidence-options"><button class="confidence-btn" data-confidence="low">Guessing<span>Not sure yet</span></button><button class="confidence-btn" data-confidence="medium">Somewhat confident<span>I think so</span></button><button class="confidence-btn" data-confidence="high">Very confident<span>Quite sure</span></button></div></div><div id="clinicHost"></div><div class="nextrow"><span class="muted" id="questionStatus">Select the best answer to begin.</span><button class="btn primary" id="nextBtn" disabled>Next question →</button></div></main>
 <aside class="sidebar"><section class="mini-panel"><div class="kicker">Learning map</div><h3>Topic mastery</h3><p class="sub">A rough signal from your attempts, not a certification prediction.</p><div id="topicMastery"></div></section><section class="mini-panel"><div class="kicker">Smart review</div><h3>Return to what matters</h3><p class="sub">Questions and concepts to revisit based on your own practice.</p><div id="reviewQueue"></div><button class="btn small ghost" id="reviewBtn">Review a weak topic</button><div style="margin-top:18px;padding-top:14px;border-top:1px solid #273650"><h3>Session history</h3><p class="sub">Completed practice sessions saved in this browser.</p><div id="sessionHistory"></div></div></section><section class="mini-panel"><div class="kicker">The method</div><h3>Why confidence?</h3><p class="sub">Being wrong while very confident may signal a misconception. Being correct while guessing may signal a concept worth strengthening. One answer is only a clue; patterns over time are more useful.</p></section></aside></div>
 <footer class="footer"><span>CloudMind · Built for learning, not memorizing.</span><span>Original practice content. <a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/" target="_blank" rel="noreferrer">Explore the official Azure Fundamentals certification</a>.</span><span>Not affiliated with or endorsed by Microsoft.</span></footer>
 </div><div class="toast" id="toast" role="status"></div>
